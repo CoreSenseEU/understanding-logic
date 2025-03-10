@@ -1,0 +1,68 @@
+%include('fundamental-concepts.th0').
+include('engines-and-modelets.th0').
+include('transitive-strategies.th0').
+
+%thf( requirement_check, axiom, (! [E: engine, M: modelet]: (meets_requirements @ M @ E) <= ! [P: property]: (~(is_requirement_of @ P @ E) <~> (is_property_of_m @ P @ M)) )).
+%thf( requirement_check, axiom, (! [E: engine, M: modelet]: ((meets_requirements @ M @ E) <= ~ (? [P: property]: ((is_requirement_of @ P @ E) & ($true != (is_property_of_m @ P @ M))) )))).
+
+
+
+% problem setup
+
+%properties exist
+thf(property_a_decl, type, pa : property).
+thf(property_b_decl, type, pb : property).
+thf(property_c_decl, type, pc : property).
+thf(property_d_decl, type, pd : property).
+thf(property_e_decl, type, pe : property).
+thf(property_f_decl, type, pf : property).
+
+% engines exist
+thf(wind_estimation_decl, type, wind_estimation : engine).
+thf(model_exchange_decl, type, model_exchange : engine).
+
+thf(forces_decl, type, forces : modelet).
+thf(global_decl, type, global : modelet).
+
+thf(wind_estimation_property_a, axiom, (is_requirement_of @ pa @ wind_estimation) & ~(is_property_of_e @ pa @ wind_estimation) & (is_property_of_m @ pa @ forces) & ~(is_property_of_m @ pa @ global)).
+thf(wind_estimation_property_b, axiom, (is_requirement_of @ pb @ wind_estimation) & ~(is_property_of_e @ pb @ wind_estimation) & (is_property_of_m @ pb @ forces) & ~(is_property_of_m @ pb @ global)).
+thf(wind_estimation_property_c, axiom, ~(is_requirement_of @ pc @ wind_estimation) & (is_property_of_e @ pc @ wind_estimation) & ~(is_property_of_m @ pc @ forces) & ~(is_property_of_m @ pc @ global)).
+thf(wind_estimation_property_d, axiom, ~(is_requirement_of @ pd @ wind_estimation) & (is_property_of_e @ pd @ wind_estimation) & ~(is_property_of_m @ pd @ forces) & ~(is_property_of_m @ pd @ global)).
+thf(wind_estimation_property_e, axiom, ~(is_requirement_of @ pe @ wind_estimation) & ~(is_property_of_e @ pe @ wind_estimation) & ~(is_property_of_m @ pe @ forces) & ~(is_property_of_m @ pe @ global)).
+thf(wind_estimation_property_f, axiom, ~(is_requirement_of @ pf @ wind_estimation) & ~(is_property_of_e @ pf @ wind_estimation) & ~(is_property_of_m @ pf @ forces) & ~(is_property_of_m @ pf @ global)).
+
+thf(model_exchange_property_a, axiom, ~(is_requirement_of @ pa @ model_exchange) & ~(is_property_of_e @ pa @ model_exchange) & ~(is_property_of_m @ pa @ forces) & ~(is_property_of_m @ pa @ global)).
+thf(model_exchange_property_b, axiom, ~(is_requirement_of @ pb @ model_exchange) & ~(is_property_of_e @ pb @ model_exchange) & ~(is_property_of_m @ pb @ forces) & ~(is_property_of_m @ pb @ global)).
+thf(model_exchange_property_c, axiom, (is_requirement_of @ pc @ model_exchange) & ~(is_property_of_e @ pc @ model_exchange) & ~(is_property_of_m @ pc @ forces) & ~(is_property_of_m @ pc @ global)).
+thf(model_exchange_property_d, axiom, (is_requirement_of @ pd @ model_exchange) & ~(is_property_of_e @ pd @ model_exchange) & ~(is_property_of_m @ pd @ forces) & ~(is_property_of_m @ pd @ global)).
+thf(model_exchange_property_e, axiom, ~(is_requirement_of @ pe @ model_exchange) & (is_property_of_e @ pe @ model_exchange) & ~(is_property_of_m @ pe @ forces) & (is_property_of_m @ pe @ global)).
+thf(model_exchange_property_f, axiom, ~(is_requirement_of @ pf @ model_exchange) & (is_property_of_e @ pf @ model_exchange) & ~(is_property_of_m @ pf @ forces) & (is_property_of_m @ pf @ global)).
+
+%thf(forces_decl, type, forces : modelet).
+%thf(forces_property_A,axiom, (is_property_of_m @ pa @ forces)).
+%thf(forces_property_B,axiom, (is_property_of_m @ pb @ forces)).
+%thf(forces_def, axiom, ? [M:modelet]: ((is_property_of_m @ pa @ M) & (is_property_of_m @ pb @ M) & ~(is_property_of_m @ pc @ M) & ~(is_property_of_m @ pd @ M) & ~(is_property_of_m @ pe @ M) & ~(is_property_of_m @ pf @ M))).
+
+%thf(global_decl, type, global : modelet).
+%thf(global_property_E,axiom, (is_property_of_m @ pe @ global)).
+%thf(global_property_F,axiom, (is_property_of_m @ pf @ global)).
+%thf(global_def, axiom, ? [M:modelet]: ~((is_property_of_m @ pa @ M) & ~(is_property_of_m @ pb @ M) & ~(is_property_of_m @ pc @ M) & ~(is_property_of_m @ pd @ M) & (is_property_of_m @ pe @ M) & (is_property_of_m @ pf @ M))).
+
+
+%thf(local_decl, type, local : modelet).
+%thf(wind_estimation_decl2, axiom, (exertable @ wind_estimation @ forces) ).
+%thf(model_exchange, axiom, (? [M: local]) => (exertable @ model_exchange @ M @ global) ).
+
+% query - does a strategy between two modelets exist
+%thf(c1, conjecture, ? [M: modelet]: (exertable @ wind_estimation @ M) ).
+
+% working
+%thf(c1, conjecture, ? [M: modelet]: ((is_property_of_m @ pa @ M) & (is_property_of_m @ pb @ M) )).
+%thf(c1, conjecture,  (is_requirement_of @ pa @ wind_estimation) & (is_requirement_of @ pb @ wind_estimation) ).
+%testing
+
+%thf(c1, conjecture, ? [M: modelet]: (meets_requirements @ M @ wind_estimation)).
+%works
+%thf(c1, conjecture, ? [M: modelet]: (meets_requirements @ M @ model_exchange)).
+%works
+thf(c1, conjecture, (strategy @ forces @ global)).

@@ -1,0 +1,104 @@
+% Modelets and engines
+include('fundamental-concepts.th0').
+
+% Engines
+thf(decl_engine, type,
+  engine : thing).
+
+% Modelets
+thf(decl_modelet, type,
+  modelet : interface).
+
+% Modelet Template
+thf(decl_template, type,
+  template : interface).
+
+
+% Interfaces have referents
+thf(decl_referent_of_t, type,
+  referent_of_t : template > phenomenon).
+
+% Interfaces have referents
+thf(decl_referent_of_m, type,
+  referent_of_m : modelet > phenomenon).
+
+% Interfaces have formalisms
+thf(decl_formalism_of_t, type,
+  formalism_of_t : template > formalism).
+
+% Interfaces have formalisms
+thf(decl_formalism_of_m, type,
+  formalism_of_m : modelet > formalism).
+
+
+% Modelets can match Templates
+thf(decl_inputs_match, type,
+  inputs_match : (modelet > (template > $o))).
+
+
+
+% Set of Modelets
+thf(decl_modelet_set, type,
+  modelet_set : $i).
+
+% Set Membership
+thf(decl_set_m_membership, type,
+  in_set_m : modelet > modelet_set > $o).
+
+% Set of Modelet Templates
+thf(decl_template_set, type,
+  template_set : $i).
+
+% Set Membership
+thf(decl_set_t_membership, type,
+  in_set_t : template > template_set > $o).
+
+% Engines have template sets as interface definition
+thf(decl_engine_input, type,
+  is_interface_of: template_set > engine > $o).
+
+
+% Sets of Modelets can match Sets of Modelet Templates
+thf(decl_interfaces_match, type,
+  interfaces_match : modelet_set > template_set > $o).
+
+thf(decl_interfaces_match2, type,
+  interfaces_match2 : template_set > modelet_set > $o).
+
+% Modelet Sets can be exerted by Engines
+thf(decl_exertable, type,
+  exertable: modelet_set > engine > $o).
+
+% Exertion of a Modelet Set results in a Modelet
+thf(decl_exert, type,
+  exert: engine > modelet_set > modelet > $o).
+
+
+
+% If an engine's template set is matched by a modelet set, the engine can exert the modelet set
+thf(definition_modelet_set_is_exertable, definition,
+  (exertable =
+    (^ [MS: modelet_set, E : engine]:
+      ? [TS: template_set]:
+      (
+        (is_interface_of @ TS @ E)
+        &
+        (interfaces_match @ MS @ TS)
+      )
+    )
+  )
+).
+
+thf(axiom_modelet_set_is_exertable, axiom,
+  ! [MS: modelet_set, E : engine]:
+  (
+    ? [TS: template_set]:
+    (
+      (is_interface_of @ TS @ E)
+      &
+      (interfaces_match @ MS @ TS)
+    )
+    =>
+    (exertable @ MS @ E)
+  )
+).

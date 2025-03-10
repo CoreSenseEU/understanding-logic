@@ -1,0 +1,265 @@
+% Property logic
+%include('fundamental-concepts.th0').
+include('engines-and-modelets.th0').
+
+% Properties exist
+thf(decl_property, type,
+  property: $tType).
+
+% Properties have Values
+thf(decl_property_value, type,
+  has_value: property > $real).
+
+
+% Requirements exist
+thf(decl_requirement, type,
+  requirement: $tType).
+
+% Properties have types
+thf(decl_type_of_p, type,
+  type_of_p : property > formalism).
+
+% Requirements have types
+thf(decl_type_of_r, type,
+  type_of_r : requirement > formalism).
+
+% Requirements have a permissible value range
+thf(decl_requirement_range, type,
+  is_permissible: requirement > $real > $o).
+
+% Modelets have properties
+thf(decl_property_of_m, type,
+  is_property_of_m: property > modelet > $o).
+
+% Engines have properties
+thf(decl_property_of_e, type,
+  is_property_of_e: property > engine > $o).
+
+% Engine outputs have properties
+thf(decl_engine_output_properties, type,
+  output_property_of_e: engine > property).
+
+% Templates have requirements in terms of properties
+thf(decl_templates_have_requirements, type,
+  is_part_of: requirement > template > $o).
+
+
+
+%thf(axiom_modelets_match_or_not, axiom,
+%    ! [M: modelet, MS: modelet_set]:
+%    (
+%      (in_set_m @ M @ MS)
+%      |
+%      ~ (in_set_m @ M @ MS)
+%    )
+%  ).
+
+%  thf(axiom_modelets_match_or_not, axiom,
+%      ! [T: template, TS: template_set]:
+%      (
+%        (in_set_t @ T @ TS)
+%        |
+%        ~ (in_set_t @ T @ TS)
+%      )
+%    ).
+
+%thf(axiom_modelets_match_or_not, axiom,
+%  ! [M: modelet, T: template]:
+%  (
+%    (inputs_match @ M @ T)
+%    |
+%    ~ (inputs_match @ M @ T)
+%  )
+%).
+thf(formally_equivalent_decl, type, formally_equivalent: template > modelet > $o).
+thf(formally_equivalent, axiom,
+  ! [M: modelet, T: template]:
+  (
+    (
+      ( % ensure co-reference between modelet and template, e.g. the mass of an object
+        (referent_of_t @ T)
+        =
+        (referent_of_m @ M)
+      )
+      &
+      ( % ensure computational compatibility, e.g. that a required description of a space in form of a costmap, is met by a costmap modelet
+        (formalism_of_t @ T)
+        =
+        (formalism_of_m @ M)
+      )
+    )
+    =>
+    (formally_equivalent @ T @ M)
+  )
+).
+
+
+
+% Modelets match Templates if their properties match the parts of the template
+thf(definition_modelet_matches_template, definition,
+  (inputs_match =
+    (^ [M: modelet, T: template]:
+    (
+      (formally_equivalent @ T @ M)
+      &
+      ! [R: requirement]:
+      (
+        (is_part_of @ R @ T)
+        =>
+        ? [P: property]:
+        (
+          (is_property_of_m @ P @ M) % match modelet to property
+          &
+          ((type_of_r @ R) = (type_of_p @ P)) % property has correct correct data format/type for requirement
+          &
+          (is_permissible @ R @ (has_value @ P)) % ensure that the property's value is permissible
+        )
+      )
+    )
+  )
+  )
+).
+
+
+thf(axiom_modelet_matches_template, axiom,
+  ! [M: modelet, T: template]:
+  ((
+    (formally_equivalent @ T @ M)
+    &
+    ! [R: requirement]:
+    (
+      (is_part_of @ R @ T)
+      =>
+      ? [P: property]:
+      (
+        (is_property_of_m @ P @ M) % match modelet to property
+        &
+        ((type_of_r @ R) = (type_of_p @ P)) % property has correct correct data format/type for requirement
+        &
+        (is_permissible @ R @ (has_value @ P)) % ensure that the property's value is permissible
+      )
+    )
+  )
+  =>
+  (inputs_match @ M @ T)
+  )
+).
+
+% Modelet sets match template sets if all their templates have a corresponding modelet with matching inputs (inputs_match @ M @ T)
+%(interfaces_match @ MS @ TS)
+
+thf(definition_modelet_sets_matches_template_sets, definition,
+  (interfaces_match = (^ [MS: modelet_set, TS: template_set]:
+    ! [T : template]:
+    (
+      (in_set_t @ T @ TS)
+      =>
+      ? [M : modelet]:
+        (
+          (inputs_match @ M @ T)
+          &
+          (in_set_m @ M @ MS)
+        )
+      )
+    )
+  )
+).
+
+thf(definition_modelet_sets_matches_template_sets2, definition,
+  (interfaces_match2 = (^ [TS: template_set, MS: modelet_set]:
+    ! [T : template]:
+    (
+      (in_set_t @ T @ TS)
+      =>
+      ? [M : modelet]:
+        (
+          (inputs_match @ M @ T)
+          &
+          (in_set_m @ M @ MS)
+        )
+      )
+    )
+  )
+).
+
+thf(axiom_modelet_sets_matches_template_sets, axiom,
+  ! [MS: modelet_set, TS: template_set]:
+  (
+    ! [T : template]:
+    (
+      (in_set_t @ T @ TS)
+      =>
+      ? [M : modelet]:
+      (
+        (inputs_match @ M @ T)
+        &
+        (in_set_m @ M @ MS)
+      )
+    )
+    =>
+    (interfaces_match @ MS @ TS)
+  )
+).
+
+thf(axiom_modelet_sets_matches_template_sets2, axiom,
+  ! [MS: modelet_set, TS: template_set]:
+  (
+    ! [T : template]:
+    (
+      (in_set_t @ T @ TS)
+      =>
+      ? [M : modelet]:
+      (
+        (inputs_match @ M @ T)
+        &
+        (in_set_m @ M @ MS)
+      )
+    )
+    =>
+    (interfaces_match2 @ TS @ MS)
+  )
+).
+
+
+
+% Engine outputs have a topic, dependent on input topics and engine
+
+thf(output_modelet_topic, axiom,
+  ! [Minput: modelet_set, E: engine, Moutput: modelet]:
+  (
+    (
+      (exertable @ Minput @ E)
+      &
+      (exert @ E @ Minput @ Moutput)
+    )
+    =>
+    (has_topic @ Moutput @ (output_topic @ E @ Minput))
+  )
+
+).
+
+% Engine outputs have properties
+%thf(exert_creates, axiom,
+%  ! [Minput: modelet_set, E: engine]:
+%  (
+%      (exertable @ Minput @ E )
+%      =>
+%      ? [Moutput: modelet]:
+%      (
+%        (exert @ E @ Minput @ Moutput)
+%        &
+%        ! [P: property]:
+%        (
+%          (
+%            ~(is_property_of_e @ P @ E)
+%            |
+%            (
+%              (is_property_of_e @ P @ E)
+%              &
+%              (is_property_of_m @ P @ Moutput)
+%            )
+%          )
+%        )
+%      )
+%    )
+%).

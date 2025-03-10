@@ -1,0 +1,40 @@
+% Matches can be replaceable
+thf(decl_replaceable, type, replaceable : (modelet > template > $o) > (modelet > template > $o) > $o).
+
+
+% Matchings that fit the same Template are replaceable
+thf(def_replacability, definition,
+    ( replaceable
+    = ( ^ [MAx: modelet > template > $o, MAy: modelet > template > $o] :
+    ! [Ma : modelet, Mb : modelet, T : template ]:
+         ( ( MAx @ Ma @ T )
+          &
+          ( MAy @ Mb @ T)
+          )) ) ).
+
+
+% Set
+%thf(decl_set, type, set : $i).
+
+% Set Membership
+%thf(decl_set_membership, type, in_set : thing > set > $o).
+
+%these, not above
+
+% Matches can be replaceable
+% TODO technically here it's not the match that is replaceable but the modelet-template tuple
+thf(decl_replaceable, type, replaceable : modelet > template > $o).
+
+% A Matching is replaceable if there exists another fitting modelet
+thf(def_replacability, definition,
+    ( replaceable
+    = ( ^ [M: modelet, T: template] :
+        ? [Mtoo : modelet]:
+        (
+          (M != Mtoo)
+          &
+          (inputs_match @ M @ T)
+          &
+          (inputs_match @ Mtoo @ T)
+         ) ) ) ).
+

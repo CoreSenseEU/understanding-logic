@@ -1,0 +1,21 @@
+include('test_properties_setup.thf').
+%--- two variables ---
+% works leo: 17014 ms, vampire: 32335ms
+thf(test, conjecture,
+? [TS: template_set, MS: modelet_set]:
+  (interfaces_match @ MS @ TS)
+).
+
+% works leo: 591 ms, vampire: 10ms
+%thf(test, conjecture,
+%? [TS: template_set, E: engine]:
+%  (is_interface_of @ TS @ E)
+%).
+
+
+% works leo: 7704 ms
+%thf(test, conjecture,
+%  ? [E: engine, MS: modelet_set]:
+%  (exertable @ MS @ E)
+%).
+
