@@ -1,0 +1,6 @@
+include('test-scenario.tff').
+
+tff(conj3, conjecture,
+  ?[TS: template_set, MS: modelet_set]:
+    interfaces_match(MS, TS)
+).

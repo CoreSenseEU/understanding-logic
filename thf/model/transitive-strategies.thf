@@ -1,5 +1,5 @@
 % Transitive strategies
-include('properties.th0').
+include('thf/model/properties.thf').
 
 
 % strategies connect modelets

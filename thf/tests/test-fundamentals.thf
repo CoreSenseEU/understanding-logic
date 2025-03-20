@@ -1,4 +1,4 @@
-include('fundamental-concepts.th0').
+include('thf/model/fundamental-concepts.thf').
 
 thf(axiom_mass_requirement, axiom,
   ? [Number : formalism, Table : phenomenon, E: engine]:

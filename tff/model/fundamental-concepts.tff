@@ -1,0 +1,25 @@
+% Fundamental concepts
+
+% Agents
+tff(decl_agent, type,
+  agent: $tType).
+
+% Things
+tff(decl_thing, type,
+  thing : $tType).
+
+% Interface Descriptions
+tff(decl_interface, type,
+  interface : thing).
+
+% Phenomena
+tff(decl_phenomenon, type,
+  phenomenon: $tType).
+
+% Formalism
+tff(decl_formalism, type,
+  formalism: $tType).
+
+% Topics
+tff(decl_topic, type,
+  topic: $tType).

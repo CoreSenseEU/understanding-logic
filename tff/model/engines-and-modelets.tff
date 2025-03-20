@@ -1,0 +1,87 @@
+% Modelets and engines
+include('tff/model/fundamental-concepts.tff').
+
+% Engines
+tff(decl_engine, type,
+  engine : thing).
+
+% Modelets
+tff(decl_modelet, type,
+  modelet : interface).
+
+% Modelet Template
+tff(decl_template, type,
+  template : interface).
+
+
+% Templates have referents
+tff(decl_referent_of_t, type,
+  referent_of_t : template > phenomenon).
+
+% Modelets have referents
+tff(decl_referent_of_m, type,
+  referent_of_m : modelet > phenomenon).
+
+% Templates have formalisms
+tff(decl_formalism_of_t, type,
+  formalism_of_t : template > formalism).
+
+% Modelets have formalisms
+tff(decl_formalism_of_m, type,
+  formalism_of_m : modelet > formalism).
+
+% Modelets can match Templates
+tff(decl_inputs_match, type,
+  inputs_match : (modelet * template) > $o).
+
+
+% Set of Modelets
+tff(decl_modelet_set, type,
+  modelet_set : $i).
+
+% Set Membership
+tff(decl_set_m_membership, type,
+  in_set_m : (modelet * modelet_set) > $o).
+
+% Set of Templates
+tff(decl_template_set, type,
+  template_set : $i).
+
+% Template Set Membership
+tff(decl_set_t_membership, type,
+  in_set_t : (template * template_set) > $o).
+
+% Engines have template sets as interface definition
+tff(decl_engine_input, type,
+  is_interface_of: (template_set * engine) > $o).
+
+
+% Sets of Modelets can match Sets of Modelet Templates
+tff(decl_interfaces_match, type,
+  interfaces_match : (modelet_set * template_set) > $o).
+
+% Modelet Sets can be exerted by Engines
+tff(decl_exertable, type,
+  exertable: (modelet_set * engine) > $o).
+
+% Exertion of a Modelet Set results in a Modelet
+tff(decl_exert, type,
+  exert: (engine * modelet_set * modelet) > $o).
+
+
+% Modelet Sets are exertable by Engines
+tff(axiom_modelet_set_is_exertable, axiom,
+  ! [MS: modelet_set, E : engine]:
+  (
+    ? [TS: template_set]:
+    (
+      is_interface_of(TS, E)
+      &
+      interfaces_match(MS, TS)
+    )
+   =>
+    exertable(MS, E)
+  )
+).
+
+

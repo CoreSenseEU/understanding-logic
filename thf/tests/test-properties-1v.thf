@@ -1,4 +1,4 @@
-include('test_properties_setup.thf').
+include('test-properties-setup.thf').
 %--- one variable ---
 
 

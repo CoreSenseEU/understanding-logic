@@ -1,0 +1,13 @@
+include('tff/model/fundamental-concepts.tff').
+
+tff(axiom_mass_requirement, axiom,
+  ? [Number : formalism, Table : phenomenon, E: engine]:
+  (
+$true
+  )
+).
+
+tff(test, conjecture,
+? [E: engine]:
+$true
+).

@@ -1,4 +1,4 @@
-include('test_properties_setup.thf').
+include('test-properties-setup.thf').
 
 % basic tests: leo: 1175ms, vampire: 6ms
 % thf(test_axioms, conjecture,

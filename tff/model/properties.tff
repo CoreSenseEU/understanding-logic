@@ -1,0 +1,186 @@
+% Property logic
+include('tff/model/engines-and-modelets.tff').
+
+% Properties exist
+tff(decl_property, type,
+  property: $tType).
+
+% Properties have Values
+tff(decl_property_value, type,
+  has_value: property > $real).
+
+
+% Requirements exist
+tff(decl_requirement, type,
+  requirement: $tType).
+
+% Properties have types (formalisms)
+tff(decl_type_of_p, type,
+  type_of_p : property > formalism).
+
+% Requirements have types (formalisms)
+tff(decl_type_of_r, type,
+  type_of_r : requirement > formalism).
+
+% Requirements have a permissible value range
+tff(decl_requirement_range, type,
+  is_permissible: (requirement * $real) > $o).
+
+% Modelets have properties
+tff(decl_property_of_m, type,
+  is_property_of_m: (property * modelet) > $o).
+
+% Engines have properties
+tff(decl_property_of_e, type,
+  is_property_of_e: (property * engine) > $o).
+
+% Engine outputs have properties
+tff(decl_engine_output_properties, type,
+  output_property_of_e: engine > property).
+
+% Templates have requirements in terms of properties
+tff(decl_templates_have_requirements, type,
+  is_part_of: (requirement * template) > $o).
+
+
+% Modelets and Templates can be formally equivalent
+tff(formally_equivalent_decl, type, formally_equivalent: (template * modelet) > $o).
+tff(formally_equivalent, axiom,
+  ! [M: modelet, T: template]:
+  (
+    (
+      ( % ensure co-reference between modelet and template, e.g. the mass of an object
+        referent_of_t(T)
+        =
+        referent_of_m(M)
+      )
+      &
+      ( % ensure computational compatibility, e.g. that a required description of a space in form of a costmap, is met by a costmap modelet
+        formalism_of_t(T)
+        =
+        formalism_of_m(M)
+      )
+    )
+    =>
+    formally_equivalent(T, M)
+  )
+).
+
+% Modelets and Templates can have matching profiles
+tff(axiom_modelet_matches_template, axiom,
+  ! [M: modelet, T: template]:
+  ((
+    formally_equivalent(T, M)
+    &
+    ! [R: requirement]:
+    (
+      is_part_of(R,T)
+      =>
+      ? [P: property]:
+      (
+        is_property_of_m(P, M) % match modelet to property
+        &
+        (type_of_r(R) = type_of_p(P)) % property has correct correct data format/type for requirement
+        &
+        is_permissible(R, has_value(P)) % ensure that the property's value is permissible
+      )
+    )
+  )
+  =>
+  inputs_match(M, T)
+  )
+).
+
+% Modelet sets match template sets if all their templates have a corresponding modelet with matching inputs inputs_match(M, T)
+%interfaces_match(MS, TS)
+
+tff(axiom_modelet_sets_matches_template_sets, axiom,
+  ! [MS: modelet_set, TS: template_set]:
+  (
+    ! [T : template]:
+    (
+      in_set_t(T, TS)
+      =>
+      ? [M : modelet]:
+      (
+        inputs_match(M, T)
+        &
+        in_set_m(M, MS)
+      )
+    )
+    =>
+    interfaces_match(MS, TS)
+  )
+).
+
+
+
+
+% Engine outputs have a topic, dependent on input topics and engine
+% engines impart semantic scope
+% topics consist of physical scope and semantic scope
+% how to match them
+% do we keep scope within properties?
+
+tff(semantic_scope_decl, type, semantic_scope : $tType).
+tff(physical_scope_decl, type, physical_scope : $tType).
+
+tff(engines_can_provide_semantic_scope, type, imparts_semantic_scope: (engine * semantic_scope) > $o).
+
+tff(modelets_can_have_semantic_scope, type, has_semantic_scope: (modelet * semantic_scope) > $o).
+
+tff(modelets_can_have_physical_scope, type, has_physical_scope: (modelet * physical_scope) > $o).
+
+
+tff(engines_can_impart_semantic_scope, axiom,
+  ![Minput: modelet_set, E:engine, S: semantic_scope, Moutput: modelet]:
+  (
+    (
+      imparts_semantic_scope(E, S)
+      &
+      exert(E, Minput, Moutput)
+    )
+    =>
+    has_semantic_scope(Moutput, S)
+  )
+).
+
+%tff(output_modelet_topic, axiom,
+%  ! [Minput: modelet_set, E: engine, Moutput: modelet]:
+%  (
+%    (
+%      exertable(Minput, E)
+%      &
+%      exert(E, Minput, Moutput)
+%    )
+%    =>
+%    has_topic(Moutput, output_topic(E, Minput))
+%  )
+%
+%).
+
+% Engine outputs have properties
+%tff(exert_creates, axiom,
+%  ! [Minput: modelet_set, E: engine]:
+%  (
+%      exertable(Minput, E )
+%      =>
+%      ? [Moutput: modelet]:
+%      (
+%        exert(E, Minput, Moutput)
+%        &
+%        ! [P: property]:
+%        (
+%          (
+%            ~is_property_of_e(P, E)
+%            |
+%            (
+%              is_property_of_e(P, E)
+%              &
+%              is_property_of_m(P, Moutput)
+%            )
+%          )
+%        )
+%      )
+%    )
+%).

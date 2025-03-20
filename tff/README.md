@@ -1,0 +1,5 @@
+# Typed First-Order Form coding
+
+## Creating test
+
+You can generated test scenarios for the conjectures in the `tests` folder by editing `tests/create-test.py` to adjust the number of instances to create, and the running `python create-test.py > test-scenario.tff` in the `tests` directory.

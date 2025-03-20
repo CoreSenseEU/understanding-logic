@@ -1,0 +1,190 @@
+include('tff/model/properties.tff').
+
+
+tff(realNumber_real, type, realNumber : $real).
+
+
+tff(number_formalism, type, number : formalism).
+tff(distribution_formalism, type, distribution : formalism).
+
+
+
+tff(t1_template, type, t1 : template).
+tff(formalism_of_t_t1, axiom, formalism_of_t(t1) = number).
+
+tff(accuracyReq_requirement, type, accuracyReq: requirement).
+tff(accuracyReq_has_type, axiom, type_of_r(accuracyReq) = number).
+tff(accuracyReq_is_permissable_number, axiom, is_permissible(accuracyReq, realNumber)).
+tff(accuracyReq_is_part_of_t1, axiom, is_part_of(accuracyReq, t1)).
+
+tff(m1_modelet, type, m1 : modelet).
+tff(formalism_of_m_m1, axiom, formalism_of_m(m1) = number).
+
+tff(accuracy_property, type, accuracyProp : property).
+tff(accuracyProp_has_type, axiom, type_of_p(accuracyProp) = number).
+tff(accuracyProp_has_value, axiom, has_value(accuracyProp) = realNumber).
+tff(accuracyProp_is_property_of_m1, axiom, is_property_of_m(accuracyProp, m1)).
+
+
+
+
+tff(t2_template, type, t2 : template).
+tff(formalism_of_t_t2, axiom, formalism_of_t(t2) = distribution).
+
+tff(varianceReq_requirement, type, varianceReq: requirement).
+tff(varianceReq_has_type, axiom, type_of_r(varianceReq) = distribution).
+tff(varianceReq_is_permissable, axiom, is_permissible(varianceReq, realNumber)).
+tff(varianceReq_is_part_of_t2, axiom, is_part_of(varianceReq, t2)).
+
+tff(m2_modelet, type, m2 : modelet).
+tff(formalism_of_m_m2, axiom, formalism_of_m(m2) = distribution).
+
+tff(variance_property, type, varianceProp : property).
+tff(varianceProp_has_type, axiom, type_of_p( varianceProp) = distribution).
+tff(varianceProp_has_value, axiom, has_value( varianceProp) = realNumber).
+tff(varianceProp_is_property_of_m2, axiom, is_property_of_m(varianceProp, m2)).
+
+
+
+tff(ts_template_set, type, ts : template_set).
+tff(t1_in_ts, axiom, in_set_t(t1, ts)).
+tff(t2_in_ts, axiom, in_set_t(t2, ts)).
+
+
+tff(e_engine, type, e : engine).
+tff(ts_interface_of_e, axiom, is_interface_of(ts, e)).
+
+
+tff(m3_modelet, type, m3 : modelet).
+
+tff(ms_modelet_set, type, ms : modelet_set).
+tff(m1_in_ms, axiom, in_set_m(m1, ms)).
+tff(m2_in_ms, axiom, in_set_m(m2, ms)).
+
+
+tff(table_phenomenon, type, table : phenomenon).
+tff(referent_of_t_t1, axiom, referent_of_t(t1) = table).
+tff(referent_of_m_m1, axiom, referent_of_m(m1) = table).
+
+tff(chair_phenomenon, type, chair : phenomenon).
+tff(referent_of_t_t2, axiom, referent_of_t(t2) = chair).
+tff(referent_of_m_m2, axiom, referent_of_m(m2) = chair).
+
+
+% faster with this? some faster by factor 10, others slower
+
+%distinctness
+tff(requirement_distinctness, axiom, $distinct(accuracyReq, varianceReq)).
+tff(property_distinctness, axiom, $distinct(accuracyProp, varianceProp)).
+tff(modelet_distinctness, axiom, $distinct(m1, m2, m3)).
+tff(template_distinctness, axiom, $distinct(t1, t2)).
+tff(formalism_distinctness, axiom, $distinct(number, distribution)).
+tff(phenomena_distinctness, axiom, $distinct(chair, table)).
+
+tff(list_engines, axiom,
+  ! [E: engine]:
+  (E = e)
+).
+tff(list_modelet_sets, axiom,
+  ! [MS: modelet_set]:
+  (MS = ms)
+).
+tff(list_template_sets, axiom,
+  ! [TS: template_set]:
+  (TS = ts)
+).
+tff(list_phenomena, axiom,
+  ! [P: phenomenon]:
+  (
+    (P = table)
+    |
+    (P = chair)
+  )
+).
+
+tff(list_formalisms, axiom,
+  ! [F: formalism]:
+  (
+    (F = distribution)
+    |
+    (F = number)
+  )
+).
+tff(list_properties, axiom,
+  ! [P: property]:
+  (
+    (P = accuracyProp)
+    |
+    (P = varianceProp)
+  )
+).
+tff(list_requirements, axiom,
+  ! [R: requirement]:
+  (
+    (R = accuracyReq)
+    |
+    (R = varianceReq)
+  )
+).
+tff(list_templates, axiom,
+  ! [T: template]:
+  (
+    (T = t1)
+    |
+    (T = t2)
+  )
+).
+tff(list_modelets, axiom,
+  ! [M: modelet]:
+  (
+    (M = m1)
+    |
+    (M = m2)
+    |
+    (M = m3)
+  )
+).
+
+% These are vital for circumnavigating the OWA!!!
+tff(define_template_set, axiom,
+  ! [T : template]:
+  (
+    in_set_t(T,ts)
+    =>
+    (
+      (T = t1)
+      |
+      (T = t2)
+    )
+  )
+).
+
+tff(define_modelet_set, axiom,
+  ! [M : modelet]:
+  (
+    in_set_m(M, ms)
+    =>
+    (
+      (M = m1)
+      |
+      (M = m2)
+    )
+  )
+).
+
+tff(define_requirement_set1, axiom,
+  ! [R : requirement]:
+  (
+    is_part_of(R, t1)
+    =>
+    (R = accuracyReq)
+  )
+).
+tff(define_requirement_set2, axiom,
+  ! [R : requirement]:
+  (
+    is_part_of(R, t2)
+    =>
+    (R = varianceReq)
+  )
+).

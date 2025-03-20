@@ -1,4 +1,4 @@
-include('test_properties_setup.thf').
+include('test-properties-setup.thf').
 %--- two variables ---
 % works leo: 17014 ms, vampire: 32335ms
 thf(test, conjecture,

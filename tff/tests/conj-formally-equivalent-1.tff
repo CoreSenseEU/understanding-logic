@@ -1,0 +1,6 @@
+include('test-scenario.tff').
+
+tff(conj1, conjecture,
+  ?[M: modelet]:
+    formally_equivalent(template_1, M)
+).

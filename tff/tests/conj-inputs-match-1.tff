@@ -1,0 +1,6 @@
+include('test-scenario.tff').
+
+tff(conj2, conjecture,
+  ?[M: modelet]:
+    inputs_match(M, template_1)
+).

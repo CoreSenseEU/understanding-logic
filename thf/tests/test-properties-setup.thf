@@ -1,4 +1,4 @@
-include('properties.th0').
+include('thf/model/properties.thf').
 
 
 thf(realNumber_real, type, realNumber : $real).
@@ -55,6 +55,7 @@ thf(e_engine, type, e : engine).
 thf(ts_interface_of_e, axiom, (is_interface_of @ ts @ e)).
 
 
+thf(m3_modelet, type, m3 : modelet).
 
 thf(ms_modelet_set, type, ms : modelet_set).
 thf(m1_in_ms, axiom, (in_set_m @ m1 @ ms)).
@@ -70,12 +71,12 @@ thf(referent_of_t_t2, axiom, (referent_of_t @ t2) = chair).
 thf(referent_of_m_m2, axiom, (referent_of_m @ m2) = chair).
 
 
-%faster with this?
+% faster with this? some faster by factor 10, others slower
 
 %distinctness
 thf(requirement_distinctness, axiom, $distinct(accuracyReq, varianceReq)).
 thf(property_distinctness, axiom, $distinct(accuracyProp, varianceProp)).
-thf(modelet_distinctness, axiom, $distinct(m1, m2)).
+thf(modelet_distinctness, axiom, $distinct(m1, m2, m3)).
 thf(template_distinctness, axiom, $distinct(t1, t2)).
 thf(formalism_distinctness, axiom, $distinct(number, distribution)).
 thf(phenomena_distinctness, axiom, $distinct(chair, table)).
@@ -139,9 +140,12 @@ thf(list_modelets, axiom,
     (M = m1)
     |
     (M = m2)
+    |
+    (M = m3)
   )
 ).
 
+% These are vital for circumnavigating the OWA!!!
 thf(define_template_set, axiom,
   ! [T : template]:
   (
@@ -168,7 +172,6 @@ thf(define_modelet_set, axiom,
   )
 ).
 
-% These are vital for circumnavigating the OWA!!!
 thf(define_requirement_set1, axiom,
   ! [R : requirement]:
   (
@@ -185,164 +188,3 @@ thf(define_requirement_set2, axiom,
     (R = varianceReq)
   )
 ).
-
-% basic tests: leo: 1175ms, vampire: 6ms
-% thf(test_axioms, conjecture,
-%   (
-%     ((referent_of_t @ t1) = (referent_of_m @ m1))
-%     &
-%     ((referent_of_t @ t2) = (referent_of_m @ m2))
-%     &
-%     ((formalism_of_t @ t1) = (formalism_of_m @ m1))
-%     &
-%     ((formalism_of_t @ t2) = (formalism_of_m @ m2))
-%     &
-%     ((type_of_p @ accuracyProp) = (type_of_r @ accuracyReq))
-%     &
-%     ((type_of_p @ varianceProp) = (type_of_r @ varianceReq))
-%     &
-%     (is_property_of_m @ accuracyProp @ m1)
-%     &
-%     (is_property_of_m @ varianceProp @ m2)
-%     &
-%     (is_part_of @ accuracyReq @ t1)
-%     &
-%     (is_part_of @ varianceReq @ t2)
-%     &
-%     (is_permissible @ accuracyReq @ (has_value @ accuracyProp))
-%     &
-%     (is_permissible @ varianceReq @ (has_value @ varianceProp))
-%     &
-%     (in_set_m @ m1 @ ms)
-%     &
-%     (in_set_m @ m2 @ ms)
-%     &
-%     (in_set_t @ t1 @ ts)
-%     &
-%     (in_set_t @ t2 @ ts)
-%     &
-%     (is_interface_of @ ts @ e)
-%   )
-% ).
-
-
-
-
-
-
-
-
-
-
-
-
-%--- given ---
-% works 980 ms
-%thf(test, conjecture,
-%(interfaces_match @ ms @ ts)
-%).
-
-% works leo3: 4749 ms, vampire: time out
-% thf(test, conjecture,
-%   (interfaces_match @ ms @ ts)
-% ).
-
-% works leo3: 746 ms
-thf(test, conjecture,
-  (is_interface_of @ ts @ e)
-).
-
-% works leo3: 1789ms, vampire: timeout
-% thf(test_inputs_match, conjecture,
-%  (
-%    (inputs_match @ m1 @ t1)
-%    &
-%    (inputs_match @ m2 @ t2)
-%  )
-% ).
-
-
-% works leo3: 47771ms
-% thf(test, conjecture,
-%  (
-%    (is_interface_of @ ts @ e)
-%    &
-%    (interfaces_match @ ms @ ts)
-%  )
-% ).
-
-% works 927 ms
-%thf(test, conjecture,
-%  (exertable @ ms @ e)
-%).
-
-%--- one variable ---
-
-
-
-
-% works 1496 ms
-%thf(test, conjecture,
-%? [TS: template_set]:
-%  (interfaces_match @ ms @ TS)
-%).
-
-% works 1217 ms
-%thf(test, conjecture,
-%? [MS: modelet_set]:
-%  (interfaces_match @ MS @ ts)
-%).
-
-% works 1584 ms
-%thf(test, conjecture,
-%? [TS: template_set]:
-%  (
-%    (is_interface_of @ TS @ e)
-%    &
-%    (interfaces_match @ ms @ TS)
-%  )
-%).
-
-%worked previously , leo3: timed out  vampire: 5764 ms
-%thf(test, conjecture,
-%? [MS: modelet_set]:
-%  (exertable @ MS @ e)
-%).
-
-%works leo: 1552 ms vampire: 5936 ms
-%thf(test, conjecture,
-%? [E: engine]:
-%  (exertable @ ms @ E)
-%).
-
-%--- two variables ---
-% works leo: 1944ms, vampire: 32335ms
-%thf(test, conjecture,
-%? [TS: template_set, MS: modelet_set]:
-%  (interfaces_match @ MS @ TS)
-%).
-
-% works leo: 333ms, vampire: 10ms
-%thf(test, conjecture,
-%? [TS: template_set, E: engine]:
-%  (is_interface_of @ TS @ E)
-%).
-
-
-% works leo: 34982ms
-%thf(test, conjecture,
-%? [E: engine, MS: modelet_set]:
-%  (exertable @ MS @ E)
-%).
-
-
-%--- 3 variables ---
-% works leo3: 2037ms, vampire: times out
-%thf(test, conjecture,
-%? [TS: template_set, E: engine, MS: modelet_set]:
-%  (
-%    (is_interface_of @ TS @ E)
-%    &
-%    (interfaces_match @ MS @ TS)
-%  )
-%).

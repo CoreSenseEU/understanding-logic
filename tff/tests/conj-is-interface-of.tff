@@ -1,0 +1,6 @@
+include('test-scenario.tff').
+
+tff(conj4, conjecture,
+  ?[TS: template_set, E: engine]:
+    is_interface_of(TS, E)
+).

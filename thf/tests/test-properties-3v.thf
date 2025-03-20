@@ -1,4 +1,4 @@
-include('test_properties_setup.thf').
+include('test-properties-setup.thf').
 
 %--- 3 variables ---
 % works leo3: 2037ms, vampire: times out

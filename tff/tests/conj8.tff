@@ -1,0 +1,6 @@
+include('not-working-scenario.tff').
+
+tff(conj1, conjecture,
+?[MS: modelet_set]:
+   exertable(MS, engine_1)
+).

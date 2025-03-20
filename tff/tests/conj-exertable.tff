@@ -1,0 +1,6 @@
+include('test-scenario.tff').
+
+tff(conj6, conjecture,
+  ?[E: engine, MS: modelet_set]:
+    exertable(MS, E)
+).

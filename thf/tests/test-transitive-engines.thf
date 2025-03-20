@@ -1,6 +1,5 @@
-%include('fundamental-concepts.th0').
-include('engines-and-modelets.th0').
-include('transitive-strategies.th0').
+include('thf/model/engines-and-modelets.thf').
+include('thf/model/transitive-strategies.thf').
 
 %thf( requirement_check, axiom, (! [E: engine, M: modelet]: (meets_requirements @ M @ E) <= ! [P: property]: (~(is_requirement_of @ P @ E) <~> (is_property_of_m @ P @ M)) )).
 %thf( requirement_check, axiom, (! [E: engine, M: modelet]: ((meets_requirements @ M @ E) <= ~ (? [P: property]: ((is_requirement_of @ P @ E) & ($true != (is_property_of_m @ P @ M))) )))).
