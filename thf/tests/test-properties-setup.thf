@@ -72,6 +72,8 @@ thf(referent_of_m_m2, axiom, (referent_of_m @ m2) = chair).
 
 
 % faster with this? some faster by factor 10, others slower
+% WARNING: vampire incorrectly assumes $distinct is an unsupported theory function
+% because it has a leading $.
 
 %distinctness
 thf(requirement_distinctness, axiom, $distinct(accuracyReq, varianceReq)).

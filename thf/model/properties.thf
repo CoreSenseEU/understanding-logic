@@ -222,20 +222,20 @@ thf(axiom_modelet_sets_matches_template_sets2, axiom,
 
 
 % Engine outputs have a topic, dependent on input topics and engine
-
-thf(output_modelet_topic, axiom,
-  ! [Minput: modelet_set, E: engine, Moutput: modelet]:
-  (
-    (
-      (exertable @ Minput @ E)
-      &
-      (exert @ E @ Minput @ Moutput)
-    )
-    =>
-    (has_topic @ Moutput @ (output_topic @ E @ Minput))
-  )
-
-).
+%
+% thf(output_modelet_topic, axiom,
+%   ! [Minput: modelet_set, E: engine, Moutput: modelet]:
+%   (
+%     (
+%       (exertable @ Minput @ E)
+%       &
+%       (exert @ E @ Minput @ Moutput)
+%     )
+%     =>
+%     (has_topic @ Moutput @ (output_topic @ E @ Minput))
+%   )
+%
+% ).
 
 % Engine outputs have properties
 %thf(exert_creates, axiom,
