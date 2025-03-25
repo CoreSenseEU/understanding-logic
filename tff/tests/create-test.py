@@ -6,18 +6,18 @@ import random
 
 
 
-NUM_PHENOMENA=2 #25
-NUM_FORMALISMS=2 #10
-NUM_TEMPLATES=2 #20 # has to be smaller than number of modelets
-NUM_MODELETS=3 #50 # has to be bigger than number of templates
-NUM_PROPERTIES=2 #20
+NUM_PHENOMENA=25
+NUM_FORMALISMS=10
+NUM_TEMPLATES=20 # has to be smaller than number of modelets
+NUM_MODELETS=50 # has to be bigger than number of templates
+NUM_PROPERTIES=20
 #NUM_REQUIREMENTS=20
-NUM_ENGINES=2 #30
-NUM_TEMPLATE_SETS=2 #30
+NUM_ENGINES=30
+NUM_TEMPLATE_SETS=30
 
 MAX_PROPERTIES = 2
 MAX_TEMPLATES = 2
-MAX_NUMBERS = 1
+MAX_NUMBERS = 10
 NUMBERS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
 
@@ -44,7 +44,7 @@ def create_numbers():
     output = ""
     for n in range(MAX_NUMBERS):
         number = NUMBERS[n]
-        output += f"tff({number}_decl, type, {number} : $real).\n"
+        output += f"tff({number}_decl, type, {number} : real).\n"
     return output
 
 def create_properties_and_requirements(n, formalism_count):
@@ -143,7 +143,7 @@ def create_engines(n, template_set_count, property_count, max_properties):
             output += f"tff(engine_{index}_has_property_{m}_decl, axiom,\n  is_property_of_e(prop_{m}, engine_{index})\n).\n"
 
         m = random.randint(1,template_set_count)
-        output += f"tff(engine_{index}_uses_template_set_{m}_decl, axiom,\n  is_interface_of(template_set_{m}, engine_{index})\n).\n\n"
+        output += f"tff(engine_{index}_uses_template_set_{m}_decl, axiom,\n  interface_of(engine_{index}) = template_set_{m}\n).\n\n"
     output += "tff(all_engines, axiom,\n  ![E : engine]:\n  (\n    "
     output += "\n    |\n    ".join([f"E = engine_{index}" for index in range(1,n+1)])
     output += "\n  )\n).\n\n"

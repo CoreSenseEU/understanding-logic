@@ -3,15 +3,15 @@ include('tff/model/fundamental-concepts.tff').
 
 % Engines
 tff(decl_engine, type,
-  engine : thing).
+  engine : $tType).
 
 % Modelets
 tff(decl_modelet, type,
-  modelet : interface).
+  modelet : $tType).
 
 % Modelet Template
 tff(decl_template, type,
-  template : interface).
+  template : $tType).
 
 
 % Templates have referents
@@ -53,7 +53,7 @@ tff(decl_set_t_membership, type,
 
 % Engines have template sets as interface definition
 tff(decl_engine_input, type,
-  is_interface_of: (template_set * engine) > $o).
+  interface_of: (engine) > template_set).
 
 
 % Sets of Modelets can match Sets of Modelet Templates
@@ -73,14 +73,9 @@ tff(decl_exert, type,
 tff(axiom_modelet_set_is_exertable, axiom,
   ! [MS: modelet_set, E : engine]:
   (
-    ? [TS: template_set]:
-    (
-      is_interface_of(TS, E)
-      &
-      interfaces_match(MS, TS)
-    )
-   =>
-    exertable(MS, E)
+   interfaces_match(MS, interface_of(E))
+   <=>
+   exertable(MS, E)
   )
 ).
 

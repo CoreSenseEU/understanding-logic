@@ -1,16 +1,15 @@
 % Fundamental concepts
 
+tff(decl_real, type,
+  real: $tType).
+
 % Agents
 tff(decl_agent, type,
   agent: $tType).
 
-% Things
-tff(decl_thing, type,
-  thing : $tType).
-
 % Interface Descriptions
 tff(decl_interface, type,
-  interface : thing).
+  interface : $tType).
 
 % Phenomena
 tff(decl_phenomenon, type,
