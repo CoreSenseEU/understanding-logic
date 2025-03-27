@@ -37,7 +37,7 @@ tff(decl_inputs_match, type,
 
 % Set of Modelets
 tff(decl_modelet_set, type,
-  modelet_set : $i).
+  modelet_set : $tType).
 
 % Set Membership
 tff(decl_set_m_membership, type,
