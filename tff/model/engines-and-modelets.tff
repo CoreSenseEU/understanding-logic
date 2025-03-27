@@ -45,7 +45,7 @@ tff(decl_set_m_membership, type,
 
 % Set of Templates
 tff(decl_template_set, type,
-  template_set : $i).
+  template_set : $tType).
 
 % Template Set Membership
 tff(decl_set_t_membership, type,
