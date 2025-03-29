@@ -1,4 +1,4 @@
-include('thf/model/properties.thf').
+include('understanding-logic/thf/model/properties.thf').
 
 
 thf(realNumber_real, type, realNumber : $real).

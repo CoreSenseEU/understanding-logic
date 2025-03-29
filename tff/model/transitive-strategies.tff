@@ -1,5 +1,5 @@
 % Transitive strategies
-include('tff/model/properties.tff').
+include('understanding-logic/tff/model/properties.tff').
 
 
 % strategies connect modelets

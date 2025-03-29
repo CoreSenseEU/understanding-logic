@@ -1,4 +1,4 @@
-include('thf/model/engines-and-modelets.thf').
+include('understanding-logic/thf/model/engines-and-modelets.thf').
 
 thf(axiom_mass_requirement, axiom,
   ? [MS: modelet_set, E: engine, TS: template_set]:
