@@ -1,5 +1,5 @@
 % Property logic
-include('tff/model/engines-and-modelets.tff').
+include('understanding-logic/tff/model/engines-and-modelets.tff').
 
 % Properties exist
 tff(decl_property, type,

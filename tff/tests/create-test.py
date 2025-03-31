@@ -6,17 +6,17 @@ import random
 
 
 
-NUM_PHENOMENA=25
-NUM_FORMALISMS=10
-NUM_TEMPLATES=20 # has to be smaller than number of modelets
-NUM_MODELETS=50 # has to be bigger than number of templates
-NUM_PROPERTIES=20
+NUM_PHENOMENA=250
+NUM_FORMALISMS=100
+NUM_TEMPLATES=200 # has to be smaller than number of modelets
+NUM_MODELETS=500 # has to be bigger than number of templates
+NUM_PROPERTIES=200
 #NUM_REQUIREMENTS=20
-NUM_ENGINES=30
-NUM_TEMPLATE_SETS=30
+NUM_ENGINES=300
+NUM_TEMPLATE_SETS=300
 
-MAX_PROPERTIES = 2
-MAX_TEMPLATES = 2
+MAX_PROPERTIES = 20
+MAX_TEMPLATES = 5
 MAX_NUMBERS = 10
 NUMBERS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
@@ -194,7 +194,7 @@ def create_exertable_1_test():
 
 
 def main() -> int:
-    output = "include('tff/model/properties.tff').\n\n"
+    output = "include('understanding-logic/tff/model/properties.tff').\n\n"
     output += create_numbers()
     output += create_phenomenons(NUM_PHENOMENA)
     output += create_formalisms(NUM_FORMALISMS)

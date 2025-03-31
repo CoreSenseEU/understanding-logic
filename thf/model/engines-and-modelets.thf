@@ -1,5 +1,5 @@
 % Modelets and engines
-include('thf/model/fundamental-concepts.thf').
+include('understanding-logic/thf/model/fundamental-concepts.thf').
 
 % Engines
 thf(decl_engine, type,
