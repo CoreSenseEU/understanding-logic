@@ -7,10 +7,6 @@ tff(decl_real, type,
 tff(decl_agent, type,
   agent: $tType).
 
-% Interface Descriptions
-tff(decl_interface, type,
-  interface : $tType).
-
 % Phenomena
 tff(decl_phenomenon, type,
   phenomenon: $tType).
