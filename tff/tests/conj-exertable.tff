@@ -1,4 +1,4 @@
-include('test-scenario.tff').
+include('understanding-logic/tff/tests/test-scenario.tff').
 
 tff(conj6, question,
   ?[E: engine, MS: modelet_set]:

@@ -1,4 +1,4 @@
-include('test-scenario.tff').
+include('understanding-logic/tff/tests/test-scenario.tff').
 
 tff(conj2, conjecture,
   ?[M: modelet, T: template]:
