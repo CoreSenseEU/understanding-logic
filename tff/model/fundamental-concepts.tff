@@ -1,8 +1,5 @@
 % Fundamental concepts
 
-tff(decl_real, type,
-  real: $tType).
-
 % Agents
 tff(decl_agent, type,
   agent: $tType).

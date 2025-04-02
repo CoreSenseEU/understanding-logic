@@ -19,7 +19,7 @@ MAX_PROPERTIES = 20 # cannot be greater than NUM_PROPERTIES
 MAX_TEMPLATES = 25 # cannot be greater than NUM_TEMPLATES
 MAX_NUMBERS = 10
 
-NUMBERS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+NUMBERS = ["0.0", "1.0", "2.0", "3.0", "4.0", "5.0", "6.0", "7.0", "8.0", "9.0"]
 
 
 USE_ROS_FORMALISMS = True
@@ -50,7 +50,7 @@ def create_numbers():
     output = ""
     for n in range(MAX_NUMBERS):
         number = NUMBERS[n]
-        output += f"tff({number}_decl, type, {number} : real).\n"
+        output += f"tff({number}_decl, type, {number} : $real).\n"
     return output
 
 def create_sizes():

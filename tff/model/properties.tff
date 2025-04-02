@@ -7,7 +7,7 @@ tff(decl_property, type,
 
 % Properties have Values
 tff(decl_property_value, type,
-  has_value: property > real).
+  has_value: property > $real).
 
 
 % Requirements exist
@@ -24,7 +24,7 @@ tff(decl_type_of_r, type,
 
 % Requirements have a permissible value range
 tff(decl_requirement_range, type,
-  is_permissible: (requirement * real) > $o).
+  is_permissible: (requirement * $real) > $o).
 
 % Modelets have properties
 tff(decl_property_of_m, type,

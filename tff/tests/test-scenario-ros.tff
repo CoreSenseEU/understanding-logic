@@ -12,16 +12,16 @@ tff(size7_decl, type, size7 : size).
 tff(size8_decl, type, size8 : size).
 tff(size9_decl, type, size9 : size).
 tff(size10_decl, type, size10 : size).
-tff(zero_decl, type, zero : real).
-tff(one_decl, type, one : real).
-tff(two_decl, type, two : real).
-tff(three_decl, type, three : real).
-tff(four_decl, type, four : real).
-tff(five_decl, type, five : real).
-tff(six_decl, type, six : real).
-tff(seven_decl, type, seven : real).
-tff(eight_decl, type, eight : real).
-tff(nine_decl, type, nine : real).
+tff(zero_decl, type, 0.0 : $real).
+tff(one_decl, type, 1 : $real).
+tff(two_decl, type, 2 : $real).
+tff(three_decl, type, 3 : $real).
+tff(four_decl, type, 4 : $real).
+tff(five_decl, type, 5 : $real).
+tff(six_decl, type, 6 : $real).
+tff(seven_decl, type, 7 : $real).
+tff(eight_decl, type, 8 : $real).
+tff(nine_decl, type, 9 : $real).
 %%%  phenomena  %%% 
 tff(phenomenon_1_decl, type, phenomenon_1 : phenomenon).
 tff(phenomenon_2_decl, type, phenomenon_2 : phenomenon).
