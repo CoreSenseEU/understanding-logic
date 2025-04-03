@@ -14,13 +14,13 @@ tff(decl_property_value, type,
 tff(decl_requirement, type,
   requirement: $tType).
 
-% Properties have types (formalisms)
-tff(decl_type_of_p, type,
-  type_of_p : property > formalism).
+% Properties have datatypes
+tff(decl_datatype_of_p, type,
+  datatype_of_p : property > datatype).
 
-% Requirements have types (formalisms)
-tff(decl_type_of_r, type,
-  type_of_r : requirement > formalism).
+% Requirements have datatypes 
+tff(decl_datatype_of_r, type,
+  datatype_of_r : requirement > datatype).
 
 % Requirements have a permissible value range
 tff(decl_requirement_range, type,
@@ -80,7 +80,7 @@ tff(axiom_modelet_matches_template, axiom,
       (
         is_property_of_m(P, M) % match modelet to property
         &
-        (type_of_r(R) = type_of_p(P)) % property has correct correct data format/type for requirement
+        (datatype_of_r(R) = datatype_of_p(P)) % property has correct correct data format/type for requirement
         &
         is_permissible(R, has_value(P)) % ensure that the property's value is permissible
       )

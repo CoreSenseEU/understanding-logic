@@ -1,80 +1,76 @@
 % ROS Message builtin types
 include('understanding-logic/tff/model/fundamental-concepts.tff').
 
-% An integer size (for specifying ROS messages)
-%   TODO: maybe later replace this with $int?
-tff(decl_size, type,
-    size: $tType).
 
+% ROS Message - builtin bool is a datatype
+tff(ros_message_bool_datatype, type,
+    'ROS2.msg.Bool': datatype).
+% ROS Message - builtin byte is a datatype
+tff(ros_message_byte_datatype, type,
+    'ROS2.msg.Byte': datatype).
+% ROS Message - builtin char is a datatype
+tff(ros_message_char_datatype, type,
+    'ROS2.msg.Char': datatype).
+% ROS Message - builtin float32 is a datatype
+tff(ros_message_float32_datatype, type,
+    'ROS2.msg.Float32': datatype).
+% ROS Message - builtin float64 is a datatype
+tff(ros_message_float64_datatype, type,
+    'ROS2.msg.Float64': datatype).
+% ROS Message - builtin int8 is a datatype
+tff(ros_message_int8_datatype, type,
+    'ROS2.msg.Int8': datatype).
+% ROS Message - builtin uint8 is a datatype
+tff(ros_message_uint8_datatype, type,
+    'ROS2.msg.Uint8': datatype).
+% ROS Message - builtin int16 is a datatype
+tff(ros_message_int16_datatype, type,
+    'ROS2.msg.Int16': datatype).
+% ROS Message - builtin uint16 is a datatype
+tff(ros_message_uint16_datatype, type,
+    'ROS2.msg.Uint16': datatype).
+% ROS Message - builtin int32 is a datatype
+tff(ros_message_int32_datatype, type,
+    'ROS2.msg.Int32': datatype).
+% ROS Message - builtin uint32 is a datatype
+tff(ros_message_uint32_datatype, type,
+    'ROS2.msg.Uint32': datatype).
+% ROS Message - builtin int64 is a datatype
+tff(ros_message_int64_datatype, type,
+    'ROS2.msg.Int64': datatype).
+% ROS Message - builtin uint64 is a datatype
+tff(ros_message_uint64_datatype, type,
+    'ROS2.msg.Uint64': datatype).
+% ROS Message - builtin (unbounded) string is a datatype
+tff(ros_message_string_datatype, type,
+    'ROS2.msg.String': datatype).
+% ROS Message - builtin wstring is a datatype
+tff(ros_message_wstring_datatype, type,
+    'ROS2.msg.Wstring': datatype).
 
-% ROS Message - builtin bool is a formalism
-tff(ros_message_bool_formalsim, type,
-    'ROS2.msg.Bool': formalism).
-% ROS Message - builtin byte is a formalism
-tff(ros_message_byte_formalsim, type,
-    'ROS2.msg.Byte': formalism).
-% ROS Message - builtin char is a formalism
-tff(ros_message_char_formalsim, type,
-    'ROS2.msg.Char': formalism).
-% ROS Message - builtin float32 is a formalism
-tff(ros_message_float32_formalsim, type,
-    'ROS2.msg.Float32': formalism).
-% ROS Message - builtin float64 is a formalism
-tff(ros_message_float64_formalsim, type,
-    'ROS2.msg.Float64': formalism).
-% ROS Message - builtin int8 is a formalism
-tff(ros_message_int8_formalsim, type,
-    'ROS2.msg.Int8': formalism).
-% ROS Message - builtin uint8 is a formalism
-tff(ros_message_uint8_formalsim, type,
-    'ROS2.msg.Uint8': formalism).
-% ROS Message - builtin int16 is a formalism
-tff(ros_message_int16_formalsim, type,
-    'ROS2.msg.Int16': formalism).
-% ROS Message - builtin uint16 is a formalism
-tff(ros_message_uint16_formalsim, type,
-    'ROS2.msg.Uint16': formalism).
-% ROS Message - builtin int32 is a formalism
-tff(ros_message_int32_formalsim, type,
-    'ROS2.msg.Int32': formalism).
-% ROS Message - builtin uint32 is a formalism
-tff(ros_message_uint32_formalsim, type,
-    'ROS2.msg.Uint32': formalism).
-% ROS Message - builtin int64 is a formalism
-tff(ros_message_int64_formalsim, type,
-    'ROS2.msg.Int64': formalism).
-% ROS Message - builtin uint64 is a formalism
-tff(ros_message_uint64_formalsim, type,
-    'ROS2.msg.Uint64': formalism).
-% ROS Message - builtin (unbounded) string is a formalism
-tff(ros_message_string_formalsim, type,
-    'ROS2.msg.String': formalism).
-% ROS Message - builtin wstring is a formalism
-tff(ros_message_wstring_formalsim, type,
-    'ROS2.msg.Wstring': formalism).
-
-% ROS Message - bounded string is a formalism
+% ROS Message - bounded string is a datatype
 %   e.g. str<=10
-tff(ros_message_bounded_string_formalsim, type,
-    'ROS2.msg.BoundedString': (size > formalism)).
-% ROS Message - unbounded dynamic array of builtins is a formalism
+tff(ros_message_bounded_string_datatype, type,
+  'ROS2.msg.BoundedString': ($int > datatype)
+).
+% ROS Message - unbounded dynamic array of builtins is a datatype
 %   e.g. char[], float32[]
-tff(ros_message_unbounded_dynamic_array_formalsim, type,
-    'ROS2.msg.UnboundedDynamicArray': (formalism > formalism)).
-% ROS Message - bounded array of builtins is a formalism
+tff(ros_message_unbounded_dynamic_array_datatype, type,
+    'ROS2.msg.UnboundedDynamicArray': (datatype > datatype)).
+% ROS Message - bounded array of builtins is a datatype
 %   e.g. char[<=5], float32[<=4]
-tff(ros_message_bounded_dynamic_array_formalsim, type,
-    'ROS2.msg.BoundedDynamicArray': ((formalism * size) > formalism)).
-% ROS Message - static array of builtins is a formalism
+tff(ros_message_bounded_dynamic_array_datatype, type,
+    'ROS2.msg.BoundedDynamicArray': ((datatype * $int) > datatype)).
+% ROS Message - static array of builtins is a datatype
 %   e.g. char[5], float32[4]
-tff(ros_message_static_array_formalsim, type,
-    'ROS2.msg.StaticArray': ((formalism * size) > formalism)).
+tff(ros_message_static_array_datatype, type,
+    'ROS2.msg.StaticArray': ((datatype * $int) > datatype)).
 
 
 % ROS Message - bounded string
-%   Bounded strings of distinct sizes are also distinct
+%   Bounded strings of distinct $ints are also distinct
 tff(distinctness_of_bounded_strings_with_distinct_args, axiom,
-    ! [Ia: size, Ib: size] :
+    ! [Ia: $int, Ib: $int] :
     (
         (Ia != Ib)
         <=>
@@ -85,7 +81,7 @@ tff(distinctness_of_bounded_strings_with_distinct_args, axiom,
 % ROS Message - unbounded dynamic array of builtins
 %   Unbounded Dynamic arrays of distinct builtins are also distinct
 tff(distinctness_of_unbounded_arrays_with_distinct_args, axiom,
-    ! [Fa: formalism, Fb: formalism] :
+    ! [Fa: datatype, Fb: datatype] :
     (
         (Fa != Fb)
         <=>
@@ -94,9 +90,9 @@ tff(distinctness_of_unbounded_arrays_with_distinct_args, axiom,
 ).
 
 % ROS Message - bounded dynamic array of builtins
-%   Bounded Dynamic arrays of distinct builtins and sizes are also distinct
+%   Bounded Dynamic arrays of distinct builtins and $ints are also distinct
 tff(distinctness_of_bounded_arrays_with_distinct_args, axiom,
-    ! [Fa: formalism, Fb: formalism, Ia: size, Ib: size] :
+    ! [Fa: datatype, Fb: datatype, Ia: $int, Ib: $int] :
     (
         (Fa != Fb | Ia != Ib)
         <=>
@@ -105,9 +101,9 @@ tff(distinctness_of_bounded_arrays_with_distinct_args, axiom,
 ).
 
 % ROS Message - static array of builtins
-%   Static arrays of distinct builtins and sizes are also distinct
+%   Static arrays of distinct builtins and $ints are also distinct
 tff(distinctness_of_static_arrays_with_distinct_args, axiom,
-    ! [Fa: formalism, Fb: formalism, Ia: size, Ib: size] :
+    ! [Fa: datatype, Fb: datatype, Ia: $int, Ib: $int] :
     (
         (Fa != Fb | Ia != Ib)
         <=>
@@ -141,9 +137,9 @@ tff(builtins_are_distinct, axiom,
 % ROS Message - bounded string
 %   Bounded strings are distinct from builtins
 tff(bounded_strings_are_distinct_from_builtins, axiom,
-    ! [Ia: size] : 
+    ! [Ia: $int] : 
     (
-        $let(fbs: formalism,
+        $let(fbs: datatype,
              fbs := 'ROS2.msg.BoundedString'(Ia),
              (
              fbs != 'ROS2.msg.Bool'
@@ -183,9 +179,9 @@ tff(bounded_strings_are_distinct_from_builtins, axiom,
 % ROS Message - unbounded dynamic array
 %   unbounded dynamic arrays are distinct from builtins
 tff(unbounded_dynamic_arrays_are_distinct_from_builtins, axiom,
-    ! [F: formalism] : 
+    ! [F: datatype] : 
     (
-        $let(fbs: formalism,
+        $let(fbs: datatype,
              fbs := 'ROS2.msg.UnboundedDynamicArray'(F),
              (
              fbs != 'ROS2.msg.Bool'
@@ -225,9 +221,9 @@ tff(unbounded_dynamic_arrays_are_distinct_from_builtins, axiom,
 % ROS Message - bounded dynamic array
 %   bounded dynamic arrays are distinct from builtins
 tff(bounded_dynamic_arrays_are_distinct_from_builtins, axiom,
-    ! [F: formalism, I: size] : 
+    ! [F: datatype, I: $int] : 
     (
-        $let(fbs: formalism,
+        $let(fbs: datatype,
              fbs := 'ROS2.msg.BoundedDynamicArray'(F, I),
              (
              fbs != 'ROS2.msg.Bool'
@@ -267,9 +263,9 @@ tff(bounded_dynamic_arrays_are_distinct_from_builtins, axiom,
 % ROS Message - static array
 %   static arrays are distinct from builtins
 tff(static_arrays_are_distinct_from_builtins, axiom,
-    ! [F: formalism, I: size] : 
+    ! [F: datatype, I: $int] : 
     (
-        $let(fbs: formalism,
+        $let(fbs: datatype,
              fbs := 'ROS2.msg.StaticArray'(F, I),
              (
              fbs != 'ROS2.msg.Bool'
@@ -306,15 +302,15 @@ tff(static_arrays_are_distinct_from_builtins, axiom,
     )
 ).
 
-% ROS Message - array formalisms are distinct from one another
-tff(formalisms_are_distinct_axiom, axiom,
-    ! [Fa: formalism, Fb: formalism, Fc: formalism,
-       Ia: size, Ib: size, Ic: size] : 
+% ROS Message - array datatypes are distinct from one another
+tff(datatypes_are_distinct_axiom, axiom,
+    ! [Fa: datatype, Fb: datatype, Fc: datatype,
+       Ia: $int, Ib: $int, Ic: $int] : 
     (
-        $let([fbs: formalism,
-              fu: formalism, 
-              fb: formalism,
-              fs: formalism],
+        $let([fbs: datatype,
+              fu: datatype, 
+              fb: datatype,
+              fs: datatype],
              [fbs := 'ROS2.msg.BoundedString'(Ia),
               fu := 'ROS2.msg.UnboundedDynamicArray'(Fa),
               fb := 'ROS2.msg.BoundedDynamicArray'(Fb, Ib),

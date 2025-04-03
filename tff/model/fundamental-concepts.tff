@@ -1,17 +1,21 @@
 % Fundamental concepts
 
-% Agents
-tff(decl_agent, type,
-  agent: $tType).
+% Agents - To be introduced later, as collective awareness is considered.
+%tff(decl_agent, type,
+%  agent: $tType).
 
-% Phenomena
+% Phenomena - Referents of modelets. The things, processes, events that the system represents using Modelets.
 tff(decl_phenomenon, type,
   phenomenon: $tType).
 
-% Formalism
+% Formalisms - Methods used to capture a modelets. Think 'ROSMessage'.
 tff(decl_formalism, type,
   formalism: $tType).
 
-% Topics
+% Datatypes - As the name suggests, the fundamental types of data considered
+tff(decl_datatype, type,
+  datatype: $tType).
+
+% Topics - Semantic and physical scope of a modelet. Think 'vanilla icecream at coordinates x/y/z, size w/d/h and time t'. To be refined.
 tff(decl_topic, type,
   topic: $tType).
