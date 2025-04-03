@@ -2,20 +2,25 @@
 
 % Agents - To be introduced later, as collective awareness is considered.
 %tff(decl_agent, type,
-%  agent: $tType).
+%  agent: $tType
+%).
 
-% Phenomena - Referents of modelets. The things, processes, events that the system represents using Modelets.
-tff(decl_phenomenon, type,
-  phenomenon: $tType).
+% Phenomena classes - Topics of modelets. The concepts in the world model, that the system represents using Modelets.
+tff(decl_phenomenon_class, type,
+  phenomenon_class: $tType
+).
 
-% Formalisms - Methods used to capture a modelets. Think 'ROSMessage'.
+% Formalisms - Methods used to express modelets. Class in Data Model. ROSMessages.
 tff(decl_formalism, type,
-  formalism: $tType).
+  formalism: $tType
+).
 
 % Datatypes - As the name suggests, the fundamental types of data considered
 tff(decl_datatype, type,
-  datatype: $tType).
+  datatype: $tType
+).
 
-% Topics - Semantic and physical scope of a modelet. Think 'vanilla icecream at coordinates x/y/z, size w/d/h and time t'. To be refined.
-tff(decl_topic, type,
-  topic: $tType).
+% Role - Usage of a modelet by engines. Class in the Processing Model.
+tff(decl_role, type,
+  role: $tType
+).

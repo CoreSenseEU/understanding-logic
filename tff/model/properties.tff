@@ -16,11 +16,11 @@ tff(decl_requirement, type,
 
 % Properties have datatypes
 tff(decl_datatype_of_p, type,
-  datatype_of_p : property > datatype).
+  datatype_of_property : property > datatype).
 
 % Requirements have datatypes 
 tff(decl_datatype_of_r, type,
-  datatype_of_r : requirement > datatype).
+  datatype_of_requirement : requirement > datatype).
 
 % Requirements have a permissible value range
 tff(decl_requirement_range, type,
@@ -28,15 +28,15 @@ tff(decl_requirement_range, type,
 
 % Modelets have properties
 tff(decl_property_of_m, type,
-  is_property_of_m: (property * modelet) > $o).
+  is_property_of_modelet: (property * modelet) > $o).
 
 % Engines have properties
 tff(decl_property_of_e, type,
-  is_property_of_e: (property * engine) > $o).
+  is_property_of_engine: (property * engine) > $o).
 
 % Engine outputs have properties
 tff(decl_engine_output_properties, type,
-  output_property_of_e: engine > property).
+  output_property_of_engine: engine > property).
 
 % Templates have requirements in terms of properties
 tff(decl_templates_have_requirements, type,
@@ -49,16 +49,25 @@ tff(formally_equivalent, axiom,
   ! [M: modelet, T: template]:
   (
     (
-      ( % ensure co-reference between modelet and template, e.g. the mass of an object
-        referent_of_t(T)
-        =
-        referent_of_m(M)
+     ( % Equivalence of world model classes
+        ? [PC : phenomenon_class]:
+	(
+	  PC = topic_of_template(T)
+          =>
+          PC = topic_of_modelet(M)
+	)
       )
       &
-      ( % ensure computational compatibility, e.g. that a required description of a space in form of a costmap, is met by a costmap modelet
-        formalism_of_t(T)
+      ( % Equivalence of processing model classes -- TODO: This feels like it will turn out to be HOL
+        role_of_template(T)
         =
-        formalism_of_m(M)
+        role_of_modelet(M)
+      )
+      &
+      ( % Equivalence of data model classes
+        formalism_of_template(T)
+        =
+        formalism_of_modelet(M)
       )
     )
     =>
@@ -78,9 +87,9 @@ tff(axiom_modelet_matches_template, axiom,
       =>
       ? [P: property]:
       (
-        is_property_of_m(P, M) % match modelet to property
+        is_property_of_modelet(P, M) % match modelet to property
         &
-        (datatype_of_r(R) = datatype_of_p(P)) % property has correct correct data format/type for requirement
+        (datatype_of_requirement(R) = datatype_of_property(P)) % property has correct correct data format/type for requirement
         &
         is_permissible(R, has_value(P)) % ensure that the property's value is permissible
       )
@@ -99,13 +108,13 @@ tff(axiom_modelet_sets_matches_template_sets, axiom,
   (
     ! [T : template]:
     (
-      in_set_t(T, TS)
+      is_in_template_set(T, TS)
       =>
       ? [M : modelet]:
       (
         inputs_match(M, T)
         &
-        in_set_m(M, MS)
+        is_in_modelet_set(M, MS)
       )
     )
     =>
@@ -138,7 +147,7 @@ tff(engines_can_impart_semantic_scope, axiom,
     (
       imparts_semantic_scope(E, S)
       &
-      exert(E, Minput, Moutput)
+      exert(E, Minput) = Moutput
     )
     =>
     has_semantic_scope(Moutput, S)
@@ -151,7 +160,7 @@ tff(engines_can_impart_semantic_scope, axiom,
 %    (
 %      exertable(Minput, E)
 %      &
-%      exert(E, Minput, Moutput)
+%      exert(E, Minput) = Moutput
 %    )
 %    =>
 %    has_topic(Moutput, output_topic(E, Minput))
@@ -167,17 +176,17 @@ tff(engines_can_impart_semantic_scope, axiom,
 %      =>
 %      ? [Moutput: modelet]:
 %      (
-%        exert(E, Minput, Moutput)
+%        exert(E, Minput) = Moutput
 %        &
 %        ! [P: property]:
 %        (
 %          (
-%            ~is_property_of_e(P, E)
+%            ~is_property_of_engine(P, E)
 %            |
 %            (
-%              is_property_of_e(P, E)
+%              is_property_of_engine(P, E)
 %              &
-%              is_property_of_m(P, Moutput)
+%              is_property_of_modelet(P, Moutput)
 %            )
 %          )
 %        )

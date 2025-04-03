@@ -3,70 +3,151 @@ include('understanding-logic/tff/model/fundamental-concepts.tff').
 
 % Engines
 tff(decl_engine, type,
-  engine : $tType).
+  engine : $tType
+).
+
+% Engines can have processing characteristics, such as delay or resource blockage/consumption
+% TBD later
+
+% Engines can impart processing semantics unto their output modelets
+tff(decl_engine_imparts_role, type,
+  engine_imparts_role : engine > role
+).
+
 
 % Modelets
 tff(decl_modelet, type,
-  modelet : $tType).
+  modelet : $tType
+).
 
-% Modelet Template
-tff(decl_template, type,
-  template : $tType).
+% Each Modelet has exactly one formalism. A language in which it is encoded. A class in the modelling model. A ROSMessage. e.g. 'sensor_msgs/Image'
+tff(decl_formalism_of_modelet, type,
+  formalism_of_modelet : modelet > formalism
+).
 
+% Modelets have a date of creation. They were created at that date.
+% TBD later
 
-% Templates have referents
-tff(decl_referent_of_t, type,
-  referent_of_t : template > phenomenon).
+% Modelets may have a time-interval/date of reference. They refer to an observation made at that date. Temporal scope.
+% TBD later
 
-% Modelets have referents
-tff(decl_referent_of_m, type,
-  referent_of_m : modelet > phenomenon).
+% Modelets may have an area/volume/location of reference. They refer to an observation made at some point. Spatial scope.
+% TBD later
 
-% Templates have formalisms
-tff(decl_formalism_of_t, type,
-  formalism_of_t : template > formalism).
+% Modelets may be associated with a concept/have a topic. A class in the world model. e.g. 'ice cream'
+tff(decl_topic_of_modelet, type,
+  topic_of_modelet : modelet > phenomenon_class
+).
 
-% Modelets have formalisms
-tff(decl_formalism_of_m, type,
-  formalism_of_m : modelet > formalism).
+% Modelets have model properties/characteristics. e.g. 'recorded wavelengths of light: an infrared picture'
+% TBD later
 
-% Modelets can match Templates
-tff(decl_inputs_match, type,
-  inputs_match : (modelet * template) > $o).
+% Modelets play roles when used by engines. They can be associated with an extrinsic (to the modelet) purpose.
+% TODO: this looks like it will turn out to be HOL
+tff(decl_role_of_m, type,
+  role_of_modelet : modelet > role
+).
 
 
 % Set of Modelets
 tff(decl_modelet_set, type,
-  modelet_set : $tType).
+  modelet_set : $tType
+).
 
-% Set Membership
+% Set Membership of Modelets
 tff(decl_set_m_membership, type,
-  in_set_m : (modelet * modelet_set) > $o).
+  is_in_modelet_set : (modelet * modelet_set) > $o
+).
+
+
+% Exertion of a Modelet Set results in a Modelet
+tff(decl_exert, type,
+  exert: (engine * modelet_set) > modelet
+).
+
+% Engines impart roles unto Modelets
+tff(axiom_engine_imparts_role, axiom,
+  ![E: engine, MS: modelet_set, R: role, M: modelet]:
+  (
+    (
+      M = exert(E, MS)
+      &
+      R = engine_imparts_role(E)
+    )
+    =>
+    role_of_modelet(M) = R
+  )
+).
+
+% Templates. Descriptions of Engine Inputs.
+tff(decl_template, type,
+  template : $tType
+).
+
+% Each Template has exactly one formalism. The language a given Engine expects for this input. A ROSMessage.
+tff(decl_formalism_of_template, type,
+  formalism_of_template : template > formalism
+).
+
+% Templates may carry time-interval/date requirements. Temporal scope.
+% TBD later
+
+% Templates may carry area/volume/location requirements. Spatial scope.
+% TBD later
+
+% Templates may be associated with a concept/have a topic. A class in the world model. 'A template of icecream'
+tff(decl_topic_of_template, type,
+  topic_of_template : template > phenomenon_class
+).
+
+% Templates may carry model characteristic requirements. e.g. 'minimun resolution'
+% TBD later
+
+% Templates carry Role requirements. Extrinsic (from the perspective of the modelet) purpose.
+tff(decl_role_of_template, type,
+  role_of_template : template > role
+).
+
 
 % Set of Templates
 tff(decl_template_set, type,
-  template_set : $tType).
+  template_set : $tType
+).
 
-% Template Set Membership
-tff(decl_set_t_membership, type,
-  in_set_t : (template * template_set) > $o).
+% Set Membership of Templates
+tff(decl_set_template_membership, type,
+  is_in_template_set : (template * template_set) > $o
+).
+
+
+
+
+
+
+% Modelets can match Templates
+tff(decl_inputs_match, type,
+  inputs_match : (modelet * template) > $o
+).
+
+
+
 
 % Engines have template sets as interface definition
 tff(decl_engine_input, type,
-  interface_of: (engine) > template_set).
+  interface_of: (engine) > template_set
+).
+
 
 
 % Sets of Modelets can match Sets of Modelet Templates
 tff(decl_interfaces_match, type,
-  interfaces_match : (modelet_set * template_set) > $o).
+  interfaces_match : (modelet_set * template_set) > $o
+).
 
 % Modelet Sets can be exerted by Engines
 tff(decl_exertable, type,
-  exertable: (modelet_set * engine) > $o).
-
-% Exertion of a Modelet Set results in a Modelet
-tff(decl_exert, type,
-  exert: (engine * modelet_set * modelet) > $o).
+  exertable: (modelet_set * engine) > $o
+).
 
 
 % Modelet Sets are exertable by Engines
