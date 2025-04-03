@@ -1,0 +1,6 @@
+include('understanding-logic/tff/tests/test-scenario.tff').
+
+tff(question3, question,
+  ?[MS: modelet_set]:
+    interfaces_match(MS, template_set_1)
+).

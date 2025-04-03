@@ -1,6 +1,6 @@
 include('understanding-logic/tff/tests/test-scenario.tff').
 
-tff(conj3, conjecture,
+tff(conjecture3, conjecture,
   ?[MS: modelet_set]:
     interfaces_match(MS, template_set_1)
 ).

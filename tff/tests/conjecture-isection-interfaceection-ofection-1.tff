@@ -1,6 +1,6 @@
 include('understanding-logic/tff/tests/test-scenario.tff').
 
-tff(conj4, conjecture,
+tff(conjecture4, conjecture,
   ?[TS: template_set]:
-    is_interface_of(TS, engine_1)
+    interface_of(engine_1) = TS
 ).

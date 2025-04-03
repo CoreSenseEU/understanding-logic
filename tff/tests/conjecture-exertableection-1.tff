@@ -1,6 +1,6 @@
 include('understanding-logic/tff/tests/test-scenario.tff').
 
-tff(conj7, question,
+tff(conjecture7, question,
   ?[MS: modelet_set]:
     exertable(MS, engine_1)
 ).
