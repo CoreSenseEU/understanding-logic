@@ -26,13 +26,19 @@ tff(decl_formalism_of_modelet, type,
 ).
 
 % Modelets have a date of creation. They were created at that date.
-% TBD later
+tff(decl_creation_date, type,
+  modelet_creation_date : modelet > $real
+).
 
 % Modelets may have a time-interval/date of reference. They refer to an observation made at that date. Temporal scope.
-% TBD later
+tff(decl_modelet_location, type,
+  modelet_location : modelet > spacetime_point
+).
 
 % Modelets may have an area/volume/location of reference. They refer to an observation made at some point. Spatial scope.
-% TBD later
+tff(decl_modelet_extent, type,
+  modelet_extent : modelet > extent
+).
 
 % Modelets may be associated with a concept/have a topic. A class in the world model. e.g. 'ice cream'
 tff(decl_topic_of_modelet, type,
@@ -40,7 +46,7 @@ tff(decl_topic_of_modelet, type,
 ).
 
 % Modelets have model properties/characteristics. e.g. 'recorded wavelengths of light: an infrared picture'
-% TBD later
+% See properties 
 
 % Modelets play roles when used by engines. They can be associated with an extrinsic (to the modelet) purpose.
 % TODO: this looks like it will turn out to be HOL
@@ -89,11 +95,15 @@ tff(decl_formalism_of_template, type,
   formalism_of_template : template > formalism
 ).
 
-% Templates may carry time-interval/date requirements. Temporal scope.
-% TBD later
+% Templates may be located. Center of spatio-temporal scope.
+tff(decl_template_location, type,
+  template_location : template > spacetime_point
+).
 
-% Templates may carry area/volume/location requirements. Spatial scope.
-% TBD later
+% Templates may extend over lenth/area/volume/time. Extent of spatio-temporal scope.
+tff(decl_template_extent, type,
+  template_extent : template > extent
+).
 
 % Templates may be associated with a concept/have a topic. A class in the world model. 'A template of icecream'
 tff(decl_topic_of_template, type,
@@ -101,7 +111,7 @@ tff(decl_topic_of_template, type,
 ).
 
 % Templates may carry model characteristic requirements. e.g. 'minimun resolution'
-% TBD later
+% See properties
 
 % Templates carry Role requirements. Extrinsic (from the perspective of the modelet) purpose.
 tff(decl_role_of_template, type,

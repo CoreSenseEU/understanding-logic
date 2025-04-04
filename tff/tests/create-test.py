@@ -11,12 +11,13 @@ NUM_FORMALISMS=50
 NUM_DATATYPES=30
 NUM_TEMPLATES=50 # has to be smaller than real of modelets
 NUM_MODELETS=200 # has to be bigger than real of templates
-NUM_PROPERTIES=80 # equals the number of requirements
+NUM_PROPERTIES_AND_REQUIREMENTS=80 # equals the number of requirements
 NUM_ENGINES=50
 NUM_ROLES=300
 NUM_TEMPLATE_SETS=50
+NUM_LOCATIONS_AND_EXTENTS=200
 
-MAX_PROPERTIES = 20 # cannot be greater than NUM_PROPERTIES
+MAX_PROPERTIES = 20 # cannot be greater than NUM_PROPERTIES_AND_REQUIREMENTS
 MAX_TEMPLATES = 5 # cannot be greater than NUM_TEMPLATES
 MAX_REALS = 10
 MAX_UINTS = 10
@@ -76,6 +77,33 @@ def create_uints():
         size = UINTS[n]
         output += f"tff({size}_decl, type, {size} : $int).\n"
     return output + "\n"
+
+def create_locations_and_extents(n):
+    output = "%%%  locations  %%%\n"
+    for index in range(1, n+1):
+        x = random.uniform(0, MAX_REALS-1)
+        y = random.uniform(0, MAX_REALS-1)
+        z = random.uniform(0, MAX_REALS-1)
+        t = random.uniform(0, MAX_REALS-1)
+        output += f"tff(location_{index}_decl, type, location_{index} : spacetime_point).\n"
+        output += f"tff(location_{index}_x_decl, axiom, point_x(location_{index}) = {x}).\n"
+        output += f"tff(location_{index}_y_decl, axiom, point_y(location_{index}) = {y}).\n"
+        output += f"tff(location_{index}_z_decl, axiom, point_z(location_{index}) = {z}).\n"
+        output += f"tff(location_{index}_t_decl, axiom, point_t(location_{index}) = {t}).\n"
+
+        width = random.uniform(0, MAX_REALS-1)
+        depth = random.uniform(0, MAX_REALS-1)
+        height = random.uniform(0, MAX_REALS-1)
+        duration = random.uniform(0, MAX_REALS-1)
+        output += f"tff(extent_{index}_decl, type, extent_{index} : extent).\n"
+        output += f"tff(extent_{index}_width_decl, axiom, extent_width(extent_{index}) = {x}).\n"
+        output += f"tff(extent_{index}_depth_decl, axiom, extent_depth(extent_{index}) = {y}).\n"
+        output += f"tff(extent_{index}_height_decl, axiom, extent_height(extent_{index}) = {z}).\n"
+        output += f"tff(extent_{index}_duration_decl, axiom, extent_duration(extent_{index}) = {t}).\n"
+
+    output += f"tff(distinct_locations, axiom,\n  $distinct({",".join([f"location_{index}" for index in range(1, n+1)])})\n).\n"
+    output += f"tff(distinct_extents, axiom,\n  $distinct({",".join([f"extent_{index}" for index in range(1, n+1)])})\n).\n\n"
+    return output
 
 
 
@@ -153,19 +181,24 @@ def create_templates_and_modelets(num_templates, num_modelets, max_properties, p
         phenomenon = random.randint(1, NUM_PHENOMENA)
         formalism = random.randint(1, NUM_FORMALISMS)
         role = random.randint(1, NUM_ROLES)
+        location = random.randint(1, NUM_LOCATIONS_AND_EXTENTS)
         modelet += f"tff(modelet_{index}_decl, type, modelet_{index} : modelet).\n"
         template += f"tff(template_{index}_decl, type, template_{index} : template).\n"
         properties = random.sample(range(1, property_count+1), random.randint(1, max_properties))
         for m in properties:
             modelet += f"tff(modelet_{index}_has_property_{m}, axiom,\n  is_property_of_modelet(prop_{m}, modelet_{index})\n).\n"
             template += f"tff(template_{index}_has_requirement_{m}, axiom,\n  is_part_of(req_{m}, template_{index})\n).\n"
-        modelet += f"tff(modelet_{index}_of_phenomenon_{phenomenon}, axiom,\n  topic_of_modelet(modelet_{index}) = phenomenon_{phenomenon}\n).\n"
+        modelet += f"tff(modelet_{index}_models_phenomenon_{phenomenon}, axiom,\n  topic_of_modelet(modelet_{index}) = phenomenon_{phenomenon}\n).\n"
         modelet += f"tff(formalism_of_modelet_{index}, axiom,\n  formalism_of_modelet(modelet_{index}) = formalism_{formalism}\n).\n\n"
         modelet += f"tff(role_of_modelet_{index}, axiom,\n  role_of_modelet(modelet_{index}) = role_{role}\n).\n\n"
+        modelet += f"tff(modelet_{index}_location, axiom,\n  modelet_location(modelet_{index}) = location_{location}\n).\n\n"
+        modelet += f"tff(modelet_{index}_extent, axiom,\n  modelet_extent(modelet_{index}) = extent_{location}\n).\n\n"
         #for m in random.sample(range(1, property_count+1), random.randint(1, max_requirements)):
         template += f"tff(template_{index}_of_phenomenon_{phenomenon}, axiom,\n  topic_of_template(template_{index}) = phenomenon_{phenomenon}\n).\n"
-        template += f"tff(role_of_template_{index}, axiom,\n  role_of_template(template_{index}) = role_{role}\n).\n"
         template += f"tff(formalism_of_template_{index}, axiom,\n  formalism_of_template(template_{index}) = formalism_{formalism}\n).\n"
+        template += f"tff(role_of_template_{index}, axiom,\n  role_of_template(template_{index}) = role_{role}\n).\n"
+        template += f"tff(template_{index}_location, axiom,\n  template_location(template_{index}) = location_{location}\n).\n\n"
+        template += f"tff(template_{index}_extent, axiom,\n  template_extent(template_{index}) = extent_{location}\n).\n\n"
         template += f"tff(template_{index}_requirements, axiom,\n  ![R : requirement]:\n  (\n"
         template += f"    is_part_of(R, template_{index})\n    =>\n    (\n      "
         template += "\n      |\n      ".join([f"R = req_{m}" for m in properties])
@@ -245,11 +278,12 @@ def main() -> int:
     if not USE_ROS_DATATYPES:
         output += create_datatypes(NUM_DATATYPES)
     output += create_formalisms(NUM_FORMALISMS)
-    output += create_properties_and_requirements(NUM_PROPERTIES)
-    output += create_templates_and_modelets(NUM_TEMPLATES, NUM_MODELETS, MAX_PROPERTIES, NUM_PROPERTIES)
+    output += create_properties_and_requirements(NUM_PROPERTIES_AND_REQUIREMENTS)
+    output += create_locations_and_extents(NUM_LOCATIONS_AND_EXTENTS)
+    output += create_templates_and_modelets(NUM_TEMPLATES, NUM_MODELETS, MAX_PROPERTIES, NUM_PROPERTIES_AND_REQUIREMENTS)
     output += create_template_sets(NUM_TEMPLATE_SETS, MAX_TEMPLATES, NUM_TEMPLATES)
-    #output += create_modelets(NUM_MODELETS, MAX_PROPERTIES, NUM_PROPERTIES)
-    output += create_engines(NUM_ENGINES, NUM_TEMPLATE_SETS, MAX_PROPERTIES, NUM_PROPERTIES)
+    #output += create_modelets(NUM_MODELETS, MAX_PROPERTIES, NUM_PROPERTIES_AND_REQUIREMENTS)
+    output += create_engines(NUM_ENGINES, NUM_TEMPLATE_SETS, MAX_PROPERTIES, NUM_PROPERTIES_AND_REQUIREMENTS)
     output += create_modelet_sets(MAX_TEMPLATES)
 
     print(output)

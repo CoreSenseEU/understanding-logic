@@ -81,6 +81,20 @@ tff(axiom_modelet_matches_template, axiom,
   ((
     formally_equivalent(T, M)
     &
+    ? [SPT : spacetime_point]:
+    (
+      template_location(T) = SPT
+      =>
+      modelet_location(M) = SPT
+    )
+    &
+    ? [E : extent]:
+    (
+      template_extent(T) = E
+      =>
+      modelet_extent(M) = E
+    )
+    &
     ! [R: requirement]:
     (
       is_part_of(R,T)
