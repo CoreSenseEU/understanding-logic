@@ -48,7 +48,7 @@ you wish to edit and it will take you to the **Github** live editor window.
     Create [Contribution Guidelines](contributing.md).
 
 If there is an extension or plugin you would like to add for additional functionality,
-feel free to edit the [mkdocs.yml](https://github.com/alex-quin-gabriel/understanding-logic/blob/documentation/mkdocs.yml) file.
+feel free to edit the [mkdocs.yml](https://github.com/alex-quin-gabriel/understanding-logic/blob/rolling/mkdocs.yml) file.
 
 ### Adding new pages
 If you want to add a whole new page to the documentation you can create a new

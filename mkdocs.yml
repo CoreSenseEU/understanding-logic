@@ -4,7 +4,7 @@
 site_name: Understanding System
 site_url: https://localhost:8000/
 repo_url: https://github.com/alex-quin-gabriel/understanding-logic
-edit_uri: edit/documentation/docs/ # Location of documentation URI
+edit_uri: edit/rolling/docs/ # Location of documentation URI
 extra_css:
   - stylesheets/extra.css
 copyright: Designed & Developed by <a href='https://kas-lab.github.io/'>Delft University of Technology</a> 2025
