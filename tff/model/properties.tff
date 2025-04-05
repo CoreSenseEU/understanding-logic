@@ -59,9 +59,12 @@ tff(formally_equivalent, axiom,
       )
       &
       ( % Equivalence of processing model classes -- TODO: This feels like it will turn out to be HOL
-        role_of_template(T)
-        =
-        role_of_modelet(M)
+        ? [R : role]:
+	(
+          R = role_of_template(T)
+          =>
+          R = role_of_modelet(M)
+	)
       )
       &
       ( % Equivalence of data model classes
@@ -97,7 +100,7 @@ tff(axiom_modelet_matches_template, axiom,
     &
     ! [R: requirement]:
     (
-      is_part_of(R,T)
+      is_part_of(R, T)
       =>
       ? [P: property]:
       (
@@ -137,34 +140,18 @@ tff(axiom_modelet_sets_matches_template_sets, axiom,
 ).
 
 
-
-
-% Engine outputs have a topic, dependent on input topics and engine
-% engines impart semantic scope
-% topics consist of physical scope and semantic scope
-% how to match them
-% do we keep scope within properties?
-
-tff(semantic_scope_decl, type, semantic_scope : $tType).
-tff(physical_scope_decl, type, physical_scope : $tType).
-
-tff(engines_can_provide_semantic_scope, type, imparts_semantic_scope: (engine * semantic_scope) > $o).
-
-tff(modelets_can_have_semantic_scope, type, has_semantic_scope: (modelet * semantic_scope) > $o).
-
-tff(modelets_can_have_physical_scope, type, has_physical_scope: (modelet * physical_scope) > $o).
-
-
-tff(engines_can_impart_semantic_scope, axiom,
-  ![Minput: modelet_set, E:engine, S: semantic_scope, Moutput: modelet]:
+tff(engine_outputs_have_formalisms_and_topics, axiom,
+  ![MSinput: modelet_set, E:engine, Moutput: modelet]:
   (
     (
-      imparts_semantic_scope(E, S)
-      &
-      exert(E, Minput) = Moutput
+      exert(E, MSinput) = Moutput
     )
     =>
-    has_semantic_scope(Moutput, S)
+    (
+      formalism_of_modelet(Moutput) = output_modelet_formalism(E)
+      &
+      topic_of_modelet(Moutput) = output_modelet_topic(E)
+    )
   )
 ).
 

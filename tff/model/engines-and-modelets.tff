@@ -6,6 +6,12 @@ tff(decl_engine, type,
   engine : $tType
 ).
 
+tff(decl_engine_output_formalism, type,
+  output_modelet_formalism : engine > formalism
+).
+tff(decl_engine_output_topic, type,
+  output_modelet_topic : engine > phenomenon_class
+).
 % Engines can have processing characteristics, such as delay or resource blockage/consumption
 % TBD later
 

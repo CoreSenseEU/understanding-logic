@@ -1,0 +1,42 @@
+% Understanding Calculus 
+include('understanding-logic/tff/model/properties.tff').
+
+
+% a Situation includes the chose history of performed actions
+%tff(understanding_state_decl, type,
+%  understanding_state : $tType
+%).
+
+
+% An exertion is the act of exerting an engine on a modelet set, resulting in a modelet, in defined state of knowledge, resulting in the addition of the output modelet to that state of knowledge. 
+tff(exertion_decl, type,
+  exertion: (engine * modelet_set * modelet * modelet_set) > modelet_set
+).
+
+% we want to plan backwards
+% we need to capture 'and' connectives between modelets and 'or' connectives between engines
+
+tff(exertion_axiom, axiom,
+  ![MS : modelet_set, E : engine, IUS : modelet_set]:
+  (
+    (
+      exertable(MS, E)
+      &
+      ![RM : modelet]:
+      (
+        is_in_modelet_set(RM, MS) 
+	=>
+	is_in_modelet_set(RM, IUS)
+      )
+    )
+    =>
+    ?[RUS : modelet_set, M : modelet]:
+    (
+      exertion(E, MS, M, IUS) = RUS
+      &
+      is_in_modelet_set(M, RUS)
+      &
+      ~is_in_modelet_set(M, IUS)
+    )
+  )
+).
