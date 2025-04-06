@@ -1,0 +1,15 @@
+include('understanding-logic/thf/model/engines-and-modelets.thf').
+
+thf(axiom_mass_requirement, axiom,
+  ? [MS: modelet_set, E: engine, TS: template_set]:
+  (
+    (is_interface_of @ TS @ E)
+    & 
+    (interfaces_match @ MS @ TS)
+  )
+).
+
+thf(test, conjecture,
+? [E: engine, MS: modelet_set]:
+  (exertable @ MS @ E)
+).

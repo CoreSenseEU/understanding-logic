@@ -1,0 +1,27 @@
+% Transitive strategies
+include('understanding-logic/thf/model/properties.thf').
+
+
+% strategies connect modelets
+thf(strategy_decl, type,
+  strategy: modelet > modelet > $o).
+
+
+% exerting engines is a strategy, strategies are transitive
+thf(ax_strategy, axiom,
+  ! [MS : modelet_set, MB : modelet] :
+    ( ? [E: engine] :
+        (exert @ E @ MS @ MB)
+	=>
+	(! [M : modelet]:
+	  (
+	    (in_set_m @ M @ MS)
+	    =>
+	    (strategy @ M @ MB)
+	  )
+	)
+      )
+).
+
+thf(ax_transitive, axiom,
+  ! [MA : modelet, MB : modelet, MC : modelet] : (((strategy @ MA @ MB) & (strategy @ MB @ MC)) => (strategy @ MA @ MC))).

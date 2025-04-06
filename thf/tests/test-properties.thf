@@ -1,0 +1,348 @@
+include('understanding-logic/thf/model/properties.thf').
+
+
+thf(realNumber_real, type, realNumber : $real).
+
+
+thf(number_formalism, type, number : formalism).
+thf(distribution_formalism, type, distribution : formalism).
+
+
+
+thf(t1_template, type, t1 : template).
+thf(formalism_of_t_t1, axiom, (formalism_of_t @ t1) = number).
+
+thf(accuracyReq_requirement, type, accuracyReq: requirement).
+thf(accuracyReq_has_type, axiom, (type_of_r @ accuracyReq) = number).
+thf(accuracyReq_is_permissable_number, axiom, (is_permissible @ accuracyReq @ realNumber)).
+thf(accuracyReq_is_part_of_t1, axiom, (is_part_of @ accuracyReq @ t1)).
+
+thf(m1_modelet, type, m1 : modelet).
+thf(formalism_of_m_m1, axiom, (formalism_of_m @ m1) = number).
+
+thf(accuracy_property, type, accuracyProp : property).
+thf(accuracyProp_has_type, axiom, (type_of_p @ accuracyProp) = number).
+thf(accuracyProp_has_value, axiom, (has_value @ accuracyProp) = realNumber).
+thf(accuracyProp_is_property_of_m1, axiom, (is_property_of_m @ accuracyProp @ m1)).
+
+
+
+
+thf(t2_template, type, t2 : template).
+thf(formalism_of_t_t2, axiom, (formalism_of_t @ t2) = distribution).
+
+thf(varianceReq_requirement, type, varianceReq: requirement).
+thf(varianceReq_has_type, axiom, (type_of_r @ varianceReq) = distribution).
+thf(varianceReq_is_permissable, axiom, (is_permissible @ varianceReq @ realNumber)).
+thf(varianceReq_is_part_of_t2, axiom, (is_part_of @ varianceReq @ t2)).
+
+thf(m2_modelet, type, m2 : modelet).
+thf(formalism_of_m_m2, axiom, (formalism_of_m @ m2) = distribution).
+
+thf(variance_property, type, varianceProp : property).
+thf(varianceProp_has_type, axiom, (type_of_p @ varianceProp) = distribution).
+thf(varianceProp_has_value, axiom, (has_value @ varianceProp) = realNumber).
+thf(varianceProp_is_property_of_m2, axiom, (is_property_of_m @ varianceProp @ m2)).
+
+
+
+thf(ts_template_set, type, ts : template_set).
+thf(t1_in_ts, axiom, (in_set_t @ t1 @ ts)).
+thf(t2_in_ts, axiom, (in_set_t @ t2 @ ts)).
+
+
+thf(e_engine, type, e : engine).
+thf(ts_interface_of_e, axiom, (is_interface_of @ ts @ e)).
+
+
+
+thf(ms_modelet_set, type, ms : modelet_set).
+thf(m1_in_ms, axiom, (in_set_m @ m1 @ ms)).
+thf(m2_in_ms, axiom, (in_set_m @ m2 @ ms)).
+
+
+thf(table_phenomenon, type, table : phenomenon).
+thf(referent_of_t_t1, axiom, (referent_of_t @ t1) = table).
+thf(referent_of_m_m1, axiom, (referent_of_m @ m1) = table).
+
+thf(chair_phenomenon, type, chair : phenomenon).
+thf(referent_of_t_t2, axiom, (referent_of_t @ t2) = chair).
+thf(referent_of_m_m2, axiom, (referent_of_m @ m2) = chair).
+
+
+%faster with this?
+
+%distinctness
+thf(requirement_distinctness, axiom, $distinct(accuracyReq, varianceReq)).
+thf(property_distinctness, axiom, $distinct(accuracyProp, varianceProp)).
+thf(modelet_distinctness, axiom, $distinct(m1, m2)).
+thf(template_distinctness, axiom, $distinct(t1, t2)).
+thf(formalism_distinctness, axiom, $distinct(number, distribution)).
+thf(phenomena_distinctness, axiom, $distinct(chair, table)).
+
+thf(list_engines, axiom,
+  ! [E: engine]:
+  (E = e)
+).
+thf(list_modelet_sets, axiom,
+  ! [MS: modelet_set]:
+  (MS = ms)
+).
+thf(list_template_sets, axiom,
+  ! [TS: template_set]:
+  (TS = ts)
+).
+thf(list_phenomena, axiom,
+  ! [P: phenomenon]:
+  (
+    (P = table)
+    |
+    (P = chair)
+  )
+).
+
+thf(list_formalisms, axiom,
+  ! [F: formalism]:
+  (
+    (F = distribution)
+    |
+    (F = number)
+  )
+).
+thf(list_properties, axiom,
+  ! [P: property]:
+  (
+    (P = accuracyProp)
+    |
+    (P = varianceProp)
+  )
+).
+thf(list_requirements, axiom,
+  ! [R: requirement]:
+  (
+    (R = accuracyReq)
+    |
+    (R = varianceReq)
+  )
+).
+thf(list_templates, axiom,
+  ! [T: template]:
+  (
+    (T = t1)
+    |
+    (T = t2)
+  )
+).
+thf(list_modelets, axiom,
+  ! [M: modelet]:
+  (
+    (M = m1)
+    |
+    (M = m2)
+  )
+).
+
+thf(define_template_set, axiom,
+  ! [T : template]:
+  (
+    (in_set_t @ T @ ts)
+    =>
+    (
+      (T = t1)
+      |
+      (T = t2)
+    )
+  )
+).
+
+thf(define_modelet_set, axiom,
+  ! [M : modelet]:
+  (
+    (in_set_m @ M @ ms)
+    =>
+    (
+      (M = m1)
+      |
+      (M = m2)
+    )
+  )
+).
+
+% These are vital for circumnavigating the OWA!!!
+thf(define_requirement_set1, axiom,
+  ! [R : requirement]:
+  (
+    (is_part_of @ R @ t1)
+    =>
+    (R = accuracyReq)
+  )
+).
+thf(define_requirement_set2, axiom,
+  ! [R : requirement]:
+  (
+    (is_part_of @ R @ t2)
+    =>
+    (R = varianceReq)
+  )
+).
+
+% basic tests: leo: 1175ms, vampire: 6ms
+% thf(test_axioms, conjecture,
+%   (
+%     ((referent_of_t @ t1) = (referent_of_m @ m1))
+%     &
+%     ((referent_of_t @ t2) = (referent_of_m @ m2))
+%     &
+%     ((formalism_of_t @ t1) = (formalism_of_m @ m1))
+%     &
+%     ((formalism_of_t @ t2) = (formalism_of_m @ m2))
+%     &
+%     ((type_of_p @ accuracyProp) = (type_of_r @ accuracyReq))
+%     &
+%     ((type_of_p @ varianceProp) = (type_of_r @ varianceReq))
+%     &
+%     (is_property_of_m @ accuracyProp @ m1)
+%     &
+%     (is_property_of_m @ varianceProp @ m2)
+%     &
+%     (is_part_of @ accuracyReq @ t1)
+%     &
+%     (is_part_of @ varianceReq @ t2)
+%     &
+%     (is_permissible @ accuracyReq @ (has_value @ accuracyProp))
+%     &
+%     (is_permissible @ varianceReq @ (has_value @ varianceProp))
+%     &
+%     (in_set_m @ m1 @ ms)
+%     &
+%     (in_set_m @ m2 @ ms)
+%     &
+%     (in_set_t @ t1 @ ts)
+%     &
+%     (in_set_t @ t2 @ ts)
+%     &
+%     (is_interface_of @ ts @ e)
+%   )
+% ).
+
+
+
+
+
+
+
+
+
+
+
+
+%--- given ---
+% works 980 ms
+%thf(test, conjecture,
+%(interfaces_match @ ms @ ts)
+%).
+
+% works leo3: 4749 ms, vampire: time out
+% thf(test, conjecture,
+%   (interfaces_match @ ms @ ts)
+% ).
+
+% works leo3: 746 ms
+thf(test, conjecture,
+  (is_interface_of @ ts @ e)
+).
+
+% works leo3: 1789ms, vampire: timeout
+% thf(test_inputs_match, conjecture,
+%  (
+%    (inputs_match @ m1 @ t1)
+%    &
+%    (inputs_match @ m2 @ t2)
+%  )
+% ).
+
+
+% works leo3: 47771ms
+% thf(test, conjecture,
+%  (
+%    (is_interface_of @ ts @ e)
+%    &
+%    (interfaces_match @ ms @ ts)
+%  )
+% ).
+
+% works 927 ms
+%thf(test, conjecture,
+%  (exertable @ ms @ e)
+%).
+
+%--- one variable ---
+
+
+
+
+% works 1496 ms
+%thf(test, conjecture,
+%? [TS: template_set]:
+%  (interfaces_match @ ms @ TS)
+%).
+
+% works 1217 ms
+%thf(test, conjecture,
+%? [MS: modelet_set]:
+%  (interfaces_match @ MS @ ts)
+%).
+
+% works 1584 ms
+%thf(test, conjecture,
+%? [TS: template_set]:
+%  (
+%    (is_interface_of @ TS @ e)
+%    &
+%    (interfaces_match @ ms @ TS)
+%  )
+%).
+
+%worked previously , leo3: timed out  vampire: 5764 ms
+%thf(test, conjecture,
+%? [MS: modelet_set]:
+%  (exertable @ MS @ e)
+%).
+
+%works leo: 1552 ms vampire: 5936 ms
+%thf(test, conjecture,
+%? [E: engine]:
+%  (exertable @ ms @ E)
+%).
+
+%--- two variables ---
+% works leo: 1944ms, vampire: 32335ms
+%thf(test, conjecture,
+%? [TS: template_set, MS: modelet_set]:
+%  (interfaces_match @ MS @ TS)
+%).
+
+% works leo: 333ms, vampire: 10ms
+%thf(test, conjecture,
+%? [TS: template_set, E: engine]:
+%  (is_interface_of @ TS @ E)
+%).
+
+
+% works leo: 34982ms
+%thf(test, conjecture,
+%? [E: engine, MS: modelet_set]:
+%  (exertable @ MS @ E)
+%).
+
+
+%--- 3 variables ---
+% works leo3: 2037ms, vampire: times out
+%thf(test, conjecture,
+%? [TS: template_set, E: engine, MS: modelet_set]:
+%  (
+%    (is_interface_of @ TS @ E)
+%    &
+%    (interfaces_match @ MS @ TS)
+%  )
+%).

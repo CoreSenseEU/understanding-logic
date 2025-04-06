@@ -1,0 +1,333 @@
+% ROS Message builtin types
+include('understanding-logic/tff/model/fundamental-concepts.tff').
+
+
+% ROS Message - builtin bool is a datatype
+tff(ros_message_bool_datatype, type,
+    'ROS2.msg.Bool': datatype).
+% ROS Message - builtin byte is a datatype
+tff(ros_message_byte_datatype, type,
+    'ROS2.msg.Byte': datatype).
+% ROS Message - builtin char is a datatype
+tff(ros_message_char_datatype, type,
+    'ROS2.msg.Char': datatype).
+% ROS Message - builtin float32 is a datatype
+tff(ros_message_float32_datatype, type,
+    'ROS2.msg.Float32': datatype).
+% ROS Message - builtin float64 is a datatype
+tff(ros_message_float64_datatype, type,
+    'ROS2.msg.Float64': datatype).
+% ROS Message - builtin int8 is a datatype
+tff(ros_message_int8_datatype, type,
+    'ROS2.msg.Int8': datatype).
+% ROS Message - builtin uint8 is a datatype
+tff(ros_message_uint8_datatype, type,
+    'ROS2.msg.Uint8': datatype).
+% ROS Message - builtin int16 is a datatype
+tff(ros_message_int16_datatype, type,
+    'ROS2.msg.Int16': datatype).
+% ROS Message - builtin uint16 is a datatype
+tff(ros_message_uint16_datatype, type,
+    'ROS2.msg.Uint16': datatype).
+% ROS Message - builtin int32 is a datatype
+tff(ros_message_int32_datatype, type,
+    'ROS2.msg.Int32': datatype).
+% ROS Message - builtin uint32 is a datatype
+tff(ros_message_uint32_datatype, type,
+    'ROS2.msg.Uint32': datatype).
+% ROS Message - builtin int64 is a datatype
+tff(ros_message_int64_datatype, type,
+    'ROS2.msg.Int64': datatype).
+% ROS Message - builtin uint64 is a datatype
+tff(ros_message_uint64_datatype, type,
+    'ROS2.msg.Uint64': datatype).
+% ROS Message - builtin (unbounded) string is a datatype
+tff(ros_message_string_datatype, type,
+    'ROS2.msg.String': datatype).
+% ROS Message - builtin wstring is a datatype
+tff(ros_message_wstring_datatype, type,
+    'ROS2.msg.Wstring': datatype).
+
+% ROS Message - bounded string is a datatype
+%   e.g. str<=10
+tff(ros_message_bounded_string_datatype, type,
+  'ROS2.msg.BoundedString': ($int > datatype)
+).
+% ROS Message - unbounded dynamic array of builtins is a datatype
+%   e.g. char[], float32[]
+tff(ros_message_unbounded_dynamic_array_datatype, type,
+    'ROS2.msg.UnboundedDynamicArray': (datatype > datatype)).
+% ROS Message - bounded array of builtins is a datatype
+%   e.g. char[<=5], float32[<=4]
+tff(ros_message_bounded_dynamic_array_datatype, type,
+    'ROS2.msg.BoundedDynamicArray': ((datatype * $int) > datatype)).
+% ROS Message - static array of builtins is a datatype
+%   e.g. char[5], float32[4]
+tff(ros_message_static_array_datatype, type,
+    'ROS2.msg.StaticArray': ((datatype * $int) > datatype)).
+
+
+% ROS Message - bounded string
+%   Bounded strings of distinct $ints are also distinct
+tff(distinctness_of_bounded_strings_with_distinct_args, axiom,
+    ! [Ia: $int, Ib: $int] :
+    (
+        (Ia != Ib)
+        <=>
+        ('ROS2.msg.BoundedString'(Ia) != 'ROS2.msg.BoundedString'(Ib))
+    )
+).
+
+% ROS Message - unbounded dynamic array of builtins
+%   Unbounded Dynamic arrays of distinct builtins are also distinct
+tff(distinctness_of_unbounded_arrays_with_distinct_args, axiom,
+    ! [Fa: datatype, Fb: datatype] :
+    (
+        (Fa != Fb)
+        <=>
+        ('ROS2.msg.UnboundedDynamicArray'(Fa) != 'ROS2.msg.UnboundedDynamicArray'(Fb))
+    )
+).
+
+% ROS Message - bounded dynamic array of builtins
+%   Bounded Dynamic arrays of distinct builtins and $ints are also distinct
+tff(distinctness_of_bounded_arrays_with_distinct_args, axiom,
+    ! [Fa: datatype, Fb: datatype, Ia: $int, Ib: $int] :
+    (
+        (Fa != Fb | Ia != Ib)
+        <=>
+        ('ROS2.msg.BoundedDynamicArray'(Fa, Ia) != 'ROS2.msg.BoundedDynamicArray'(Fb, Ib))
+    )
+).
+
+% ROS Message - static array of builtins
+%   Static arrays of distinct builtins and $ints are also distinct
+tff(distinctness_of_static_arrays_with_distinct_args, axiom,
+    ! [Fa: datatype, Fb: datatype, Ia: $int, Ib: $int] :
+    (
+        (Fa != Fb | Ia != Ib)
+        <=>
+        ('ROS2.msg.StaticArray'(Fa, Ia) != 'ROS2.msg.StaticArray'(Fb, Ib))
+    )
+).
+
+
+
+tff(builtins_are_distinct, axiom,
+     $distinct(
+        'ROS2.msg.Bool',
+        'ROS2.msg.Byte',
+        'ROS2.msg.Char',
+        'ROS2.msg.Float32',
+        'ROS2.msg.Float64',
+        'ROS2.msg.Int8',
+        'ROS2.msg.Uint8',
+        'ROS2.msg.Int16',
+        'ROS2.msg.Uint16',
+        'ROS2.msg.Int32',
+        'ROS2.msg.Uint32',
+        'ROS2.msg.Int64',
+        'ROS2.msg.Uint64',
+        'ROS2.msg.String',
+        'ROS2.msg.Wstring'
+    )
+).
+
+
+% ROS Message - bounded string
+%   Bounded strings are distinct from builtins
+tff(bounded_strings_are_distinct_from_builtins, axiom,
+    ! [Ia: $int] : 
+    (
+        $let(fbs: datatype,
+             fbs := 'ROS2.msg.BoundedString'(Ia),
+             (
+             fbs != 'ROS2.msg.Bool'
+			 &
+             fbs != 'ROS2.msg.Byte'
+			 &
+             fbs != 'ROS2.msg.Char'
+			 &
+             fbs != 'ROS2.msg.Float32'
+			 &
+             fbs != 'ROS2.msg.Float64'
+			 &
+             fbs != 'ROS2.msg.Int8'
+			 &
+             fbs != 'ROS2.msg.Uint8'
+			 &
+             fbs != 'ROS2.msg.Int16'
+			 &
+             fbs != 'ROS2.msg.Uint16'
+			 &
+             fbs != 'ROS2.msg.Int32'
+			 &
+             fbs != 'ROS2.msg.Uint32'
+			 &
+             fbs != 'ROS2.msg.Int64'
+			 &
+             fbs != 'ROS2.msg.Uint64'
+			 &
+             fbs != 'ROS2.msg.String'
+			 &
+             fbs != 'ROS2.msg.Wstring'
+            )
+         )
+    )
+).
+
+% ROS Message - unbounded dynamic array
+%   unbounded dynamic arrays are distinct from builtins
+tff(unbounded_dynamic_arrays_are_distinct_from_builtins, axiom,
+    ! [F: datatype] : 
+    (
+        $let(fbs: datatype,
+             fbs := 'ROS2.msg.UnboundedDynamicArray'(F),
+             (
+             fbs != 'ROS2.msg.Bool'
+			 &
+             fbs != 'ROS2.msg.Byte'
+			 &
+             fbs != 'ROS2.msg.Char'
+			 &
+             fbs != 'ROS2.msg.Float32'
+			 &
+             fbs != 'ROS2.msg.Float64'
+			 &
+             fbs != 'ROS2.msg.Int8'
+			 &
+             fbs != 'ROS2.msg.Uint8'
+			 &
+             fbs != 'ROS2.msg.Int16'
+			 &
+             fbs != 'ROS2.msg.Uint16'
+			 &
+             fbs != 'ROS2.msg.Int32'
+			 &
+             fbs != 'ROS2.msg.Uint32'
+			 &
+             fbs != 'ROS2.msg.Int64'
+			 &
+             fbs != 'ROS2.msg.Uint64'
+			 &
+             fbs != 'ROS2.msg.String'
+			 &
+             fbs != 'ROS2.msg.Wstring'
+            )
+         )
+    )
+).
+
+% ROS Message - bounded dynamic array
+%   bounded dynamic arrays are distinct from builtins
+tff(bounded_dynamic_arrays_are_distinct_from_builtins, axiom,
+    ! [F: datatype, I: $int] : 
+    (
+        $let(fbs: datatype,
+             fbs := 'ROS2.msg.BoundedDynamicArray'(F, I),
+             (
+             fbs != 'ROS2.msg.Bool'
+			 &
+             fbs != 'ROS2.msg.Byte'
+			 &
+             fbs != 'ROS2.msg.Char'
+			 &
+             fbs != 'ROS2.msg.Float32'
+			 &
+             fbs != 'ROS2.msg.Float64'
+			 &
+             fbs != 'ROS2.msg.Int8'
+			 &
+             fbs != 'ROS2.msg.Uint8'
+			 &
+             fbs != 'ROS2.msg.Int16'
+			 &
+             fbs != 'ROS2.msg.Uint16'
+			 &
+             fbs != 'ROS2.msg.Int32'
+			 &
+             fbs != 'ROS2.msg.Uint32'
+			 &
+             fbs != 'ROS2.msg.Int64'
+			 &
+             fbs != 'ROS2.msg.Uint64'
+			 &
+             fbs != 'ROS2.msg.String'
+			 &
+             fbs != 'ROS2.msg.Wstring'
+            )
+         )
+    )
+).
+
+% ROS Message - static array
+%   static arrays are distinct from builtins
+tff(static_arrays_are_distinct_from_builtins, axiom,
+    ! [F: datatype, I: $int] : 
+    (
+        $let(fbs: datatype,
+             fbs := 'ROS2.msg.StaticArray'(F, I),
+             (
+             fbs != 'ROS2.msg.Bool'
+			 &
+             fbs != 'ROS2.msg.Byte'
+			 &
+             fbs != 'ROS2.msg.Char'
+			 &
+             fbs != 'ROS2.msg.Float32'
+			 &
+             fbs != 'ROS2.msg.Float64'
+			 &
+             fbs != 'ROS2.msg.Int8'
+			 &
+             fbs != 'ROS2.msg.Uint8'
+			 &
+             fbs != 'ROS2.msg.Int16'
+			 &
+             fbs != 'ROS2.msg.Uint16'
+			 &
+             fbs != 'ROS2.msg.Int32'
+			 &
+             fbs != 'ROS2.msg.Uint32'
+			 &
+             fbs != 'ROS2.msg.Int64'
+			 &
+             fbs != 'ROS2.msg.Uint64'
+			 &
+             fbs != 'ROS2.msg.String'
+			 &
+             fbs != 'ROS2.msg.Wstring'
+            )
+         )
+    )
+).
+
+% ROS Message - array datatypes are distinct from one another
+tff(datatypes_are_distinct_axiom, axiom,
+    ! [Fa: datatype, Fb: datatype, Fc: datatype,
+       Ia: $int, Ib: $int, Ic: $int] : 
+    (
+        $let([fbs: datatype,
+              fu: datatype, 
+              fb: datatype,
+              fs: datatype],
+             [fbs := 'ROS2.msg.BoundedString'(Ia),
+              fu := 'ROS2.msg.UnboundedDynamicArray'(Fa),
+              fb := 'ROS2.msg.BoundedDynamicArray'(Fb, Ib),
+              fs := 'ROS2.msg.StaticArray'(Fc, Ic)],
+             (
+              fbs != fu
+              &
+              fbs != fb
+              &
+              fbs != fs
+              &
+              fu != fb
+              &
+              fu != fs
+              &
+              fb != fs
+             )
+        )
+     )
+ ).

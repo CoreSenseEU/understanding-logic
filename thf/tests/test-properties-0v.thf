@@ -1,0 +1,91 @@
+include('test-properties-setup.thf').
+
+% basic tests: leo: 1175ms, vampire: 6ms
+% thf(test_axioms, conjecture,
+%   (
+%     ((referent_of_t @ t1) = (referent_of_m @ m1))
+%     &
+%     ((referent_of_t @ t2) = (referent_of_m @ m2))
+%     &
+%     ((formalism_of_t @ t1) = (formalism_of_m @ m1))
+%     &
+%     ((formalism_of_t @ t2) = (formalism_of_m @ m2))
+%     &
+%     ((type_of_p @ accuracyProp) = (type_of_r @ accuracyReq))
+%     &
+%     ((type_of_p @ varianceProp) = (type_of_r @ varianceReq))
+%     &
+%     (is_property_of_m @ accuracyProp @ m1)
+%     &
+%     (is_property_of_m @ varianceProp @ m2)
+%     &
+%     (is_part_of @ accuracyReq @ t1)
+%     &
+%     (is_part_of @ varianceReq @ t2)
+%     &
+%     (is_permissible @ accuracyReq @ (has_value @ accuracyProp))
+%     &
+%     (is_permissible @ varianceReq @ (has_value @ varianceProp))
+%     &
+%     (in_set_m @ m1 @ ms)
+%     &
+%     (in_set_m @ m2 @ ms)
+%     &
+%     (in_set_t @ t1 @ ts)
+%     &
+%     (in_set_t @ t2 @ ts)
+%     &
+%     (is_interface_of @ ts @ e)
+%   )
+% ).
+
+
+
+
+
+
+
+
+
+
+
+
+%--- given ---
+% works 980 ms
+%thf(test, conjecture,
+%(interfaces_match @ ms @ ts)
+%).
+
+% works leo3: 4749 ms, vampire: time out
+% thf(test, conjecture,
+%   (interfaces_match @ ms @ ts)
+% ).
+
+% works leo3: 746 ms
+thf(test, conjecture,
+  (is_interface_of @ ts @ e)
+).
+
+% works leo3: 1789ms, vampire: timeout
+% thf(test_inputs_match, conjecture,
+%  (
+%    (inputs_match @ m1 @ t1)
+%    &
+%    (inputs_match @ m2 @ t2)
+%  )
+% ).
+
+
+% works leo3: 47771ms
+% thf(test, conjecture,
+%  (
+%    (is_interface_of @ ts @ e)
+%    &
+%    (interfaces_match @ ms @ ts)
+%  )
+% ).
+
+% works 927 ms
+%thf(test, conjecture,
+%  (exertable @ ms @ e)
+%).

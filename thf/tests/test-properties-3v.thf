@@ -1,0 +1,12 @@
+include('test-properties-setup.thf').
+
+%--- 3 variables ---
+% works leo3: 2037ms, vampire: times out
+thf(test, conjecture,
+  ? [TS: template_set, E: engine, MS: modelet_set]:
+  (
+    (is_interface_of @ TS @ E)
+    &
+    (interfaces_match @ MS @ TS)
+  )
+).

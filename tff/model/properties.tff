@@ -1,0 +1,196 @@
+% Property logic
+include('understanding-logic/tff/model/engines-and-modelets.tff').
+
+% Properties exist
+tff(decl_property, type,
+  property: $tType).
+
+% Properties have Values
+tff(decl_property_value, type,
+  has_value: property > $real).
+
+
+% Requirements exist
+tff(decl_requirement, type,
+  requirement: $tType).
+
+% Properties have datatypes
+tff(decl_datatype_of_p, type,
+  datatype_of_property : property > datatype).
+
+% Requirements have datatypes 
+tff(decl_datatype_of_r, type,
+  datatype_of_requirement : requirement > datatype).
+
+% Requirements have a permissible value range
+tff(decl_requirement_range, type,
+  is_permissible: (requirement * $real) > $o).
+
+% Modelets have properties
+tff(decl_property_of_m, type,
+  is_property_of_modelet: (property * modelet) > $o).
+
+% Engines have properties
+tff(decl_property_of_e, type,
+  is_property_of_engine: (property * engine) > $o).
+
+% Engine outputs have properties
+tff(decl_engine_output_properties, type,
+  output_property_of_engine: engine > property).
+
+% Templates have requirements in terms of properties
+tff(decl_templates_have_requirements, type,
+  is_part_of: (requirement * template) > $o).
+
+
+% Modelets and Templates can be formally equivalent
+tff(formally_equivalent_decl, type, formally_equivalent: (template * modelet) > $o).
+tff(formally_equivalent, axiom,
+  ! [M: modelet, T: template]:
+  (
+    (
+     ( % Equivalence of world model classes
+        ? [PC : phenomenon_class]:
+	(
+	  PC = topic_of_template(T)
+          =>
+          PC = topic_of_modelet(M)
+	)
+      )
+      &
+      ( % Equivalence of processing model classes -- TODO: This feels like it will turn out to be HOL
+        ? [R : role]:
+	(
+          R = role_of_template(T)
+          =>
+          R = role_of_modelet(M)
+	)
+      )
+      &
+      ( % Equivalence of data model classes
+        formalism_of_template(T)
+        =
+        formalism_of_modelet(M)
+      )
+    )
+    =>
+    formally_equivalent(T, M)
+  )
+).
+
+% Modelets and Templates can have matching profiles
+tff(axiom_modelet_matches_template, axiom,
+  ! [M: modelet, T: template]:
+  ((
+    formally_equivalent(T, M)
+    &
+    ? [SPT : spacetime_point]:
+    (
+      template_location(T) = SPT
+      =>
+      modelet_location(M) = SPT
+    )
+    &
+    ? [E : extent]:
+    (
+      template_extent(T) = E
+      =>
+      modelet_extent(M) = E
+    )
+    &
+    ! [R: requirement]:
+    (
+      is_part_of(R, T)
+      =>
+      ? [P: property]:
+      (
+        is_property_of_modelet(P, M) % match modelet to property
+        &
+        (datatype_of_requirement(R) = datatype_of_property(P)) % property has correct correct data format/type for requirement
+        &
+        is_permissible(R, has_value(P)) % ensure that the property's value is permissible
+      )
+    )
+  )
+  =>
+  inputs_match(M, T)
+  )
+).
+
+% Modelet sets match template sets if all their templates have a corresponding modelet with matching inputs inputs_match(M, T)
+%interfaces_match(MS, TS)
+
+tff(axiom_modelet_sets_matches_template_sets, axiom,
+  ! [MS: modelet_set, TS: template_set]:
+  (
+    ! [T : template]:
+    (
+      is_in_template_set(T, TS)
+      =>
+      ? [M : modelet]:
+      (
+        inputs_match(M, T)
+        &
+        is_in_modelet_set(M, MS)
+      )
+    )
+    =>
+    interfaces_match(MS, TS)
+  )
+).
+
+
+tff(engine_outputs_have_formalisms_and_topics, axiom,
+  ![MSinput: modelet_set, E:engine, Moutput: modelet]:
+  (
+    (
+      exert(E, MSinput) = Moutput
+    )
+    =>
+    (
+      formalism_of_modelet(Moutput) = output_modelet_formalism(E)
+      &
+      topic_of_modelet(Moutput) = output_modelet_topic(E)
+    )
+  )
+).
+
+%tff(output_modelet_topic, axiom,
+%  ! [Minput: modelet_set, E: engine, Moutput: modelet]:
+%  (
+%    (
+%      exertable(Minput, E)
+%      &
+%      exert(E, Minput) = Moutput
+%    )
+%    =>
+%    has_topic(Moutput, output_topic(E, Minput))
+%  )
+%
+%).
+
+% Engine outputs have properties
+%tff(exert_creates, axiom,
+%  ! [Minput: modelet_set, E: engine]:
+%  (
+%      exertable(Minput, E )
+%      =>
+%      ? [Moutput: modelet]:
+%      (
+%        exert(E, Minput) = Moutput
+%        &
+%        ! [P: property]:
+%        (
+%          (
+%            ~is_property_of_engine(P, E)
+%            |
+%            (
+%              is_property_of_engine(P, E)
+%              &
+%              is_property_of_modelet(P, Moutput)
+%            )
+%          )
+%        )
+%      )
+%    )
+%).

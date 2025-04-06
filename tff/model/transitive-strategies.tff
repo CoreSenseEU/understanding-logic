@@ -1,0 +1,28 @@
+% Transitive strategies
+include('understanding-logic/tff/model/properties.tff').
+
+
+% strategies connect modelets
+tff(strategy_decl, type,
+  strategy: (modelet_set * modelet) > $o).
+
+
+% exerting engines is a strategy, strategies are transitive
+tff(ax_strategy, axiom,
+  ! [MS : modelet_set, MB : modelet] :
+    ( ? [E: engine] :
+        exert(E, MS) = MB
+	=>
+	(! [M : modelet]:
+	  (
+	    is_in_modelet_set(M, MS)
+	    =>
+	    strategy(M, MB)
+	  )
+	)
+ )
+).
+
+% Modelet transformation strategies are transitive
+tff(ax_transitive, axiom,
+  ! [MA : modelet, MB : modelet, MC : modelet] : ((strategy(MA, MB) & strategy(MB, MC)) => strategy(MA, MC))).

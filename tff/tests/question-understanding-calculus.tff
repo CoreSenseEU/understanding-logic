@@ -1,0 +1,19 @@
+include('understanding-logic/tff/model/understanding-calculus.tff').
+include('understanding-logic/tff/tests/test-scenario.tff').
+
+%tff(question7, question,
+%  ?[E1: engine, E2: engine, US1 : modelet_set, US2 : modelet_set, US3: modelet_set, MS1: modelet_set, MS2: modelet_set, M1 : modelet, M2: modelet]:
+%  (
+%    exertion(E1, MS1, M1, US1) = US2
+%    &
+%    exertion(E2, MS2, M2, US2) = US3
+%  )
+%).
+
+
+tff(question8, question,
+  ?[E1: engine, E2: engine, US1 : modelet_set, US2 : modelet_set, US3: modelet_set, MS1: modelet_set, MS2: modelet_set, M1 : modelet, M2: modelet]:
+  (
+    exertion(E2, MS2, M2, exertion(E1, MS1, M1, US1)) = US3
+  )
+).

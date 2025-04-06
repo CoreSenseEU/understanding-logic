@@ -1,0 +1,13 @@
+include('understanding-logic/thf/model/fundamental-concepts.thf').
+
+thf(axiom_mass_requirement, axiom,
+  ? [Number : formalism, Table : phenomenon, E: engine]:
+  (
+$true
+  )
+).
+
+thf(test, conjecture,
+? [E: engine]:
+$true
+).

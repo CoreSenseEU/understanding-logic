@@ -1,0 +1,71 @@
+% Fundamental concepts
+
+% Agents - To be introduced later, as collective awareness is considered.
+%tff(decl_agent, type,
+%  agent : $tType
+%).
+
+% Phenomena classes - Topics of modelets. The concepts in the world model, that the system represents using Modelets.
+tff(decl_phenomenon_class, type,
+  phenomenon_class : $tType
+).
+
+% Formalisms - Methods used to express modelets. Class in Data Model. ROSMessages.
+tff(decl_formalism, type,
+  formalism : $tType
+).
+
+% Datatypes - As the name suggests, the fundamental types of data considered
+tff(decl_datatype, type,
+  datatype : $tType
+).
+
+% Role - Usage of a modelet by engines. Class in the Processing Model.
+tff(decl_role, type,
+  role : $tType
+).
+
+
+% SpaceTime Point - 4-dimensional coordinates
+tff(decl_spacetime_point, type,
+  spacetime_point : $tType
+).
+
+
+tff(decl_point_x, type,
+  point_x : spacetime_point > $real
+).
+
+tff(decl_point_y, type,
+  point_y : spacetime_point > $real
+).
+
+tff(decl_point_z, type,
+  point_z : spacetime_point > $real
+).
+
+tff(decl_point_t, type,
+  point_t : spacetime_point > $real
+).
+
+% Extent - 4-dimensional size
+tff(decl_extent, type,
+  extent : $tType
+).
+
+tff(decl_duration, type,
+  extent_duration : extent > $real
+).
+
+tff(decl_width, type,
+  extent_width : extent > $real
+).
+
+tff(decl_depth, type,
+  extent_depth : extent > $real
+).
+
+tff(decl_height, type,
+  extent_height : extent > $real
+).
+

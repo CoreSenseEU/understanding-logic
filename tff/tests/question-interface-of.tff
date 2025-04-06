@@ -1,0 +1,6 @@
+include('understanding-logic/tff/tests/test-scenario.tff').
+
+tff(question4, question,
+  ?[TS: template_set, E: engine]:
+    interface_of(E) = TS
+).

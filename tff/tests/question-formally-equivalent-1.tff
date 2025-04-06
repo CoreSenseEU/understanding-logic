@@ -1,0 +1,6 @@
+include('understanding-logic/tff/tests/test-scenario.tff').
+
+tff(question1, question,
+  ?[M: modelet]:
+    formally_equivalent(template_1, M)
+).

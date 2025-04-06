@@ -1,0 +1,66 @@
+include('test-properties-setup.thf').
+%--- one variable ---
+
+
+% works leo: 1784 ms
+%thf(test, conjecture,
+%? [TS: template_set]:
+%  (interfaces_match @ ms @ TS)
+%).
+
+% works leo: 5975 ms
+%thf(test, conjecture,
+%? [MS: modelet_set]:
+%  (interfaces_match @ MS @ ts)
+%).
+
+% works leo: 4108 ms
+%thf(test, conjecture,
+%? [TS: template_set]:
+%  (interfaces_match2 @ TS @ ms)
+%).
+
+% works leo: 2508 ms
+%thf(test, conjecture,
+%? [MS: modelet_set]:
+%  (interfaces_match2 @ ts @ MS)
+%).
+
+% works leo: 586 ms
+%thf(test, conjecture,
+%  ? [TS: template_set]:
+%    (is_interface_of @ TS @ e)
+%).
+
+% works leo: 12525 ms
+%thf(test, conjecture,
+%  ? [TS: template_set]:
+%  (
+%    (is_interface_of @ TS @ e)
+%    &
+%    (interfaces_match @ ms @ TS)
+%  )
+%).
+
+% works leo: 12640 ms
+%thf(test, conjecture,
+%  ? [TS: template_set]:
+%  (
+%    (interfaces_match @ ms @ TS)
+%    &
+%    (is_interface_of @ TS @ e)
+%  )
+%).
+
+%works, leo3: 8866 ms, vampire: 5764 ms
+thf(test, conjecture,
+  ? [MS: modelet_set]:
+  (exertable @ MS @ e)
+).
+
+%works leo: 4368 ms
+%thf(test, conjecture,
+%  ? [E: engine]:
+%  (exertable @ ms @ E)
+%).
+

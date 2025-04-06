@@ -1,0 +1,6 @@
+include('understanding-logic/tff/tests/test-scenario.tff').
+
+tff(conjecture2, conjecture,
+  ?[M: modelet]:
+    inputs_match(M, template_1)
+).
