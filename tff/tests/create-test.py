@@ -225,10 +225,10 @@ def create_template_sets(n, max_templates, template_count):
         output += f"tff(template_set_{index}_decl, type, template_set_{index} : template_set).\n"
         
         templates = random.sample(range(1, template_count+1), random.randint(1, max_templates))
-        for m in templates:
-            output += f"tff(template_{m}_in_template_set_{index}, axiom,\n  is_in_template_set(template_{m}, template_set_{index})\n).\n\n"
+        # for m in templates:
+        #     output += f"tff(template_{m}_in_template_set_{index}, axiom,\n  is_in_template_set(template_{m}, template_set_{index})\n).\n\n"
         output += f"tff(template_set_{index}_templates, axiom,\n  ![T : template]:\n  (\n"
-        output += f"    is_in_template_set(T, template_set_{index})\n    =>\n    (\n      "
+        output += f"    is_in_template_set(T, template_set_{index})\n    <=>\n    (\n      "
         output += "\n      |\n      ".join([f"T = template_{t}" for t in templates])
         output += "\n    )\n  )\n).\n\n"
     output += f"tff(distinct_template_sets, axiom,\n  $distinct({",".join([f"template_set_{index}" for index in range(1, n+1)])})\n).\n\n"
