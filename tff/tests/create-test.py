@@ -284,7 +284,7 @@ def main() -> int:
     output += create_template_sets(NUM_TEMPLATE_SETS, MAX_TEMPLATES, NUM_TEMPLATES)
     #output += create_modelets(NUM_MODELETS, MAX_PROPERTIES, NUM_PROPERTIES_AND_REQUIREMENTS)
     output += create_engines(NUM_ENGINES, NUM_TEMPLATE_SETS, MAX_PROPERTIES, NUM_PROPERTIES_AND_REQUIREMENTS)
-    output += create_modelet_sets(MAX_TEMPLATES)
+    # output += create_modelet_sets(MAX_TEMPLATES)
 
     print(output)
     return 0

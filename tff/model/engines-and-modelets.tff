@@ -52,7 +52,7 @@ tff(decl_topic_of_modelet, type,
 ).
 
 % Modelets have model properties/characteristics. e.g. 'recorded wavelengths of light: an infrared picture'
-% See properties 
+% See properties
 
 % Modelets play roles when used by engines. They can be associated with an extrinsic (to the modelet) purpose.
 % TODO: this looks like it will turn out to be HOL
@@ -69,6 +69,23 @@ tff(decl_modelet_set, type,
 % Set Membership of Modelets
 tff(decl_set_m_membership, type,
   is_in_modelet_set : (modelet * modelet_set) > $o
+).
+
+% (Finite) modelet sets
+
+tff(empty_modelet_set, type, ms_empty : modelet_set).
+
+tff(modelet_set_empty, axiom, ![M: modelet]: ~ is_in_modelet_set(M,ms_empty)).
+
+tff(modelet_set_add, type, ms_insert : (modelet * modelet_set) > modelet_set).
+
+tff(modelet_set_insert, axiom,
+	![M1: modelet,M2: modelet]:![MS: modelet_set]:
+  (
+    is_in_modelet_set(M1, ms_insert(M2,MS))
+      <=>
+    (is_in_modelet_set(M1,MS) | M1 = M2)
+  )
 ).
 
 
