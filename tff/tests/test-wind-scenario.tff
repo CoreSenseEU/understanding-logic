@@ -389,7 +389,7 @@ tff(wee_template_set_axiom, axiom,
   interface_of(we_engine) = wee_template_set
 ).
 
-tff(drone_state_estimation_template_set_parts, axiom,
+tff(wee_template_set_parts, axiom,
   ![T : template]:
   (
     is_in_template_set(T, wee_template_set)
