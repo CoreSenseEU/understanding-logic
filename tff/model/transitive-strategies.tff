@@ -1,28 +1,32 @@
 % Transitive strategies
 include('understanding-logic/tff/model/properties.tff').
 
+tff(strategy_description_decl, type, strategy_description : $tType).
 
 % strategies connect modelets
 tff(strategy_decl, type,
-  strategy: (modelet_set * modelet) > $o).
+  strategy: (modelet_set * modelet * strategy_description) > $o).
 
+%tff(strategy_decl, type,
+%	via_select: (modelet * modelet_set) > strategy_description).
+%
+%tff(just_use, axiom,
+%  ! [MS : modelet_set, M : modelet] :
+%  (is_in_modelet_set(M, MS) => strategy(MS,M,via_select(M,MS)))).
 
-% exerting engines is a strategy, strategies are transitive
+tff(strategy_decl, type,
+	via_exert: (modelet * modelet_set * engine) > strategy_description).
+
+% exerting engines is a strategy
 tff(ax_strategy, axiom,
-  ! [MS : modelet_set, MB : modelet] :
-    ( ? [E: engine] :
-        exert(E, MS) = MB
+  ! [MS : modelet_set, E: engine] :
+    (
+        exertable(MS, E)
 	=>
-	(! [M : modelet]:
-	  (
-	    is_in_modelet_set(M, MS)
-	    =>
-	    strategy(M, MB)
-	  )
-	)
- )
+		strategy(MS,exert(E, MS),via_exert(exert(E, MS),MS,E))
+   )
 ).
 
 % Modelet transformation strategies are transitive
-tff(ax_transitive, axiom,
-  ! [MA : modelet, MB : modelet, MC : modelet] : ((strategy(MA, MB) & strategy(MB, MC)) => strategy(MA, MC))).
+% tff(ax_transitive, axiom,
+%   ! [MA : modelet, MB : modelet, MC : modelet] : ((strategy(MA, MB) & strategy(MB, MC)) => strategy(MA, MC))).

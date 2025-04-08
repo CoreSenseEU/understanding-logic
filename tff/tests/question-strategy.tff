@@ -1,0 +1,18 @@
+include('understanding-logic/tff/tests/test-scenario.tff').
+include('understanding-logic/tff/model/transitive-strategies.tff').
+
+%tff(question6, question,
+%  ?[M: modelet, MS: modelet_set, D: strategy_description]:
+%    strategy(MS,M,D)
+%).
+
+% tff(question6, question,
+%  ?[D: strategy_description]:
+%    strategy(ms_insert(modelet_1,ms_insert(modelet_2,ms_insert(modelet_3,ms_empty))),modelet_3,D)
+%).
+
+tff(question6, question,
+ ?[MS: modelet_set, D: strategy_description]:
+   strategy(MS,modelet_100,D)
+).
+
