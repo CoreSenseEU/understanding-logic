@@ -46,25 +46,20 @@ tff(decl_templates_have_requirements, type,
 % Modelets and Templates can be formally equivalent
 tff(formally_equivalent_decl, type, formally_equivalent: (template * modelet) > $o).
 tff(formally_equivalent, axiom,
-  ! [M: modelet, T: template]:
+  ! [M: modelet, T: template, R: role, To: phenomenon_class]:
   (
     (
-     ( % Equivalence of world model classes
-        ? [PC : phenomenon_class]:
-	(
-	  PC = topic_of_template(T)
-          =>
-          PC = topic_of_modelet(M)
-	)
+      ( % Equivalence of world model classes
+        topic_of_template(T, To)
+        =>
+        topic_of_modelet(M, To)
       )
       &
       ( % Equivalence of processing model classes -- TODO: This feels like it will turn out to be HOL
-        ? [R : role]:
-	(
-          R = role_of_template(T)
-          =>
-          R = role_of_modelet(M)
-	)
+        
+        role_of_template(T, R) 
+	=>
+        role_of_modelet(M, R)
       )
       &
       ( % Equivalence of data model classes
@@ -150,7 +145,7 @@ tff(engine_outputs_have_formalisms_and_topics, axiom,
     (
       formalism_of_modelet(Moutput) = output_modelet_formalism(E)
       &
-      topic_of_modelet(Moutput) = output_modelet_topic(E)
+      topic_of_modelet(Moutput, output_modelet_topic(E))
     )
   )
 ).

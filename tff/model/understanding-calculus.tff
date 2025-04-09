@@ -17,12 +17,11 @@ tff(exertion_decl, type,
 % we need to capture 'and' connectives between modelets and 'or' connectives between engines
 
 tff(exertion_axiom, axiom,
-  ![MS : modelet_set, E : engine, IUS : modelet_set]:
+  ![MS : modelet_set, E : engine, IUS : modelet_set, RM : modelet]:
   (
     (
       exertable(MS, E)
       &
-      ![RM : modelet]:
       (
         is_in_modelet_set(RM, MS) 
 	=>
@@ -32,11 +31,11 @@ tff(exertion_axiom, axiom,
     =>
     ?[RUS : modelet_set]:
     (
-      exertion(E, MS, exert(E,MS), IUS) = RUS
+      exertion(E, MS, exert(E, MS), IUS) = RUS
       &
-      is_in_modelet_set(exert(E,MS), RUS)
-      &
-      ~is_in_modelet_set(exert(E,MS), IUS)
+      is_in_modelet_set(exert(E, MS), RUS)
     )
   )
 ).
+%      &
+%      ~is_in_modelet_set(exert(E, MS), IUS)

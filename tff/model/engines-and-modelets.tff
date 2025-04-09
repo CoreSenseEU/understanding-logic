@@ -48,7 +48,7 @@ tff(decl_modelet_extent, type,
 
 % Modelets may be associated with a concept/have a topic. A class in the world model. e.g. 'ice cream'
 tff(decl_topic_of_modelet, type,
-  topic_of_modelet : modelet > phenomenon_class
+  topic_of_modelet : (modelet * phenomenon_class) > $o
 ).
 
 % Modelets have model properties/characteristics. e.g. 'recorded wavelengths of light: an infrared picture'
@@ -56,8 +56,8 @@ tff(decl_topic_of_modelet, type,
 
 % Modelets play roles when used by engines. They can be associated with an extrinsic (to the modelet) purpose.
 % TODO: this looks like it will turn out to be HOL
-tff(decl_role_of_m, type,
-  role_of_modelet : modelet > role
+tff(decl_role_of_modelet, type,
+  role_of_modelet : (modelet * role) > $o
 ).
 
 
@@ -104,7 +104,7 @@ tff(axiom_engine_imparts_role, axiom,
       R = engine_imparts_role(E)
     )
     =>
-    role_of_modelet(M) = R
+    role_of_modelet(M, R)
   )
 ).
 
@@ -130,7 +130,7 @@ tff(decl_template_extent, type,
 
 % Templates may be associated with a concept/have a topic. A class in the world model. 'A template of icecream'
 tff(decl_topic_of_template, type,
-  topic_of_template : template > phenomenon_class
+  topic_of_template : (template * phenomenon_class) > $o
 ).
 
 % Templates may carry model characteristic requirements. e.g. 'minimun resolution'
@@ -138,7 +138,7 @@ tff(decl_topic_of_template, type,
 
 % Templates carry Role requirements. Extrinsic (from the perspective of the modelet) purpose.
 tff(decl_role_of_template, type,
-  role_of_template : template > role
+  role_of_template : (template * role) > $o
 ).
 
 

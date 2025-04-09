@@ -84,7 +84,7 @@ tff(gnss_template_no_requirements, axiom,
 ).
 
 tff(gnss_template_topic, axiom,
-  topic_of_template(gnss_template) = geolocation
+  topic_of_template(gnss_template, geolocation)
 ).
 
 tff(gnss_template_formalism, axiom,
@@ -103,7 +103,7 @@ tff(imu_template_no_requirements, axiom,
 ).
 
 tff(imu_template_topic, axiom,
-  topic_of_template(imu_template) = inertia
+  topic_of_template(imu_template, inertia)
 ).
 
 tff(imu_template_formalism, axiom,
@@ -121,7 +121,7 @@ tff(ds_template_no_requirements, axiom,
 ).
 
 tff(drone_state_template_topic, axiom,
-  topic_of_template(ds_template) = drone_state
+  topic_of_template(ds_template, drone_state)
 ).
 
 tff(drone_state_template_formalism, axiom,
@@ -139,7 +139,7 @@ tff(wind_template_no_requirements, axiom,
 ).
 
 tff(wind_state_template_topic, axiom,
-  topic_of_template(wind_template) = wind
+  topic_of_template(wind_template, wind)
 ).
 
 tff(wind_state_template_formalism, axiom,
@@ -157,7 +157,7 @@ tff(trajectory_template_no_requirements, axiom,
 ).
 
 tff(trajectory_template_topic, axiom,
-  topic_of_template(trajectory_template) = trajectory
+  topic_of_template(trajectory_template, trajectory)
 ).
 
 tff(trajectory_template_formalism, axiom,
@@ -176,7 +176,7 @@ tff(dse_template_no_requirements, axiom,
 
 
 tff(drone_state_evolution_template_topic, axiom,
-  topic_of_template(dse_template) = drone_state_evolution
+  topic_of_template(dse_template, drone_state_evolution)
 ).
 
 tff(drone_state_evolution_template_formalism, axiom,
@@ -196,7 +196,7 @@ tff(imu0_modelet_decl, type,
 ).
 
 tff(imu0_modelet_models_inertia, axiom,
-  topic_of_modelet(imu0_modelet) = inertia
+  topic_of_modelet(imu0_modelet, inertia)
 ).
 
 tff(imu0_modelet_formalism, axiom,
@@ -209,7 +209,7 @@ tff(gnss0_modelet_decl, type,
 ).
 
 tff(gnss0_modelet_models_geolocation, axiom,
-  topic_of_modelet(gnss0_modelet) = geolocation
+  topic_of_modelet(gnss0_modelet, geolocation)
 ).
 
 tff(gnss0_modelet_formalism, axiom,
@@ -222,7 +222,7 @@ tff(rotor_force0_modelet_decl, type,
 ).
 
 tff(rotor_force0_modelet_models_force, axiom,
-  topic_of_modelet(rotor_force0_modelet) = force
+  topic_of_modelet(rotor_force0_modelet, force)
 ).
 
 tff(rotor_force0_modelet_formalism, axiom,
@@ -238,7 +238,7 @@ tff(trajectory0_has_vector3_msg_formalims, axiom,
 ).
 
 tff(trajectory0_modelet_models_trajectory, axiom,
-  topic_of_modelet(trajectory0_modelet) = trajectory
+  topic_of_modelet(trajectory0_modelet, trajectory)
 ).
 
 
@@ -251,7 +251,7 @@ tff(wind0_has_vector3_msg_formalims, axiom,
 ).
 
 tff(wind0_modelet_models_wind, axiom,
-  topic_of_modelet(wind0_modelet) = wind
+  topic_of_modelet(wind0_modelet, wind)
 ).
 
 
@@ -470,7 +470,7 @@ tff(all_engines, axiom,
 tff(question_decl, question,
   ?[MS : modelet_set, E : engine, M: modelet, US1: modelet_set, US2: modelet_set]:
   (
-    exertion(we_engine, MS, M, ius) = US2
+    exertion(we_engine, MS, M, US1) = US2
   )
 ).
 
