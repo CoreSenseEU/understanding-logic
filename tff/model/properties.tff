@@ -9,7 +9,6 @@ tff(decl_property, type,
 tff(decl_property_value, type,
   has_value: property > $real).
 
-
 % Requirements exist
 tff(decl_requirement, type,
   requirement: $tType).
@@ -49,66 +48,79 @@ tff(formally_equivalent, axiom,
   ! [M: modelet, T: template, R: role, To: phenomenon_class]:
   (
     (
-      ( % Equivalence of world model classes
-        topic_of_template(T, To)
-        =>
-        topic_of_modelet(M, To)
-      )
-      &
-      ( % Equivalence of processing model classes -- TODO: This feels like it will turn out to be HOL
-        
-        role_of_template(T, R) 
-	=>
-        role_of_modelet(M, R)
-      )
-      &
-      ( % Equivalence of data model classes
-        formalism_of_template(T)
-        =
-        formalism_of_modelet(M)
-      )
+      formalism_of_template(T)
+      =
+      formalism_of_modelet(M)
     )
     =>
     formally_equivalent(T, M)
   )
 ).
 
+%tff(formally_equivalent, axiom,
+%  ! [M: modelet, T: template, R: role, To: phenomenon_class]:
+%  (
+%    (
+%      ( % Equivalence of world model classes
+%        is_topic_of_template(T, To)
+%        =>
+%        is_topic_of_modelet(M, To)
+%      )
+%      &
+%      ( % Equivalence of processing model classes -- TODO: This feels like it will turn out to be HOL
+%        is_role_of_template(T, R) 
+%	=>
+%        is_role_of_modelet(M, R)
+%      )
+%      &
+%      ( % Equivalence of data model classes
+%        formalism_of_template(T)
+%        =
+%        formalism_of_modelet(M)
+%      )
+%    )
+%    =>
+%    formally_equivalent(T, M)
+%  )
+%).
+
 % Modelets and Templates can have matching profiles
 tff(axiom_modelet_matches_template, axiom,
   ! [M: modelet, T: template]:
-  ((
-    formally_equivalent(T, M)
-    &
-    ? [SPT : spacetime_point]:
+  (
     (
-      template_location(T) = SPT
-      =>
-      modelet_location(M) = SPT
-    )
-    &
-    ? [E : extent]:
-    (
-      template_extent(T) = E
-      =>
-      modelet_extent(M) = E
-    )
-    &
-    ! [R: requirement]:
-    (
-      is_part_of(R, T)
-      =>
-      ? [P: property]:
+      formally_equivalent(T, M)
+      &
+      ? [SPT : spacetime_point]:
       (
-        is_property_of_modelet(P, M) % match modelet to property
-        &
-        (datatype_of_requirement(R) = datatype_of_property(P)) % property has correct correct data format/type for requirement
-        &
-        is_permissible(R, has_value(P)) % ensure that the property's value is permissible
+        template_location(T) = SPT
+        =>
+        modelet_location(M) = SPT
+      )
+      &
+      ? [E : extent]:
+      (
+        template_extent(T) = E
+        =>
+        modelet_extent(M) = E
+      )
+      &
+      ! [R: requirement]:
+      (
+        is_part_of(R, T)
+        =>
+        ? [P: property]:
+        (
+          is_property_of_modelet(P, M) % match modelet to property
+          &
+          (datatype_of_requirement(R) = datatype_of_property(P)) % property has correct correct data format/type for requirement
+          &
+          is_permissible(R, has_value(P)) % ensure that the property's value is permissible
+        )
       )
     )
-  )
-  =>
-  inputs_match(M, T)
+    =>
+    inputs_match(M, T)
   )
 ).
 
@@ -135,34 +147,7 @@ tff(axiom_modelet_sets_matches_template_sets, axiom,
 ).
 
 
-tff(engine_outputs_have_formalisms_and_topics, axiom,
-  ![MSinput: modelet_set, E:engine, Moutput: modelet]:
-  (
-    (
-      exert(E, MSinput) = Moutput
-    )
-    =>
-    (
-      formalism_of_modelet(Moutput) = output_modelet_formalism(E)
-      &
-      topic_of_modelet(Moutput, output_modelet_topic(E))
-    )
-  )
-).
 
-%tff(output_modelet_topic, axiom,
-%  ! [Minput: modelet_set, E: engine, Moutput: modelet]:
-%  (
-%    (
-%      exertable(Minput, E)
-%      &
-%      exert(E, Minput) = Moutput
-%    )
-%    =>
-%    has_topic(Moutput, output_topic(E, Minput))
-%  )
-%
-%).
 
 % Engine outputs have properties
 %tff(exert_creates, axiom,

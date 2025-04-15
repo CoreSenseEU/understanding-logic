@@ -10,14 +10,14 @@ tff(decl_engine_output_formalism, type,
   output_modelet_formalism : engine > formalism
 ).
 tff(decl_engine_output_topic, type,
-  output_modelet_topic : engine > phenomenon_class
+  is_output_modelet_topic : (engine * phenomenon_class) > $o
 ).
 % Engines can have processing characteristics, such as delay or resource blockage/consumption
 % TBD later
 
 % Engines can impart processing semantics unto their output modelets
 tff(decl_engine_imparts_role, type,
-  engine_imparts_role : engine > role
+  is_output_modelet_role : (engine * role) > $o
 ).
 
 
@@ -48,7 +48,7 @@ tff(decl_modelet_extent, type,
 
 % Modelets may be associated with a concept/have a topic. A class in the world model. e.g. 'ice cream'
 tff(decl_topic_of_modelet, type,
-  topic_of_modelet : (modelet * phenomenon_class) > $o
+  is_topic_of_modelet : (modelet * phenomenon_class) > $o
 ).
 
 % Modelets have model properties/characteristics. e.g. 'recorded wavelengths of light: an infrared picture'
@@ -57,7 +57,7 @@ tff(decl_topic_of_modelet, type,
 % Modelets play roles when used by engines. They can be associated with an extrinsic (to the modelet) purpose.
 % TODO: this looks like it will turn out to be HOL
 tff(decl_role_of_modelet, type,
-  role_of_modelet : (modelet * role) > $o
+  is_role_of_modelet : (modelet * role) > $o
 ).
 
 
@@ -73,18 +73,25 @@ tff(decl_set_m_membership, type,
 
 % (Finite) modelet sets
 
-tff(empty_modelet_set, type, ms_empty : modelet_set).
+tff(empty_modelet_set, type,
+  ms_empty : modelet_set
+).
 
-tff(modelet_set_empty, axiom, ![M: modelet]: ~ is_in_modelet_set(M,ms_empty)).
+tff(modelet_set_empty, axiom,
+  ![M: modelet]:
+    ~ is_in_modelet_set(M, ms_empty)
+).
 
-tff(modelet_set_add, type, ms_insert : (modelet * modelet_set) > modelet_set).
+tff(modelet_set_add, type,
+  s : (modelet * modelet_set) > modelet_set
+).
 
 tff(modelet_set_insert, axiom,
-	![M1: modelet,M2: modelet]:![MS: modelet_set]:
+  ![M1: modelet, M2: modelet, MS: modelet_set]:
   (
-    is_in_modelet_set(M1, ms_insert(M2,MS))
-      <=>
-    (is_in_modelet_set(M1,MS) | M1 = M2)
+    is_in_modelet_set(M1, s(M2, MS))
+    <=>
+    (is_in_modelet_set(M1, MS) | M1 = M2)
   )
 ).
 
@@ -94,17 +101,29 @@ tff(decl_exert, type,
   exert: (engine * modelet_set) > modelet
 ).
 
-% Engines impart roles unto Modelets
-tff(axiom_engine_imparts_role, axiom,
+% Engines impart formalisms unto Modelets
+tff(axiom_engine_may_impart_topic, axiom,
+  ![E: engine, MS: modelet_set]:
+    formalism_of_modelet(exert(E, MS)) = output_modelet_formalism(E)
+).
+
+% Engines may impart roles unto Modelets
+tff(axiom_engine_may_impart_role, axiom,
   ![E: engine, MS: modelet_set, R: role, M: modelet]:
   (
-    (
-      M = exert(E, MS)
-      &
-      R = engine_imparts_role(E)
-    )
+    is_output_modelet_role(E, R)
     =>
-    role_of_modelet(M, R)
+    is_role_of_modelet(exert(E, MS), R)
+  )
+).
+
+% Engines may impart topic unto Modelets
+tff(axiom_engine_may_impart_topic, axiom,
+  ![E: engine, MS: modelet_set, P: phenomenon_class, M: modelet]:
+  (
+    is_output_modelet_topic(E, P)
+    =>
+    is_topic_of_modelet(exert(E, MS), P)
   )
 ).
 
@@ -130,7 +149,7 @@ tff(decl_template_extent, type,
 
 % Templates may be associated with a concept/have a topic. A class in the world model. 'A template of icecream'
 tff(decl_topic_of_template, type,
-  topic_of_template : (template * phenomenon_class) > $o
+  is_topic_of_template : (template * phenomenon_class) > $o
 ).
 
 % Templates may carry model characteristic requirements. e.g. 'minimun resolution'
@@ -138,7 +157,7 @@ tff(decl_topic_of_template, type,
 
 % Templates carry Role requirements. Extrinsic (from the perspective of the modelet) purpose.
 tff(decl_role_of_template, type,
-  role_of_template : (template * role) > $o
+  is_role_of_template : (template * role) > $o
 ).
 
 
@@ -188,7 +207,7 @@ tff(axiom_modelet_set_is_exertable, axiom,
   ! [MS: modelet_set, E : engine]:
   (
    interfaces_match(MS, interface_of(E))
-   <=>
+   =>
    exertable(MS, E)
   )
 ).

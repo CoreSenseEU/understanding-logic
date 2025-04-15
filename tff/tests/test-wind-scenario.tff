@@ -84,7 +84,10 @@ tff(gnss_template_no_requirements, axiom,
 ).
 
 tff(gnss_template_topic, axiom,
-  topic_of_template(gnss_template, geolocation)
+  ![T : phenomenon_class]:
+  (
+    is_topic_of_template(gnss_template, T) => T = geolocation
+  )
 ).
 
 tff(gnss_template_formalism, axiom,
@@ -103,7 +106,10 @@ tff(imu_template_no_requirements, axiom,
 ).
 
 tff(imu_template_topic, axiom,
-  topic_of_template(imu_template, inertia)
+  ![T : phenomenon_class]:
+  (
+    is_topic_of_template(imu_template, T) => T = inertia
+  )
 ).
 
 tff(imu_template_formalism, axiom,
@@ -121,7 +127,10 @@ tff(ds_template_no_requirements, axiom,
 ).
 
 tff(drone_state_template_topic, axiom,
-  topic_of_template(ds_template, drone_state)
+  ![T : phenomenon_class]:
+  (
+    is_topic_of_template(ds_template, T) => T = drone_state
+  )
 ).
 
 tff(drone_state_template_formalism, axiom,
@@ -139,7 +148,10 @@ tff(wind_template_no_requirements, axiom,
 ).
 
 tff(wind_state_template_topic, axiom,
-  topic_of_template(wind_template, wind)
+  ![T : phenomenon_class]:
+  (
+    is_topic_of_template(wind_template, T) => T = wind
+  )
 ).
 
 tff(wind_state_template_formalism, axiom,
@@ -157,7 +169,10 @@ tff(trajectory_template_no_requirements, axiom,
 ).
 
 tff(trajectory_template_topic, axiom,
-  topic_of_template(trajectory_template, trajectory)
+  ![T : phenomenon_class]:
+  (
+    is_topic_of_template(trajectory_template, T) => T = trajectory
+  )
 ).
 
 tff(trajectory_template_formalism, axiom,
@@ -176,7 +191,10 @@ tff(dse_template_no_requirements, axiom,
 
 
 tff(drone_state_evolution_template_topic, axiom,
-  topic_of_template(dse_template, drone_state_evolution)
+  ![T : phenomenon_class]:
+  (
+    is_topic_of_template(dse_template, T) => T = drone_state_evolution
+  )
 ).
 
 tff(drone_state_evolution_template_formalism, axiom,
@@ -196,7 +214,10 @@ tff(imu0_modelet_decl, type,
 ).
 
 tff(imu0_modelet_models_inertia, axiom,
-  topic_of_modelet(imu0_modelet, inertia)
+  ![T : phenomenon_class]:
+  (
+    is_topic_of_modelet(imu0_modelet, T) => T = inertia
+  )
 ).
 
 tff(imu0_modelet_formalism, axiom,
@@ -209,7 +230,10 @@ tff(gnss0_modelet_decl, type,
 ).
 
 tff(gnss0_modelet_models_geolocation, axiom,
-  topic_of_modelet(gnss0_modelet, geolocation)
+  ![T : phenomenon_class]:
+  (
+    is_topic_of_modelet(gnss0_modelet, T) => T = geolocation
+  )
 ).
 
 tff(gnss0_modelet_formalism, axiom,
@@ -222,7 +246,10 @@ tff(rotor_force0_modelet_decl, type,
 ).
 
 tff(rotor_force0_modelet_models_force, axiom,
-  topic_of_modelet(rotor_force0_modelet, force)
+  ![T : phenomenon_class]:
+  (
+    is_topic_of_modelet(rotor_force0_modelet, T) => T = force
+  )
 ).
 
 tff(rotor_force0_modelet_formalism, axiom,
@@ -238,7 +265,10 @@ tff(trajectory0_has_vector3_msg_formalims, axiom,
 ).
 
 tff(trajectory0_modelet_models_trajectory, axiom,
-  topic_of_modelet(trajectory0_modelet, trajectory)
+  ![T : phenomenon_class]:
+  (
+    is_topic_of_modelet(trajectory0_modelet, T) => T = trajectory
+  )
 ).
 
 
@@ -251,7 +281,10 @@ tff(wind0_has_vector3_msg_formalims, axiom,
 ).
 
 tff(wind0_modelet_models_wind, axiom,
-  topic_of_modelet(wind0_modelet, wind)
+  ![T : phenomenon_class]:
+  (
+    is_topic_of_modelet(wind0_modelet, T) => T = wind
+  )
 ).
 
 
@@ -297,7 +330,7 @@ tff(dse_engine_output_formalism, axiom,
 ).
 
 tff(dse_engine_output_topic, axiom,
-  output_modelet_topic(dse_engine) = drone_state
+  is_output_modelet_topic(dse_engine, drone_state)
 ).
 
 tff(dse_template_set_decl, type,
@@ -339,7 +372,7 @@ tff(drone_state_evolution_engine_output_formalism, axiom,
 ).
 
 tff(drone_state_evolution_engine_output_topic, axiom,
-  output_modelet_topic(dsee_engine) = drone_state_evolution
+  is_output_modelet_topic(dsee_engine, drone_state_evolution)
 ).
 
 tff(dsee_template_set_decl, type,
@@ -377,7 +410,7 @@ tff(wind_estimation_engine_output_formalism, axiom,
 ).
 
 tff(wind_estimation_engine_output_topic, axiom,
-  output_modelet_topic(we_engine) = wind
+  is_output_modelet_topic(we_engine, wind)
 ).
 
 
@@ -409,51 +442,6 @@ tff(template_sets_are_distinct, axiom,
 
 %%% Modelet Set Definitions
 %---------------------------------------------------------------------------
-tff(modelet_sets_of_size_1_exist, axiom,
-  ![M1: modelet]:
-    ?[MS: modelet_set]:
-    (
-      is_in_modelet_set(M1, MS)
-    )
-).
-
-tff(modelet_sets_of_size_2_exist, axiom,
-  ![M1: modelet, M2: modelet]:
-    ?[MS: modelet_set]:
-    (
-      M1 != M2
-      =>
-      (
-        is_in_modelet_set(M1, MS)
-        &
-        is_in_modelet_set(M2, MS)
-      )
-    )
-).
-
-
-tff(modelet_sets_of_size_3_exist, axiom,
-  ![M1: modelet, M2: modelet, M3: modelet]:
-    ?[MS: modelet_set]:
-    (
-      (
-        M1 != M2
-        &
-        M2 != M3
-        &
-        M3 != M1
-      )
-      =>
-      (
-        is_in_modelet_set(M1, MS)
-        &
-        is_in_modelet_set(M2, MS)
-        &
-        is_in_modelet_set(M3, MS)
-      )
-    )
-).
-
 
 tff(all_engines, axiom, 
   ![E : engine]:
@@ -467,13 +455,19 @@ tff(all_engines, axiom,
 ).
 
 % This should fail due to the situation 'ius' not including the required modelets
+%tff(question_decl, question,
+%  ?[MS : modelet_set, E : engine, M: modelet, US1: modelet_set, US2: modelet_set]:
+%  (
+%    exertion(dse_engine, MS, M, US1) = US2
+%  )
+%).
+
 tff(question_decl, question,
-  ?[MS : modelet_set, E : engine, M: modelet, US1: modelet_set, US2: modelet_set]:
+  ?[MS : modelet_set]:
   (
-    exertion(we_engine, MS, M, US1) = US2
+    exertable(MS, we_engine)
   )
 ).
-
 %    exertable(MS, dse_engine)
 %  ?[MS : modelet_set, E : engine, M: modelet, US1: modelet_set, US2: modelet_set]:
 %    exertion(we_engine, MS, M, ius) = US2

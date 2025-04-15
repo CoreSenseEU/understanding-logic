@@ -6,18 +6,18 @@ import random
 
 
 
-NUM_PHENOMENA=250
-NUM_FORMALISMS=50
-NUM_DATATYPES=30
-NUM_TEMPLATES=50 # has to be smaller than real of modelets
-NUM_MODELETS=200 # has to be bigger than real of templates
-NUM_PROPERTIES_AND_REQUIREMENTS=80 # equals the number of requirements
-NUM_ENGINES=50
-NUM_ROLES=300
-NUM_TEMPLATE_SETS=50
-NUM_LOCATIONS_AND_EXTENTS=200
+NUM_PHENOMENA=25
+NUM_FORMALISMS=5
+NUM_DATATYPES=3
+NUM_TEMPLATES=5 # has to be smaller than real of modelets
+NUM_MODELETS=20 # has to be bigger than real of templates
+NUM_PROPERTIES_AND_REQUIREMENTS=8 # equals the number of requirements
+NUM_ENGINES=5
+NUM_ROLES=30
+NUM_TEMPLATE_SETS=5
+NUM_LOCATIONS_AND_EXTENTS=20
 
-MAX_PROPERTIES = 20 # cannot be greater than NUM_PROPERTIES_AND_REQUIREMENTS
+MAX_PROPERTIES = 2 # cannot be greater than NUM_PROPERTIES_AND_REQUIREMENTS
 MAX_TEMPLATES = 5 # cannot be greater than NUM_TEMPLATES
 MAX_REALS = 10
 MAX_UINTS = 10
