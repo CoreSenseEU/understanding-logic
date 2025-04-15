@@ -74,12 +74,12 @@ tff(decl_set_m_membership, type,
 % (Finite) modelet sets
 
 tff(empty_modelet_set, type,
-  ms_empty : modelet_set
+  empty_ms : modelet_set
 ).
 
 tff(modelet_set_empty, axiom,
   ![M: modelet]:
-    ~ is_in_modelet_set(M, ms_empty)
+    ~ is_in_modelet_set(M, empty_ms)
 ).
 
 tff(modelet_set_add, type,
@@ -109,7 +109,7 @@ tff(axiom_engine_may_impart_topic, axiom,
 
 % Engines may impart roles unto Modelets
 tff(axiom_engine_may_impart_role, axiom,
-  ![E: engine, MS: modelet_set, R: role, M: modelet]:
+  ![E: engine, MS: modelet_set, R: role]:
   (
     is_output_modelet_role(E, R)
     =>
@@ -119,7 +119,7 @@ tff(axiom_engine_may_impart_role, axiom,
 
 % Engines may impart topic unto Modelets
 tff(axiom_engine_may_impart_topic, axiom,
-  ![E: engine, MS: modelet_set, P: phenomenon_class, M: modelet]:
+  ![E: engine, MS: modelet_set, P: phenomenon_class]:
   (
     is_output_modelet_topic(E, P)
     =>

@@ -333,6 +333,11 @@ tff(dse_engine_output_topic, axiom,
   is_output_modelet_topic(dse_engine, drone_state)
 ).
 
+tff(dse_engine_output_role, axiom,
+  ![R : role]:
+  ~is_output_modelet_role(dse_engine, R)
+).
+
 tff(dse_template_set_decl, type,
   dse_template_set : template_set
 ).
@@ -350,7 +355,7 @@ tff(dse_template_set_parts, axiom,
   ![T : template]:
   (
     is_in_template_set(T, dse_template_set)
-    =>
+    <=>
     (
       T = gnss_template
       |
@@ -371,6 +376,11 @@ tff(drone_state_evolution_engine_output_formalism, axiom,
   output_modelet_formalism(dsee_engine) = drone_state_evolution_msg
 ).
 
+tff(dsee_engine_output_role, axiom,
+  ![R : role]:
+  ~is_output_modelet_role(dsee_engine, R)
+).
+
 tff(drone_state_evolution_engine_output_topic, axiom,
   is_output_modelet_topic(dsee_engine, drone_state_evolution)
 ).
@@ -387,7 +397,7 @@ tff(drone_state_estimation_template_set_parts, axiom,
   ![T : template]:
   (
     is_in_template_set(T, dsee_template_set)
-    =>
+    <=>
     (
       T = ds_template
       |
@@ -405,8 +415,14 @@ tff(drone_state_estimation_template_set_parts, axiom,
 tff(wind_estimation_engine_decl, type,
   we_engine : engine
 ).
+
 tff(wind_estimation_engine_output_formalism, axiom,
   output_modelet_formalism(we_engine) = vector3_msg
+).
+
+tff(we_engine_output_role, axiom,
+  ![R : role]:
+  ~is_output_modelet_role(we_engine, R)
 ).
 
 tff(wind_estimation_engine_output_topic, axiom,
@@ -426,7 +442,7 @@ tff(wee_template_set_parts, axiom,
   ![T : template]:
   (
     is_in_template_set(T, wee_template_set)
-    =>
+    <=>
     (
       T = ds_template
       |

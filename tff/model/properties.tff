@@ -45,44 +45,33 @@ tff(decl_templates_have_requirements, type,
 % Modelets and Templates can be formally equivalent
 tff(formally_equivalent_decl, type, formally_equivalent: (template * modelet) > $o).
 tff(formally_equivalent, axiom,
-  ! [M: modelet, T: template, R: role, To: phenomenon_class]:
+  ! [M: modelet, T: template]:
   (
     (
-      formalism_of_template(T)
-      =
-      formalism_of_modelet(M)
+      (
+        formalism_of_template(T)
+        =
+        formalism_of_modelet(M)
+      )
+      &
+      ![P: phenomenon_class]:
+      ( % Equivalence of world model classes
+        is_topic_of_template(T, P)
+        =>
+        is_topic_of_modelet(M, P)
+      )
+      &
+      ![R: role]:
+      ( % Equivalence of processing model classes -- TODO: This feels like it will turn out to be HOL
+        is_role_of_template(T, R)
+        =>
+        is_role_of_modelet(M, R)
+      )
     )
     =>
     formally_equivalent(T, M)
   )
 ).
-
-%tff(formally_equivalent, axiom,
-%  ! [M: modelet, T: template, R: role, To: phenomenon_class]:
-%  (
-%    (
-%      ( % Equivalence of world model classes
-%        is_topic_of_template(T, To)
-%        =>
-%        is_topic_of_modelet(M, To)
-%      )
-%      &
-%      ( % Equivalence of processing model classes -- TODO: This feels like it will turn out to be HOL
-%        is_role_of_template(T, R) 
-%	=>
-%        is_role_of_modelet(M, R)
-%      )
-%      &
-%      ( % Equivalence of data model classes
-%        formalism_of_template(T)
-%        =
-%        formalism_of_modelet(M)
-%      )
-%    )
-%    =>
-%    formally_equivalent(T, M)
-%  )
-%).
 
 % Modelets and Templates can have matching profiles
 tff(axiom_modelet_matches_template, axiom,
