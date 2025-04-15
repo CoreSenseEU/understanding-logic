@@ -79,8 +79,8 @@ tff(gnss_template_decl, type,
 ).
 
 tff(gnss_template_no_requirements, axiom,
-  ~?[R : requirement]:
-    is_part_of(R, gnss_template)
+  ![R : requirement]:
+    ~is_part_of(R, gnss_template)
 ).
 
 tff(gnss_template_topic, axiom,
@@ -94,6 +94,10 @@ tff(gnss_template_formalism, axiom,
   formalism_of_template(gnss_template) = navSatFix_msg
 ).
 
+tff(gnss_template_role, axiom,
+  ![R : role]:
+  ~is_role_of_template(gnss_template, R)
+).
 
 % IMU template
 tff(imu_template, type,
@@ -114,6 +118,11 @@ tff(imu_template_topic, axiom,
 
 tff(imu_template_formalism, axiom,
   formalism_of_template(imu_template) = imu_msg
+).
+
+tff(imu_template_role, axiom,
+  ![R : role]:
+  ~is_role_of_template(imu_template, R)
 ).
 
 % Drone State template
@@ -137,6 +146,11 @@ tff(drone_state_template_formalism, axiom,
   formalism_of_template(ds_template) = drone_state_msg
 ).
 
+tff(ds_template_role, axiom,
+  ![R : role]:
+  ~is_role_of_template(ds_template, R)
+).
+
 % Wind template
 tff(wind_state_template_decl, type,
   wind_template : template
@@ -156,6 +170,11 @@ tff(wind_state_template_topic, axiom,
 
 tff(wind_state_template_formalism, axiom,
   formalism_of_template(wind_template) = vector3_msg
+).
+
+tff(wind_template_role, axiom,
+  ![R : role]:
+  ~is_role_of_template(wind_template, R)
 ).
 
 % Trajectory template
@@ -179,6 +198,11 @@ tff(trajectory_template_formalism, axiom,
   formalism_of_template(trajectory_template) = vector3_msg
 ).
 
+tff(trajectory_template_role, axiom,
+  ![R : role]:
+  ~is_role_of_template(trajectory_template, R)
+).
+
 % Drone State Evolution template
 tff(drone_state_evolution_template_decl, type,
   dse_template : template
@@ -200,6 +224,12 @@ tff(drone_state_evolution_template_topic, axiom,
 tff(drone_state_evolution_template_formalism, axiom,
   formalism_of_template(dse_template) = drone_state_evolution_msg
 ).
+
+tff(drone_state_evolution_template_role, axiom,
+  ![R : role]:
+  ~is_role_of_template(dse_template, R)
+).
+
 
 tff(templates_are_distinct, axiom,
   $distinct(gnss_template, imu_template, ds_template, dse_template, wind_template, trajectory_template)
