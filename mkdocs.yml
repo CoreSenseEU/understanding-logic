@@ -29,11 +29,11 @@ nav:
     - Phenomenon: concepts/phenomenon.md
     - Property: concepts/property.md
     - Requirement: concepts/requirement.md
-    - Role: concepts/role.md
+    - Representation Class: concepts/representation_class.md
     - Space Time Point: concepts/spacetime_point.md
     - Strategy: concepts/strategy.md
     - Template: concepts/template.md
-    - Topic: concepts/topic.md
+    - Concept: concepts/concept.md
   # - System Architecture: 
   #   - architecture/index.md
   # - Packages:
