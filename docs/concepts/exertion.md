@@ -8,7 +8,7 @@ Check if a [modelet](modelet.md) matches a [template](template.md).
 ###### Source: `engines-and-modelets.tff`, `properties.tff`
 
 ### **formally_equivalent** `((`[**`template`**](template.md)` * `[**`modelet`**](modelet.md)`) > `**`$o`**`)` { #formally_equivalent data-toc-label='formally_equivalent' }
-A [template](template.md) and a [modelet](modelet.md) share the same *referent* and [formalism](formalism.md).
+A [template](template.md) and a [modelet](modelet.md) share the same *phenomenon* and [formalism](formalism.md).
 ###### Source: `properties.tff`
 
 ### **interfaces_match** `((`[**`modelet_set`**](modelet.md#modelet_set)` * `[**`template_set`**](template.md#template_set)`) > `**`$o`**`)` { #interfaces_match data-toc-label='interfaces_match' }
@@ -19,7 +19,7 @@ Check if all of the [templates](template.md) in the [template_set](template.md#t
 ###### Source: `engines-and-modelets.tff`, `properties.tff`
 
 ### **exert** `((`[**`engine`**](engine.md)` * `[**`modelet_set`**](modelet.md#modelet_set)` * `[**`modelet`**](modelet.md)`) > `**`$o`**`)` { #exert data-toc-label='exert' }
-Exert an [engine](engine.md) on a [modelet_set](modelet.md#modelet_set) to produce and output [modelet](modelet.md).
+Exert an [engine](engine.md) on a [modelet_set](modelet.md#modelet_set) to produce an output [modelet](modelet.md).
 ###### Source: `engines-and-modelets.tff`
 
 ### **exertable** `((`[**`modelet_set`**](modelet.md#modelet_set)` * `[**`engine`**](engine.md)`) > `**`$o`**`)` { #exertable data-toc-label='exertable' }

@@ -10,7 +10,7 @@ The main idea is to:
     Find *strategies* of **Engine** *exertions* to **create** required **Modelets**.
 
 !!! question "TODO"
-    Add a map of the conepts or something more elegant here...
+    Add a map of the concepts or something more elegant here...
     We should also include the triangle of meaning.
 
 ## Types
@@ -50,8 +50,8 @@ The main idea is to:
 ### [**requirement**](requirement.md)
 --8<-- "docs/concepts/requirement.md:3:3"
 
-### [**role**](role.md)
---8<-- "docs/concepts/role.md:3:3"
+### [**representation_class**](representation_class.md)
+--8<-- "docs/concepts/representation_class.md:3:3"
 
 ### [**spacetime_point**](spacetime_point.md)
 --8<-- "docs/concepts/spacetime_point.md:3:3"
@@ -65,6 +65,6 @@ The main idea is to:
 ### [**template_set**](template.md#template_set)
 --8<-- "docs/concepts/template.md:11:11"
 
-### [**topic**](topic.md)
---8<-- "docs/concepts/topic.md:3:3"
+### [**concept**](concept.md)
+--8<-- "docs/concepts/concept.md:3:3"
 

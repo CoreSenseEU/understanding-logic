@@ -19,7 +19,7 @@ for more details.
 !!! important
     These individuals are not associated with a particular semantic label. The
     intention (WIP) is to match a particular [datatype](#datatype) (the
-    `fieldtype`) and a [topic](topic.md) (the `fieldname`) in some
+    `fieldtype`) and a [concept](concept.md) (the `fieldname`) in some
     [formalism](formalism.md) representing the ROS 2 interface.
 
 ### **'ROS2.msg.Bool'** [**`datatype`**](#datatype) { #ros2-msg-bool data-toc-label="'ROS2.msg.Bool'" }

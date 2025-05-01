@@ -17,35 +17,28 @@ Some particular set of [templates](#template) which describe the inputs to an [e
 
 
 ## Relations
-### **topic_of_template** `(`[**`template`**](#template)` > `[**`phenomenon`**](phenomenon.md)`)` { #topic_of_template data-toc-label='topic_of_template' }
-The [phenomenon](phenomenon.md) symbolizing the *referent* of a [template](template.md).
-!!! question "TODO"
-    rename from 'topic' to something else.
-!!! question "TODO"
-    Should we call this the intrinsic purpose? (as opposed to the [`role`](role.md)).
+### **template_has_concept_requirement** `(`[**`template`**](#template)` > `[**`concept`**](concept.md)`)` { #template_has_concept_requirement data-toc-label='template_has_concept_requirement' }
+The [concept](concept.md) symbolizing the *phenomenon class* of a [template](template.md).
 ###### Source: `engines-and-modelets.tff`
 
-### **formalism_of_template** `(`[**`template`**](#template)` > `[**`formalism`**](formalism.md)`)` { #formalism_of_template data-toc-label='formalism_of_template' }
-The [formalism](formalism.md) this [template](#template) expects the *referent*
+### **template_formalism_requirement** `(`[**`template`**](#template)` > `[**`formalism`**](formalism.md)`)` { #template_formalism_requirement data-toc-label='template_formalism_requirement' }
+The [formalism](formalism.md) this [template](#template) expects the *phenomenon*
 to be described by.
 ###### Source: `engines-and-templates.tff`
 
-### **template_location** `(`[**`template`**](#template)` > `[**`spacetime_point`**](spacetime_point.md)`)` { #template_location data-toc-label='template_location' }
+### **template_has_location_requirement** `(`[**`template`**](#template)` > `[**`spacetime_point`**](spacetime_point.md)`)` { #template_has_location_requirement data-toc-label='template_has_location_requirement' }
 The time and spatial location a [template](#template) refers to.
 A [template](template.md) may have a specific temporal scope or expect an observation
 at a specific [`spacetime_point`](spacetime_point.md).
 ###### Source: `engines-and-modelets.tff`
 
-### **template_extent** `(`[**`template`**](#template)` > `[**`extent`**](extent.md)`)` { #template_extent data-toc-label='template_extent' }
+### **template_has_extent_requirement** `(`[**`template`**](#template)` > `[**`extent`**](extent.md)`)` { #template_has_extent_requirement data-toc-label='template_has_extent_requirement' }
 The time and spatial [extent](extent.md) a [template](#template) covers.
 A [template](#template) may expect an area/volume/duration of reference.
 ###### Source: `engines-and-modelets.tff`
 
-### **role_of_template** `(`[**`template`**](#template)` > `[**`role`**](role.md)`)` { #role_of_template data-toc-label='role_of_template' }
-The [role](role.md) a [template](#template) requires a [modelet](modelet.md) to
-play when used by an [engine](engine.md).
-!!! question "TODO"
-    This looks like it will turn out to be HOL.
+### **template_has_creator_requirement** `(`[**`template`**](#template)` > `[**`engine`**](engine.md)`)` { #template_has_creator_requirement data-toc-label='template_has_creator_requirement' }
+The [engine](engine.md) a [template](#template) requires a [modelet](modelet.md) to have been created by.
 ###### Source: `engines-and-modelets.tff`
 
 ### **is_in_template_set** `((`[**`template`**](#template)` * `[**`template_set`**](#template_set)`) > `**`$o`**`)` { #is_in_template_set data-toc-label='is_in_template_set' }

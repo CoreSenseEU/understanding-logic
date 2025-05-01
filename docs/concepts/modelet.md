@@ -1,12 +1,12 @@
 ## Types
 ### **modelet** `$tType` { #modelet data-toc-label='modelet' }
 Models a [phenomenon](phenomenon.md) as the *thought* in the triangle of meaning.
-All modelets describe a [topic](topic.md), have an [origin](origin.md), and are
+All modelets describe an instance of a [concept](concept.md), have an [origin](origin.md), and are
 modeled in a specific [formalism](formalism.md).
 
-- [**Topic**](topic.md): the *referent* of the [modelet](#modelet)
-- [**Origin**](origin.md): the agent's perspective on the *referent*
-- [**Formalism**](formalism.md): the representation of the *referent*
+- [**Concept**](concept.md): the *phenomenon* of the [modelet](#modelet), an instance of a class in the world model.
+- [**Origin**](origin.md): the agent's perspective on the *phenomenon*
+- [**Formalism**](formalism.md): the representation of the *phenomenon*
 ###### Source: `engines-and-modelets.tff`
 
 ### **modelet_set** `$tType` { #modelet_set data-toc-label='modelet_set' }
@@ -20,16 +20,16 @@ Used to collect the inputs to an [engine](engine.md).
 
 
 ## Relations
-### **topic_of_modelet** `(`[**`modelet`**](#modelet)` > `[**`phenomenon`**](phenomenon.md)`)` { #topic_of_modelet data-toc-label='topic_of_modelet' }
-The [phenomenon](phenomenon.md) symbolizing the *referent* of a [modelet](modelet.md).
+### **modelet_models_concept** `(`[**`modelet`**](#modelet)` > `[**`phenomenon`**](phenomenon.md)`)` { #modelet_models_concept data-toc-label='modelet_models_concept' }
+The [phenomenon](phenomenon.md) symbolizing the *phenomenon* of a [modelet](modelet.md).
 !!! question "TODO"
-    rename from 'topic' to something else.
+    rename from 'concept' to something else.
 !!! question "TODO"
     Should we call this the intrinsic purpose? (as opposed to the [`role`](role.md)).
 ###### Source: `engines-and-modelets.tff`
 
 ### **formalism_of_modelet** `(`[**`modelet`**](#modelet)` > `[**`formalism`**](formalism.md)`)` { #formalism_of_modelet data-toc-label='formalism_of_modelet' }
-The [formalism](formalism.md) used by a [modelet](#modelet) to describe the *referent*.
+The [formalism](formalism.md) used by a [modelet](#modelet) to describe the *phenomenon*.
 ###### Source: `engines-and-modelets.tff`
 
 ### **modelet_creation_date** `(`[**`modelet`**](#modelet)` > `**`$real`**`)` { #modelet_creation_date data-toc-label='modelet_creation_date' }

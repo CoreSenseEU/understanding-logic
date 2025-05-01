@@ -4,7 +4,7 @@ A succession of [exertions](exertion.md) of [engines](engine.md) connects [model
 [Strategies](#strategy) are transitive.
 
 - Must respect engine [requirements](requirement.md)
-- Matches [modelet](modelet.md) *referent* semantics to physical reality
+- Matches [modelet](modelet.md) *phenomenon* semantics to physical reality
 	- e.g. "on the living room table" to coordinates
 
 ###### Source: `transitive-strategies.tff`

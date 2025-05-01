@@ -6,7 +6,7 @@ variable with the absolute path:
 ```bash
 mkdir src && cd src
 export TPTP=$(pwd)
-git clone git@github.com:alex-quin-gabriel/understanding-logic.git
+git clone git@github.com:CoreSenseEU/understanding-logic.git
 ```
 This results in `include()` paths being read relative to the `src` directory.
 Other TPTP files can be placed in the same `src` directory matching this tree

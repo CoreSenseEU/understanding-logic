@@ -1,13 +1,15 @@
 ## Types
 ### **phenomenon** `$tType` { #phenomenon data-toc-label='phenomenon' }
-A *symbol* of some structure or object in the real world that the system
+Some space or object or being or process in the real world that the system
 represents using [modelets](modelet.md).
-A class in the *world model*.
-!!! question "TODO"
-    this has been renamed to "phenomenon_class" but maybe we pick something else?
+
+- *Situated* in time and space
+- May change over time
+- Associated with a mission-dependent *meaning*
 
 !!! example
-    - chair1
-    - dog7
-    - cloud5
+    - you
+    - your office
+    - your tea
+    - your tea approaching room temperature
 ###### Source: `fundamental-concepts.tff`

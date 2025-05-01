@@ -1,6 +1,6 @@
 ## Types
 ### **origin** `$tType` { #origin data-toc-label='origin' }
-An agent's perspective on the *referent* captured in a particular [modelet](modelet.md).
+An agent's perspective on the *phenomenon* captured in a particular [modelet](modelet.md).
 
 - Observation is *situated* in time and space
 - Measured with sensors that have certain characteristics and limitations
