@@ -7,37 +7,37 @@ include('understanding-logic/tff/model/understanding-calculus.tff').
 %---------------------------------------------------------------------------
 % Inertia
 tff(inertia_decl, type,
-  inertia : phenomenon_class
+  inertia : concept
 ).
 
 % Geolocation
 tff(geolocation_decl, type,
-  geolocation : phenomenon_class
+  geolocation : concept
 ).
 
 % Force
 tff(force_decl, type,
-  force : phenomenon_class
+  force : concept
 ).
 
 % Drone State
 tff(drone_state_decl, type,
-  drone_state : phenomenon_class
+  drone_state : concept
 ).
 
 % Drone State Evolution
 tff(drone_state_evolution_decl, type,
-  drone_state_evolution : phenomenon_class
+  drone_state_evolution : concept
 ).
 
 % Wind
 tff(wind, type,
-  wind : phenomenon_class
+  wind : concept
 ).
 
 % Trajectory
 tff(trajectory, type,
-  trajectory : phenomenon_class
+  trajectory : concept
 ).
 
 
@@ -83,18 +83,45 @@ tff(gnss_template_no_requirements, axiom,
     is_part_of(R, gnss_template)
 ).
 
+tff(gnss_template_no_creator_requirements, axiom,
+  ~?[E: engine]:
+    template_has_creator_requirement(gnss_template, E)
+).
+
 tff(gnss_template_topic, axiom,
-  topic_of_template(gnss_template) = geolocation
+  ![C : concept]:
+  (
+    template_has_concept_requirement(gnss_template, C) <=> C = geolocation
+  )
 ).
 
 tff(gnss_template_formalism, axiom,
-  formalism_of_template(gnss_template) = navSatFix_msg
+  template_formalism_requirement(gnss_template) = navSatFix_msg
 ).
 
+tff(gnss_template_representation_class, axiom,
+  ~?[R : representation_class]:
+    template_has_representation_class_requirement(gnss_template, R)
+).
+
+tff(gnss_template_no_location_requirements, axiom,
+  ~?[SPT: spacetime_point]:
+    template_has_location_requirement(gnss_template, SPT)
+).
+
+tff(gnss_template_no_extent_requirements, axiom,
+  ~?[E: extent]:
+    template_has_extent_requirement(gnss_template, E)
+).
 
 % IMU template
 tff(imu_template, type,
   imu_template : template
+).
+
+tff(imu_template_no_creator_requirements, axiom,
+  ~?[E: engine]:
+    template_has_creator_requirement(imu_template, E)
 ).
 
 tff(imu_template_no_requirements, axiom,
@@ -103,16 +130,39 @@ tff(imu_template_no_requirements, axiom,
 ).
 
 tff(imu_template_topic, axiom,
-  topic_of_template(imu_template) = inertia
+  ![C : concept]:
+  (
+    template_has_concept_requirement(imu_template, C) <=> C = inertia
+  )
 ).
 
 tff(imu_template_formalism, axiom,
-  formalism_of_template(imu_template) = imu_msg
+  template_formalism_requirement(imu_template) = imu_msg
+).
+
+tff(imu_template_representation_class, axiom,
+  ~?[R : representation_class]:
+    template_has_representation_class_requirement(imu_template, R)
+).
+
+tff(imu_template_no_location_requirements, axiom,
+  ~?[SPT: spacetime_point]:
+    template_has_location_requirement(imu_template, SPT)
+).
+
+tff(imu_template_no_extent_requirements, axiom,
+  ~?[E: extent]:
+    template_has_extent_requirement(imu_template, E)
 ).
 
 % Drone State template
 tff(drone_state_template_decl, type,
   ds_template : template
+).
+
+tff(drone_state_template_no_creator_requirements, axiom,
+  ~?[E: engine]:
+    template_has_creator_requirement(ds_template, E)
 ).
 
 tff(ds_template_no_requirements, axiom,
@@ -121,16 +171,41 @@ tff(ds_template_no_requirements, axiom,
 ).
 
 tff(drone_state_template_topic, axiom,
-  topic_of_template(ds_template) = drone_state
+  ![C : concept]:
+  (
+    template_has_concept_requirement(ds_template, C) <=> C = drone_state
+  )
 ).
 
 tff(drone_state_template_formalism, axiom,
-  formalism_of_template(ds_template) = drone_state_msg
+  template_formalism_requirement(ds_template) = drone_state_msg
 ).
+
+tff(ds_template_representation_class, axiom,
+  ~?[R : representation_class]:
+    template_has_representation_class_requirement(ds_template, R)
+).
+
+tff(ds_template_no_location_requirements, axiom,
+  ~?[SPT: spacetime_point]:
+    template_has_location_requirement(ds_template, SPT)
+).
+
+
+tff(ds_template_no_extent_requirements, axiom,
+  ~?[E: extent]:
+    template_has_extent_requirement(ds_template, E)
+).
+
 
 % Wind template
 tff(wind_state_template_decl, type,
   wind_template : template
+).
+
+tff(wind_template_no_creator_requirements, axiom,
+  ~?[E: engine]:
+    template_has_creator_requirement(wind_template, E)
 ).
 
 tff(wind_template_no_requirements, axiom,
@@ -139,16 +214,40 @@ tff(wind_template_no_requirements, axiom,
 ).
 
 tff(wind_state_template_topic, axiom,
-  topic_of_template(wind_template) = wind
+  ![C : concept]:
+  (
+    template_has_concept_requirement(wind_template, C) <=> C = wind
+  )
 ).
 
 tff(wind_state_template_formalism, axiom,
-  formalism_of_template(wind_template) = vector3_msg
+  template_formalism_requirement(wind_template) = vector3_msg
+).
+
+tff(wind_template_representation_class, axiom,
+  ~?[R : representation_class]:
+    template_has_representation_class_requirement(wind_template, R)
+).
+
+tff(wind_template_no_location_requirements, axiom,
+  ~?[SPT: spacetime_point]:
+    template_has_location_requirement(wind_template, SPT)
+).
+
+
+tff(wind_template_no_extent_requirements, axiom,
+  ~?[E: extent]:
+    template_has_extent_requirement(wind_template, E)
 ).
 
 % Trajectory template
 tff(trajectory_template_decl, type,
   trajectory_template : template
+).
+
+tff(trajectory_template_no_creator_requirements, axiom,
+  ~?[E: engine]:
+    template_has_creator_requirement(trajectory_template, E)
 ).
 
 tff(trajectory_template_no_requirements, axiom,
@@ -157,11 +256,30 @@ tff(trajectory_template_no_requirements, axiom,
 ).
 
 tff(trajectory_template_topic, axiom,
-  topic_of_template(trajectory_template) = trajectory
+  ![C : concept]:
+  (
+    template_has_concept_requirement(trajectory_template, C) <=> C = trajectory
+  )
 ).
 
 tff(trajectory_template_formalism, axiom,
-  formalism_of_template(trajectory_template) = vector3_msg
+  template_formalism_requirement(trajectory_template) = vector3_msg
+).
+
+tff(trajectory_template_representation_class, axiom,
+  ~?[R : representation_class]:
+    template_has_representation_class_requirement(trajectory_template, R)
+).
+
+tff(trajectory_template_no_location_requirements, axiom,
+  ~?[SPT: spacetime_point]:
+    template_has_location_requirement(trajectory_template, SPT)
+).
+
+
+tff(trajectory_template_no_extent_requirements, axiom,
+  ~?[E: extent]:
+    template_has_extent_requirement(trajectory_template, E)
 ).
 
 % Drone State Evolution template
@@ -169,18 +287,41 @@ tff(drone_state_evolution_template_decl, type,
   dse_template : template
 ).
 
+tff(drone_state_evolution_template_no_creator_requirements, axiom,
+  ~?[E: engine]:
+    template_has_creator_requirement(dse_template, E)
+).
+
 tff(dse_template_no_requirements, axiom,
   ~?[R : requirement]:
     is_part_of(R, dse_template)
 ).
 
-
 tff(drone_state_evolution_template_topic, axiom,
-  topic_of_template(dse_template) = drone_state_evolution
+  ![C : concept]:
+  (
+    template_has_concept_requirement(dse_template, C) <=> C = drone_state_evolution
+  )
 ).
 
 tff(drone_state_evolution_template_formalism, axiom,
-  formalism_of_template(dse_template) = drone_state_evolution_msg
+  template_formalism_requirement(dse_template) = drone_state_evolution_msg
+).
+
+tff(drone_state_evolution_template_representation_class, axiom,
+  ~?[R : representation_class]:
+    template_has_representation_class_requirement(dse_template, R)
+).
+
+tff(drone_state_evolution_template_no_location_requirements, axiom,
+  ~?[SPT: spacetime_point]:
+    template_has_location_requirement(dse_template, SPT)
+).
+
+
+tff(drone_state_evolution_template_no_extent_requirements, axiom,
+  ~?[E: extent]:
+    template_has_extent_requirement(dse_template, E)
 ).
 
 tff(templates_are_distinct, axiom,
@@ -195,8 +336,20 @@ tff(imu0_modelet_decl, type,
   imu0_modelet : modelet
 ).
 
+tff(imu0_modelet_creator, axiom,
+  ~?[E : engine]:
+    modelet_has_creator(imu0_modelet, E)
+).
+
+tff(imu0_modelet_parents, axiom,
+  parents_of_modelet(imu0_modelet) = empty_ms
+).
+
 tff(imu0_modelet_models_inertia, axiom,
-  topic_of_modelet(imu0_modelet) = inertia
+  ![C : concept]:
+  (
+    modelet_models_concept(imu0_modelet, C) <=> C = inertia
+  )
 ).
 
 tff(imu0_modelet_formalism, axiom,
@@ -208,8 +361,20 @@ tff(gnss0_modelet_decl, type,
   gnss0_modelet : modelet
 ).
 
+tff(gnss0_modelet_creator, axiom,
+  ~?[E : engine]:
+    modelet_has_creator(gnss0_modelet, E)
+).
+
+tff(gnss0_modelet_parents, axiom,
+  parents_of_modelet(gnss0_modelet) = empty_ms
+).
+
 tff(gnss0_modelet_models_geolocation, axiom,
-  topic_of_modelet(gnss0_modelet) = geolocation
+  ![C : concept]:
+  (
+    modelet_models_concept(gnss0_modelet, C) <=> C = geolocation
+  )
 ).
 
 tff(gnss0_modelet_formalism, axiom,
@@ -221,8 +386,20 @@ tff(rotor_force0_modelet_decl, type,
   rotor_force0_modelet : modelet
 ).
 
+tff(rotor_force0_modelet_creator, axiom,
+  ~?[E : engine]:
+    modelet_has_creator(rotor_force0_modelet, E)
+).
+
+tff(rotor_force0_modelet_parents, axiom,
+  parents_of_modelet(rotor_force0_modelet) = empty_ms
+).
+
 tff(rotor_force0_modelet_models_force, axiom,
-  topic_of_modelet(rotor_force0_modelet) = force
+  ![C : concept]:
+  (
+    modelet_models_concept(rotor_force0_modelet, C) <=> C = force
+  )
 ).
 
 tff(rotor_force0_modelet_formalism, axiom,
@@ -233,12 +410,24 @@ tff(trajectory0_modelet_decl, type,
   trajectory0_modelet : modelet
 ).
 
+tff(trajectory0_modelet_creator, axiom,
+  ~?[E : engine]:
+    modelet_has_creator(trajectory0_modelet, E)
+).
+
+tff(trajectory0_modelet_parents, axiom,
+  parents_of_modelet(trajectory0_modelet) = empty_ms
+).
+
 tff(trajectory0_has_vector3_msg_formalims, axiom,
   formalism_of_modelet(trajectory0_modelet) = vector3_msg
 ).
 
 tff(trajectory0_modelet_models_trajectory, axiom,
-  topic_of_modelet(trajectory0_modelet) = trajectory
+  ![C : concept]:
+  (
+    modelet_models_concept(trajectory0_modelet, C) <=> C = trajectory
+  )
 ).
 
 
@@ -246,12 +435,24 @@ tff(wind0_modelet_decl, type,
   wind0_modelet : modelet
 ).
 
+tff(wind0_modelet_creator, axiom,
+  ~?[E : engine]:
+    modelet_has_creator(wind0_modelet, E)
+).
+
+tff(wind0_modelet_parents, axiom,
+  parents_of_modelet(wind0_modelet) = empty_ms
+).
+
 tff(wind0_has_vector3_msg_formalims, axiom,
   formalism_of_modelet(wind0_modelet) = vector3_msg
 ).
 
 tff(wind0_modelet_models_wind, axiom,
-  topic_of_modelet(wind0_modelet) = wind
+  ![C : concept]:
+  (
+    modelet_models_concept(wind0_modelet, C) <=> C = wind
+  )
 ).
 
 
@@ -265,7 +466,7 @@ tff(initial_understanding_set_membership, axiom,
     ![M : modelet]:
     (
       is_in_modelet_set(M, ius)
-      =>
+      <=>
       (
         M = wind0_modelet
         |
@@ -274,6 +475,8 @@ tff(initial_understanding_set_membership, axiom,
         M = imu0_modelet
         |
         M = gnss0_modelet
+        |
+        M = rotor_force0_modelet
       )
     )
   )
@@ -285,7 +488,6 @@ tff(input_modelets_are_distinct, axiom,
 
 %%%%%% Engines
 %---------------------------------------------------------------------------
-
 %%% Drone State Estimator
 %-----------------------------------
 tff(drone_state_estimation_engine_decl, type,
@@ -297,7 +499,17 @@ tff(dse_engine_output_formalism, axiom,
 ).
 
 tff(dse_engine_output_topic, axiom,
-  output_modelet_topic(dse_engine) = drone_state
+  ![C : concept]:
+  (
+    is_output_modelet_concept(dse_engine, C)
+    <=>
+    C = drone_state
+  )
+).
+
+tff(dse_engine_output_representation_class, axiom,
+  ~?[R : representation_class]:
+    is_output_modelet_representation_class(dse_engine, R)
 ).
 
 tff(dse_template_set_decl, type,
@@ -309,22 +521,22 @@ tff(wee_template_set_axiom, axiom,
 ).
 
 tff(dse_template_set_parts, axiom,
-(
-  is_in_template_set(gnss_template, dse_template_set)
-  &
-  is_in_template_set(imu_template, dse_template_set)
-  &
-  ![T : template]:
   (
-    is_in_template_set(T, dse_template_set)
-    =>
+    is_in_template_set(gnss_template, dse_template_set)
+    &
+    is_in_template_set(imu_template, dse_template_set)
+    &
+    ![T : template]:
     (
-      T = gnss_template
-      |
-      T = imu_template
+      is_in_template_set(T, dse_template_set)
+      <=>
+      (
+        T = gnss_template
+        |
+        T = imu_template
+      )
     )
   )
-)
 ).
 
 
@@ -338,8 +550,18 @@ tff(drone_state_evolution_engine_output_formalism, axiom,
   output_modelet_formalism(dsee_engine) = drone_state_evolution_msg
 ).
 
+tff(dsee_engine_output_representation_class, axiom,
+  ~?[R : representation_class]:
+    is_output_modelet_representation_class(dsee_engine, R)
+).
+
 tff(drone_state_evolution_engine_output_topic, axiom,
-  output_modelet_topic(dsee_engine) = drone_state_evolution
+  ![C : concept]:
+  (
+    is_output_modelet_concept(dsee_engine, C)
+    <=>
+    C = drone_state_evolution
+  )
 ).
 
 tff(dsee_template_set_decl, type,
@@ -354,13 +576,15 @@ tff(drone_state_estimation_template_set_parts, axiom,
   ![T : template]:
   (
     is_in_template_set(T, dsee_template_set)
-    =>
+    <=>
     (
       T = ds_template
       |
       T = wind_template
       |
       T = trajectory_template
+      |
+      T = wind_template
     )
   )
 ).
@@ -372,12 +596,23 @@ tff(drone_state_estimation_template_set_parts, axiom,
 tff(wind_estimation_engine_decl, type,
   we_engine : engine
 ).
+
 tff(wind_estimation_engine_output_formalism, axiom,
   output_modelet_formalism(we_engine) = vector3_msg
 ).
 
+tff(we_engine_output_representation_class, axiom,
+  ~?[R : representation_class]:
+    is_output_modelet_representation_class(we_engine, R)
+).
+
 tff(wind_estimation_engine_output_topic, axiom,
-  output_modelet_topic(we_engine) = wind
+  ![C : concept]:
+  (
+    is_output_modelet_concept(we_engine, C)
+    <=>
+    C = wind
+  )
 ).
 
 
@@ -389,11 +624,11 @@ tff(wee_template_set_axiom, axiom,
   interface_of(we_engine) = wee_template_set
 ).
 
-tff(drone_state_estimation_template_set_parts, axiom,
+tff(wee_template_set_parts, axiom,
   ![T : template]:
   (
     is_in_template_set(T, wee_template_set)
-    =>
+    <=>
     (
       T = ds_template
       |
@@ -409,71 +644,56 @@ tff(template_sets_are_distinct, axiom,
 
 %%% Modelet Set Definitions
 %---------------------------------------------------------------------------
-tff(modelet_sets_of_size_1_exist, axiom,
-  ![M1: modelet]:
-    ?[MS: modelet_set]:
-    (
-      is_in_modelet_set(M1, MS)
-    )
-).
 
-tff(modelet_sets_of_size_2_exist, axiom,
-  ![M1: modelet, M2: modelet]:
-    ?[MS: modelet_set]:
-    (
-      M1 != M2
-      =>
-      (
-        is_in_modelet_set(M1, MS)
-        &
-        is_in_modelet_set(M2, MS)
-      )
-    )
-).
+%tff(all_engines, axiom, 
+%  ![E : engine]:
+%  (
+%    E = we_engine
+%    |
+%    E = dse_engine
+%    |
+%    E = dsee_engine
+%  )
+%).
 
-
-tff(modelet_sets_of_size_3_exist, axiom,
-  ![M1: modelet, M2: modelet, M3: modelet]:
-    ?[MS: modelet_set]:
-    (
-      (
-        M1 != M2
-        &
-        M2 != M3
-        &
-        M3 != M1
-      )
-      =>
-      (
-        is_in_modelet_set(M1, MS)
-        &
-        is_in_modelet_set(M2, MS)
-        &
-        is_in_modelet_set(M3, MS)
-      )
-    )
-).
-
-
-tff(all_engines, axiom, 
-  ![E : engine]:
-  (
-    E = we_engine
-    |
-    E = dse_engine
-    |
-    E = dsee_engine
-  )
-).
-
-% This should fail due to the situation 'ius' not including the required modelets
 tff(question_decl, question,
-  ?[MS : modelet_set, E : engine, M: modelet, US1: modelet_set, US2: modelet_set]:
+  ?[MS : modelet_set, M: modelet, US1: modelet_set]:
   (
-    exertion(we_engine, MS, M, ius) = US2
+    subset(MS, US1)
+    &
+    exertable(we_engine, MS)
+    &
+    exert(we_engine, MS) = M
+    &
+    is_in_modelet_set(M, exertion(we_engine, MS, M, US1))
   )
 ).
 
-%    exertable(MS, dse_engine)
-%  ?[MS : modelet_set, E : engine, M: modelet, US1: modelet_set, US2: modelet_set]:
-%    exertion(we_engine, MS, M, ius) = US2
+%tff(question_decl, question,
+%  ?[M : modelet]:
+%  (
+%    ~(M = wind0_modelet)
+%    &
+%    modelet_models_concept(M, wind) 
+%  )
+%).
+
+
+%tff(question_decl, question,
+%  ?[MS : modelet_set]:
+%  (
+%    exertable(we_engine, MS)
+%  )
+%).
+
+
+%tff(question_decl, question,
+%  ?[WM : modelet]:
+%  (
+%    modelet_models_concept(WM, wind)
+%    &
+%    WM != wind0_modelet
+%    &
+%    WM != not_existing_modelet
+%  )
+%).

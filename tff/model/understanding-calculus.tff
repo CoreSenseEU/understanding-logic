@@ -16,27 +16,41 @@ tff(exertion_decl, type,
 % we want to plan backwards
 % we need to capture 'and' connectives between modelets and 'or' connectives between engines
 
+
+%tff(exertion_axiom, axiom,
+%  ![MS : modelet_set, E : engine, IUS : modelet_set, M: modelet]:
+%  (
+%    (
+%      exertable(E, MS)
+%      &
+%      subset(MS, IUS)
+%    )
+%    =>
+%    (
+%      exertion(E, MS, exert(E, MS), IUS) = s(M, IUS)
+%    )
+%  )
+%).
+
+
 tff(exertion_axiom, axiom,
-  ![MS : modelet_set, E : engine, IUS : modelet_set]:
+  ![MS: modelet_set, E : engine, IUS : modelet_set]:
   (
     (
-      exertable(MS, E)
+      subset(MS, IUS)
       &
-      ![RM : modelet]:
-      (
-        is_in_modelet_set(RM, MS) 
-	=>
-	is_in_modelet_set(RM, IUS)
-      )
+      exertable(E, MS)
     )
-    =>
-    ?[RUS : modelet_set, M : modelet]:
-    (
-      exertion(E, MS, M, IUS) = RUS
-      &
-      is_in_modelet_set(M, RUS)
-      &
-      ~is_in_modelet_set(M, IUS)
-    )
+    => 
+    exertion(E, MS, exert(E, MS), IUS) = s(exert(E, MS), IUS)
   )
 ).
+
+%tff(exertion_axiom, axiom,
+%  ![MS : modelet_set, E : engine, IUS : modelet_set, RUS: modelet_set]:
+%  (
+%    ~exertable(E, MS)
+%    =>
+%    ~exertion(E, MS, IUS) = RUS
+%  )
+%).
