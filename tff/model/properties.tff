@@ -27,11 +27,11 @@ tff(decl_requirement_range, type,
 
 % Modelets have properties
 tff(decl_property_of_m, type,
-  is_property_of_modelet: (property * modelet) > $o).
+  modelet_has_property: (modelet * property) > $o).
 
 % Engines have properties
 tff(decl_property_of_e, type,
-  is_property_of_engine: (property * engine) > $o).
+  engine_has_property: (engine * property) > $o).
 
 % Engine outputs have properties
 tff(decl_engine_output_properties, type,
@@ -49,23 +49,44 @@ tff(formally_equivalent, axiom,
   (
     (
       (
-        formalism_of_template(T)
+        template_formalism_requirement(T)
         =
         formalism_of_modelet(M)
       )
       &
-      ![P: phenomenon_class]:
+      ![C: concept]:
       ( % Equivalence of world model classes
-        is_topic_of_template(T, P)
+        template_has_concept_requirement(T, C)
         =>
-        is_topic_of_modelet(M, P)
+        modelet_models_concept(M, C)
       )
       &
-      ![R: role]:
-      ( % Equivalence of processing model classes -- TODO: This feels like it will turn out to be HOL
-        is_role_of_template(T, R)
+      ![R: representation_class]:
+      ( % Equivalence of processing model classes
+        template_has_representation_class_requirement(T, R)
         =>
-        is_role_of_modelet(M, R)
+        modelet_has_representation_class(M, R)
+      )
+      &
+      ! [SPT : spacetime_point]:
+      (
+        template_has_location_requirement(T, SPT)
+        =>
+        modelet_has_location(M, SPT)
+      )
+      &
+      ! [E : extent]:
+      (
+        template_has_extent_requirement(T, E)
+        =>
+        modelet_has_extent(M, E)
+      )
+      &
+      ![E: engine]:
+      ( % Equivalence of creators
+        template_has_creator_requirement(T, E)
+        =>
+        modelet_has_creator(M, E)
       )
     )
     =>
@@ -80,27 +101,13 @@ tff(axiom_modelet_matches_template, axiom,
     (
       formally_equivalent(T, M)
       &
-      ? [SPT : spacetime_point]:
-      (
-        template_location(T) = SPT
-        =>
-        modelet_location(M) = SPT
-      )
-      &
-      ? [E : extent]:
-      (
-        template_extent(T) = E
-        =>
-        modelet_extent(M) = E
-      )
-      &
       ! [R: requirement]:
       (
         is_part_of(R, T)
         =>
         ? [P: property]:
         (
-          is_property_of_modelet(P, M) % match modelet to property
+          modelet_has_property(M, P) % match modelet to property
           &
           (datatype_of_requirement(R) = datatype_of_property(P)) % property has correct correct data format/type for requirement
           &
@@ -142,21 +149,21 @@ tff(axiom_modelet_sets_matches_template_sets, axiom,
 %tff(exert_creates, axiom,
 %  ! [Minput: modelet_set, E: engine]:
 %  (
-%      exertable(Minput, E )
+%      exertable(E, Minput)
 %      =>
 %      ? [Moutput: modelet]:
 %      (
-%        exert(E, Minput) = Moutput
+%        exert(E, Minput, Moutput)
 %        &
 %        ! [P: property]:
 %        (
 %          (
-%            ~is_property_of_engine(P, E)
+%            ~engine_has_property(E, P)
 %            |
 %            (
-%              is_property_of_engine(P, E)
+%              engine_has_property(E, P)
 %              &
-%              is_property_of_modelet(P, Moutput)
+%              modelet_has_property(Moutput, P)
 %            )
 %          )
 %        )
