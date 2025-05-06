@@ -27,6 +27,9 @@ src
 ```
 
 ## Documentation
+The documentation is available at [https://coresenseeu.github.io/understanding-logic/](https://coresenseeu.github.io/understanding-logic/).
+
+
 The documentation is built using the [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/)
 framework, which allows for easy documentation generation from markdown files.
 While it is based on the [CommonMark](https://commonmark.org/) flavor of Markdown,
