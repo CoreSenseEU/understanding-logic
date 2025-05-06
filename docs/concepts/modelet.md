@@ -24,8 +24,6 @@ Used to collect the inputs to an [engine](engine.md).
 The [phenomenon](phenomenon.md) symbolizing the *phenomenon* of a [modelet](modelet.md).
 !!! question "TODO"
     rename from 'concept' to something else.
-!!! question "TODO"
-    Should we call this the intrinsic purpose? (as opposed to the [`role`](role.md)).
 ###### Source: `engines-and-modelets.tff`
 
 ### **formalism_of_modelet** `(`[**`modelet`**](#modelet)` > `[**`formalism`**](formalism.md)`)` { #formalism_of_modelet data-toc-label='formalism_of_modelet' }
@@ -40,22 +38,28 @@ The date a [modelet](#modelet) was created.
     This may be solved by integration with `spacetime_point`.
 ###### Source: `engines-and-modelets.tff`
 
-### **modelet_location** `(`[**`modelet`**](#modelet)` > `[**`spacetime_point`**](spacetime_point.md)`)` { #modelet_location data-toc-label='modelet_location' }
+### **modelet_has_location** `(`[**`modelet`**](#modelet)` > `[**`spacetime_point`**](spacetime_point.md)`)` { #modelet_has_location data-toc-label='modelet_has_location' }
 The time and spatial location a [modelet](#modelet) refers to.
 [Modelets](modelet.md) may have a specific temporal scope or make an observation
 at a specific [`spacetime_point`](spacetime_point.md).
 ###### Source: `engines-and-modelets.tff`
 
-### **modelet_extent** `(`[**`modelet`**](#modelet)` > `[**`extent`**](extent.md)`)` { #modelet_extent data-toc-label='modelet_extent' }
+### **modelet_has_extent** `(`[**`modelet`**](#modelet)` > `[**`extent`**](extent.md)`)` { #modelet_has_extent data-toc-label='modelet_has_extent' }
 The time and spatial [extent](extent.md) a [modelet](#modelet) refers to.
 [Modelets](#modelet) may have an area/volume/duration of reference.
 ###### Source: `engines-and-modelets.tff`
 
-### **role_of_modelet** `(`[**`modelet`**](#modelet)` > `[**`role`**](role.md)`)` { #role_of_modelet data-toc-label='role_of_modelet' }
-The [role](role.md) a [modelet](#modelet) plays when used by an [engine](engine.md).
+### **modelet_has_representation_class** `(`[**`modelet`**](#modelet)` > `[**`representation_class`**](representation_class.md)`)` { #modelet_has_representation_class data-toc-label='modelet_has_representation_class' }
+The [representation_class](representation_class.md) a [modelet](#modelet)'s relation to its parents has after being created by an [engine](engine.md).
 !!! question "TODO"
     This looks like it will turn out to be HOL.
 ###### Source: `engines-and-modelets.tff`
+
+### **modelet_has_creator** `(`[**`modelet`**](#modelet)` > `[**`engine`**](engine.md)`)` { #modelet_has_creator data-toc-label='modelet_has_creator' }
+The [engine](engine.md) that created the [modelet](#modelet).
+###### Source: `engines-and-modelets.tff`
+
+
 
 
 ### **is_in_modelet_set** `((`[**`modelet`**](#modelet)` * `[**`modelet_set`**](#modelet_set)`) > `**`$o`**`)` { #is_in_modelet_set data-toc-label='is_in_modelet_set' }
