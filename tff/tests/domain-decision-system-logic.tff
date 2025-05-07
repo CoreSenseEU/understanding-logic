@@ -1,0 +1,58 @@
+include('understanding-logic/tff/model/fundamental_concepts.tff');
+
+tff(accept_always_engine_decl, type,
+  accept_always : engine
+);
+
+
+tff(accept_dominating_engine_decl, type,
+  accept_dominating : engine
+);
+
+tff(accept_satisficing_engine_decl, type,
+  accept_satisficing : engine
+);
+
+tff(accept_size_engine_decl, type,
+  accept_size : engine
+);
+
+tff(aggregate_multi_value_utility_engine_decl, type,
+  aggregate_multi_value_utility : engine
+);
+
+tff(aggregate_preferences_engine_decl, type,
+  aggregate_preferences : engine
+);
+
+tff(aggregate_utility_engine_decl, type,
+  aggregate_utility : engine
+);
+
+tff(assess_engine_decl, type,
+  assess : engine
+);
+
+tff(cue_engine_decl, type,
+  cue : engine
+);
+
+tff(order_concorcet_engine_decl, type,
+  order_concorcet : engine
+);
+
+tff(order_dominating_engine_decl, type,
+  order_dominating : engine
+);
+
+tff(order_lexicographical_engine_decl, type,
+  order_lexicographical : engine
+);
+
+tff(take_best_engine_decl, type,
+  take_best : engine
+);
+
+tff(eliminate_worst_engine_decl, type,
+  eliminate_worst : engine
+);
