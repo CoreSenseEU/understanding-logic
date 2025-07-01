@@ -34,8 +34,8 @@ tff(decl_property_of_e, type,
   engine_has_property: (engine * property) > $o).
 
 % Engine outputs have properties
-tff(decl_engine_output_properties, type,
-  output_property_of_engine: engine > property).
+tff(decl_engine_imparts_output_properties, type,
+  engine_imparts_output_property: (engine * property) > $o).
 
 % Templates have requirements in terms of properties
 tff(decl_templates_have_requirements, type,
@@ -94,31 +94,104 @@ tff(formally_equivalent, axiom,
   )
 ).
 
+% % Modelets and Templates can have matching profiles
+% tff(axiom_modelet_matches_template, axiom,
+%   ! [M: modelet, T: template]:
+%   (
+%     (
+%       formally_equivalent(T, M)
+%       &
+%       ! [R: requirement]:
+%       (
+%         is_part_of(R, T)
+%         =>
+%         ? [P: property]:
+%         (
+%           modelet_has_property(M, P) % match modelet to property
+%           &
+%           (datatype_of_requirement(R) = datatype_of_property(P)) % property has correct correct data format/type for requirement
+%           &
+%           is_permissible(R, has_value(P)) % ensure that the property's value is permissible
+%         )
+%       )
+%     )
+%     =>
+%     inputs_match(M, T)
+%   )
+% ).
+
+
+
+tff(property_meets_requirement_decl, type,
+  property_meets_requirement : (property * requirement) > $o
+).
+
+tff(axiom_property_meets_requirement, axiom,
+  ! [P: property, R: requirement]:
+  (
+    (
+      (datatype_of_requirement(R) = datatype_of_property(P)) % property has correct correct data format/type for requirement
+      &
+      is_permissible(R, has_value(P)) % ensure that the property's value is permissible
+    )
+    =>
+    property_meets_requirement(P, R)
+  )
+).
+
+
+tff(modelet_meets_requirement_decl, type,
+  modelet_meets_requirement : (modelet * requirement) > $o
+).
+
+tff(axiom_modelet_meets_requirement, axiom,
+  ! [M : modelet, R : requirement, P: property]:
+  (
+    (
+      modelet_has_property(M, P) % match modelet to property
+      &
+      property_meets_requirement(P, R)
+    )
+    =>
+    modelet_meets_requirement(M, R)
+  )
+).
+
+
+
 % Modelets and Templates can have matching profiles
-tff(axiom_modelet_matches_template, axiom,
+tff(new_axiom_modelet_matches_template, axiom,
   ! [M: modelet, T: template]:
   (
     (
       formally_equivalent(T, M)
       &
-      ! [R: requirement]:
+      ![R: requirement] :
       (
         is_part_of(R, T)
         =>
-        ? [P: property]:
-        (
-          modelet_has_property(M, P) % match modelet to property
-          &
-          (datatype_of_requirement(R) = datatype_of_property(P)) % property has correct correct data format/type for requirement
-          &
-          is_permissible(R, has_value(P)) % ensure that the property's value is permissible
-        )
+        modelet_meets_requirement(M, R)
       )
     )
     =>
     inputs_match(M, T)
   )
 ).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 % Modelet sets match template sets if all their templates have a corresponding modelet with matching inputs inputs_match(M, T)
 %interfaces_match(MS, TS)
@@ -146,27 +219,23 @@ tff(axiom_modelet_sets_matches_template_sets, axiom,
 
 
 % Engine outputs have properties
-%tff(exert_creates, axiom,
-%  ! [Minput: modelet_set, E: engine]:
-%  (
-%      exertable(E, Minput)
-%      =>
-%      ? [Moutput: modelet]:
-%      (
-%        exert(E, Minput, Moutput)
-%        &
-%        ! [P: property]:
-%        (
-%          (
-%            ~engine_has_property(E, P)
-%            |
-%            (
-%              engine_has_property(E, P)
-%              &
-%              modelet_has_property(Moutput, P)
-%            )
-%          )
-%        )
-%      )
-%    )
-%).
+tff(exert_creates, axiom,
+  ! [E: engine, MS: modelet_set, M: modelet, P: property]:
+  (
+    (
+      exertable(E, MS)
+      &
+      exert(E, MS) = M
+      &
+      engine_imparts_output_property(E, P)
+    )
+    =>
+    modelet_has_property(M, P)
+  )
+).
+
+
+
+% Modelets that are output from engines only have the properties imparted by
+% their engines
+% TODO: this is a strong assumption, do we really want it?
