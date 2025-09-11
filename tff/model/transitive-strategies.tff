@@ -21,7 +21,7 @@ tff(strategy_decl, type,
 tff(ax_strategy, axiom,
   ! [MS : modelet_set, E: engine] :
     (
-        exertable(MS, E)
+        exertable(E, MS)
 	=>
 		strategy(MS,exert(E, MS),via_exert(exert(E, MS),MS,E))
    )
