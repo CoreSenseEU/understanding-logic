@@ -134,7 +134,7 @@ tff(axiom_modelet_meets_requirement, axiom,
 
 
 % Modelets and Templates can have matching profiles
-tff(new_axiom_modelet_matches_template, axiom,
+tff(axiom_modelet_matches_template, axiom,
   ! [M: modelet, T: template]:
   (
     (
@@ -151,20 +151,6 @@ tff(new_axiom_modelet_matches_template, axiom,
     inputs_match(M, T)
   )
 ).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 % Modelet sets match template sets if all their templates have a corresponding modelet with matching inputs inputs_match(M, T)
