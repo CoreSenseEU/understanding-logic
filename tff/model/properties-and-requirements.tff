@@ -1,0 +1,50 @@
+% Property logic
+include('understanding-logic/tff/model/fundamental-concepts.tff').
+
+% Properties exist
+tff(decl_property, type,
+  property: $tType).
+
+% Properties have Values
+tff(decl_property_value, type,
+  has_value: property > $real).
+
+% Requirements exist
+tff(decl_requirement, type,
+  requirement: $tType).
+
+% Properties have types
+tff(decl_type_of_p, type,
+  type_of_property : property > proptype).
+
+% Requirements have types 
+tff(decl_type_of_r, type,
+  type_of_requirement : requirement > proptype).
+
+% Requirements have a permissible value range
+tff(decl_requirement_range, type,
+  is_permissible: (requirement * $real) > $o).
+
+
+tff(property_meets_requirement_decl, type,
+  property_meets_requirement : (property * requirement) > $o
+).
+
+tff(axiom_property_meets_requirement, axiom,
+  ! [P: property, R: requirement]:
+  (
+    (
+      (type_of_requirement(R) = type_of_property(P)) % property has correct correct data format/type for requirement
+      &
+      is_permissible(R, has_value(P)) % ensure that the property's value is permissible
+    )
+    =>
+    property_meets_requirement(P, R)
+  )
+).
+
+
+
+% Modelets that are output from engines only have the properties imparted by
+% their engines
+% TODO: this is a strong assumption, do we really want it?

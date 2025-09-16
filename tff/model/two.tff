@@ -1,0 +1,133 @@
+% Modelets and engines
+include('understanding-logic/tff/model/engines.tff').
+
+
+
+tff(decl_exert2, type,
+  exert2: (engine * modelet * modelet) > modelet
+).
+
+
+
+tff(decl_defines_input2, type,
+  defines_input2 : (template * template * engine) > $o
+).
+
+
+
+tff(decl_exertable2, type,
+  exertable2: (engine * modelet * modelet) > $o
+).
+% Modelets are exertable by Engines (no sets) 2
+tff(axiom_modelet_is_exertable2, axiom,
+  ![M1: modelet, M2: modelet, T1: template, T2: template, E: engine]:
+  (
+    (
+      inputs_match(M1, T1)
+      &
+      inputs_match(M2, T2)
+      &
+      defines_input2(T1, T2, E)
+    )
+    =>
+    exertable2(E, M1, M2)
+  )
+).
+
+
+
+tff(axiom_engines_impart_formalism2, axiom,
+  ![E: engine, IM1: modelet, IM2: modelet, OM: modelet]:
+  (
+    (
+      exertable2(E, IM1, IM2)
+      &
+      exert2(E, IM1, IM2) = OM
+    )
+    =>
+    formalism_of_modelet(OM) = output_modelet_formalism(E)
+  )
+).
+
+
+
+% Engines are creators of Modelets
+tff(axiom_engines_are_creators_of_modelets2, axiom,
+  ![E: engine, IM1: modelet, IM2: modelet, OM: modelet]:
+  (
+    (
+      exertable2(E, IM1, IM2)
+      &
+      exert2(E, IM1, IM2) = OM
+    )
+    =>
+    modelet_has_creator(OM, E)
+  )
+).
+
+
+
+% ModeletSets are parents of Modelets
+%tff(axiom_modelet_sets_are_parents_to_modelets, axiom,
+%  ![E: engine, MS: modelet_set, M: modelet]:
+%  (
+%    (
+%      exertable(E, MS)
+%      &
+%      exert(E, MS) = M
+%    )
+%    =>
+%    parents_of_modelet(M) = MS
+%  )
+%).
+
+
+
+tff(axiom_engine_may_impart_representation_class2, axiom,
+  ![E: engine, IM1: modelet, IM2: modelet, OM: modelet, R: representation_class]:
+  (
+    (
+      exertable2(E, IM1, IM2)
+      &
+      exert2(E, IM1, IM2) = OM
+      &
+      is_output_modelet_representation_class(E, R)
+    )
+    =>
+    modelet_has_representation_class(OM, R)
+  )
+).
+
+
+
+tff(axiom_engine_may_impart_topic2, axiom,
+  ![E: engine, IM1: modelet, IM2: modelet, OM: modelet, C: concept]:
+  (
+    (
+      exertable2(E, IM1, IM2)
+      &
+      exert2(E, IM1, IM2) = OM
+      &
+      is_output_modelet_concept(E, C)
+    )
+    =>
+    modelet_models_concept(OM, C) 
+  )
+).
+
+
+% Engine outputs have properties
+tff(axiom_engine_may_impart_property2, axiom,
+  ! [E: engine, IM1: modelet, IM2: modelet, OM: modelet, P: property]:
+  (
+    (
+      exertable2(E, IM1, IM2)
+      &
+      exert2(E, IM1, IM2) = OM
+      &
+      engine_imparts_output_property(E, P)
+    )
+    =>
+    modelet_has_property(OM, P)
+  )
+).

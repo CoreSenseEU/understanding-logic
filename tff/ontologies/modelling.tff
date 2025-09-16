@@ -1,0 +1,68 @@
+
+%% Classes
+tff(_mo_class_decl, type,
+  mo_class : type
+).
+
+%% Base Class
+tff(_mo_base_class_decl, type,
+  mo_entity : mo_class
+).
+
+%% Sub Classing 
+tff(_mo_subclass_decl, type,
+  mo_sc : (mo_class * mo_class) > $o 
+).
+
+%% Sub Classing Transitivity
+%%% TODO do I want this, or do I want the transitivity on an extra predicate?
+tff(_mo_subclass_transitive_axiom, axiom,
+  ![C1 : mo_class, C2 : mo_class, C3 : mo_class]:
+  (
+    (
+      mo_sc(C1, C2)
+      &
+      mo_sc(C2, C3)
+    )
+    =>
+    mo_sc(C1, C3)
+  )
+).
+
+%% Every Class except the base class subclasses the base class
+tff(_mo_subclassing_root_axiom, axiom,
+  ![C : mo_class]:
+  (
+    C != mo_entity
+    =>
+    mo_sc(C, mo_entity)
+  )
+).
+
+
+
+%% Instances
+%%% TODO change all this to be the modelet representation class directly?
+%%% ala if modelet has this class, it also has the parent classes?
+tff(_mo_instance_decl, type,
+  mo_instance : type
+).
+
+%% Class Membership
+tff(_mo_class_membership_decl, type,
+  mo_is: (mo_instance * mo_class) > $o
+).
+
+%% Parent Class Membership
+tff(_mo_subtype_transitivity_axiom, axiom,
+  ! [I : mo_instance, CP : mo_class, CC : mo_class]:
+  (
+    (
+      mo_is(I, CC)
+      &
+      mo_sc(CC, CP)
+    )
+    =>
+    mo_is(I, CP)
+  )
+).

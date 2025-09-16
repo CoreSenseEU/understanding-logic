@@ -1,0 +1,53 @@
+% Templates
+include('understanding-logic/tff/model/properties-and-requirements.tff').
+
+
+
+% Templates. Descriptions of Engine Inputs.
+tff(decl_template, type,
+  template : $tType
+).
+
+
+
+% Templates may carry model characteristic requirements. e.g. 'minimun resolution'
+% See properties-and-requirements.tff
+tff(decl_templates_have_requirements, type,
+  is_part_of: (requirement * template) > $o
+).
+
+
+
+% Each Template has exactly one formalism. The language a given Engine expects for this input. A ROSMessage.
+tff(decl_template_formalism_requirement, type,
+  template_formalism_requirement : template > formalism
+).
+
+
+
+% Templates may be located. Center of spatio-temporal scope.
+tff(decl_template_has_location_requirement, type,
+  template_has_location_requirement : (template * spacetime_point) > $o
+).
+
+
+
+% Templates may extend over lenth/area/volume/time. Extent of spatio-temporal scope.
+tff(decl_template_has_extent_requirement, type,
+  template_has_extent_requirement : (template * extent) > $o
+).
+
+
+
+% Templates may be associated with a concept. A class of phenomenon in the world model. 'A template of icecream'
+tff(decl_template_has_concept_requirement, type,
+  template_has_concept_requirement : (template * concept) > $o
+).
+
+
+
+% representation class removed for the moment.
+% Templates carry Role requirements. Extrinsic (from the perspective of the modelet) purpose.
+tff(decl_template_has_representation_class_requirement, type,
+  template_has_representation_class_requirement : (template * representation_class) > $o
+).

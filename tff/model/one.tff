@@ -1,0 +1,134 @@
+% Modelets and engines
+include('understanding-logic/tff/model/engines.tff').
+
+
+
+tff(decl_exert1, type,
+  exert1: (engine * modelet) > modelet
+).
+
+
+
+tff(decl_defines_input1, type,
+  defines_input1 : (template * engine) > $o
+).
+
+
+
+tff(decl_exertable1, type,
+  exertable1: (engine * modelet) > $o
+).
+% Modelets are exertable by Engines (no sets) 1
+tff(axiom_modelet_is_exertable1, axiom,
+  ![M: modelet, T: template, E: engine]:
+  (
+    (
+      inputs_match(M, T)
+      &
+      defines_input1(T, E)
+    )
+    =>
+    exertable1(E, M)
+  )
+).
+
+
+
+tff(axiom_engines_impart_formalism1, axiom,
+  ![E: engine, IM1: modelet, OM: modelet]:
+  (
+    (
+      exertable1(E, IM1)
+      &
+      exert1(E, IM1) = OM
+    )
+    =>
+    formalism_of_modelet(OM) = output_modelet_formalism(E)
+  )
+).
+
+
+
+% Engines are creators of Modelets
+tff(axiom_engines_are_creators_of_modelets1, axiom,
+  ![E: engine, IM1: modelet, OM: modelet]:
+  (
+    (
+      exertable1(E, IM1)
+      &
+      exert1(E, IM1) = OM
+    )
+    =>
+    modelet_has_creator(OM, E)
+  )
+).
+
+
+
+% ModeletSets are parents of Modelets
+%tff(axiom_modelet_sets_are_parents_to_modelets, axiom,
+%  ![E: engine, MS: modelet_set, M: modelet]:
+%  (
+%    (
+%      exertable(E, MS)
+%      &
+%      exert(E, MS) = M
+%    )
+%    =>
+%    parents_of_modelet(M) = MS
+%  )
+%).
+
+
+
+tff(axiom_engine_may_impart_representation_class1, axiom,
+  ![E: engine, IM: modelet, OM: modelet, R: representation_class]:
+  (
+    (
+      exertable1(E, IM)
+      &
+      exert1(E, IM) = OM
+      &
+      is_output_modelet_representation_class(E, R)
+    )
+    =>
+    modelet_has_representation_class(OM, R)
+  )
+).
+
+
+
+tff(axiom_engine_may_impart_topic1, axiom,
+  ![E: engine, IM: modelet, OM: modelet, C: concept]:
+  (
+    (
+      exertable1(E, IM)
+      &
+      exert1(E, IM) = OM
+      &
+      is_output_modelet_concept(E, C)
+    )
+    =>
+    modelet_models_concept(OM, C) 
+  )
+).
+
+
+
+% Engine outputs have properties
+tff(axiom_engine_may_impart_property1, axiom,
+  ! [E: engine, IM1: modelet, OM: modelet, P: property]:
+  (
+    (
+      exertable1(E, IM1)
+      &
+      exert1(E, IM1) = OM
+      &
+      engine_imparts_output_property(E, P)
+    )
+    =>
+    modelet_has_property(OM, P)
+  )
+).
+
+

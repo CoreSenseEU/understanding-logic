@@ -1,0 +1,47 @@
+% Understanding Calculus 
+include('understanding-logic/tff/model/sets.tff').
+
+% An exertion is the act of exerting an engine on a modelet set, resulting in a modelet, in defined state of knowledge, resulting in the addition of the output modelet to that state of knowledge. 
+tff(exertion_decl, type,
+  exertion: (engine * modelet_set * modelet * modelet_set) > modelet_set
+).
+
+
+%tff(exertion_axiom, axiom,
+%  ![MS : modelet_set, E : engine, IUS : modelet_set, M: modelet]:
+%  (
+%    (
+%      exertable(E, MS)
+%      &
+%      subset(MS, IUS)
+%    )
+%    =>
+%    (
+%      exertion(E, MS, exert(E, MS), IUS) = s(M, IUS)
+%    )
+%  )
+%).
+
+
+tff(exertion_axiom, axiom,
+  ![MS: modelet_set, E : engine, IUS : modelet_set]:
+  (
+    (
+      subset(MS, IUS)
+      &
+      exertable(E, MS)
+    )
+    => 
+    exertion(E, MS, exert(E, MS), IUS) = s(exert(E, MS), IUS)
+  )
+).
+
+
+%tff(no_exertion_axiom, axiom,
+%  ![MS : modelet_set, E : engine, IUS : modelet_set, RUS: modelet_set]:
+%  (
+%    ~exertable(E, MS)
+%    =>
+%    ~exertion(E, MS, IUS) = RUS
+%  )
+%).

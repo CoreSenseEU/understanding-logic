@@ -1,0 +1,151 @@
+import('understanding_logic/tff/model/fundamental_concepts.tff').
+
+%% Classes
+tff(_pro_class_decl, type,
+  pro_class : type
+).
+
+%% Base Class
+tff(_pro_base_class_decl, type,
+  process : pro_class
+).
+
+%% Sub Classing 
+tff(_pro_subclass_decl, type,
+  pro_sc : (pro_class * pro_class) > $o 
+).
+
+%% Sub Classing Transitivity
+%%% TODO do I want this, or do I want the transitivity on an extra predicate?
+tff(_pro_subclass_transitive_axiom, axiom,
+  ![C1 : pro_class, C2 : pro_class, C3 : pro_class]:
+  (
+    (
+      pro_sc(C1, C2)
+      &
+      pro_sc(C2, C3)
+    )
+    =>
+    pro_sc(C1, C3)
+  )
+).
+
+%% Every Class except the base class subclasses the base class
+tff(_pro_subclassing_root_axiom, axiom,
+  ![C : pro_class]:
+  (
+    C != pro_entity
+    =>
+    pro_sc(C, process)
+  )
+).
+
+
+tff(decl_pro_acting, type,
+  pro_acting : pro_class
+).
+
+tff(axiom_pro_acting_is_process, axiom,
+  pro_sc(pro_acting, process)
+).
+
+tff(decl_pro_has_actor, type,
+  has_actor: (pro_instance * agent) > $o
+).
+
+tff(axiom_pro_actings_have_actors, decl,
+  ![P : pro_instance]:
+  (
+    pro_is(P, pro_acting)
+    <=>
+    ?[A: agent]:
+    (
+      has_actor(P, A)
+    )
+  )
+).
+
+tff(decl_pro_scoring, type,
+  pro_scoring : pro_class
+).
+
+tff(axiom_pro_scoring_is_acting, axiom,
+  pro_sc(pro_scoring, pro_acting)
+).
+
+
+tff(decl_pro_scoring_target, type,
+  scoring_target: (pro_instance * entity) > $o
+).
+
+tff(axiom_pro_scoring_target, axiom,
+  ![P: pro_instance]:
+  (
+    pro_is(P, pro_scoring)
+    <=>
+    ?[E : entity]:
+    (
+      scoring_target(P, E)
+    )
+  )
+).
+
+tff(decl_pro_scoring_metric, type,
+  scoring_metric: (pro_instance * metric) > $o
+).
+
+tff(axiom_pro_scoring_metric, axiom,
+  ![P: pro_instance]:
+  (
+    pro_is(P, pro_scoring)
+    <=>
+    ?[M : metric]:
+    (
+      scoring_metric(P, M)
+    )
+  )
+).
+
+tff(decl_pro_scoring_score, type,
+  scoring_score: (pro_instance * score) > $o
+).
+
+tff(axiom_pro_scoring_score, axiom,
+  ![P: pro_instance]:
+  (
+    pro_is(P, pro_scoring)
+    <=>
+    ?[S : score]:
+    (
+      scoring_score(P, S)
+    )
+  )
+).
+
+
+
+%% Instances
+%%% TODO change all this to be the modelet representation class directly?
+%%% ala if modelet has this class, it also has the parent classes?
+tff(_pro_instance_decl, type,
+  pro_instance : type
+).
+
+%% Class Membership
+tff(_pro_class_membership_decl, type,
+  pro_is: (pro_instance * pro_class) > $o
+).
+
+%% Parent Class Membership
+tff(_pro_subtype_transitivity_axiom, axiom,
+  ! [I : pro_instance, CP : pro_class, CC : pro_class]:
+  (
+    (
+      pro_is(I, CC)
+      &
+      pro_sc(CC, CP)
+    )
+    =>
+    pro_is(I, CP)
+  )
+).
