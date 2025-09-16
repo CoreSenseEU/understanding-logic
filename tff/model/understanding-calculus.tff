@@ -1,52 +1,72 @@
-% Understanding Calculus 
-include('understanding-logic/tff/model/properties.tff').
+% Understanding Calculus
+include('understanding-logic/tff/model/one.tff').
+include('understanding-logic/tff/model/two.tff').
+include('understanding-logic/tff/model/three.tff').
 
 
-% a Situation includes the chose history of performed actions
-%tff(understanding_state_decl, type,
-%  understanding_state : $tType
-%).
+tff(exertion1_decl, type,
+  exertion1: (engine * modelet * modelet * modelet_set) > modelet_set
+).
 
+tff(exertion2_decl, type,
+  exertion2: (engine * modelet * modelet * modelet * modelet_set) > modelet_set
+).
 
-% An exertion is the act of exerting an engine on a modelet set, resulting in a modelet, in defined state of knowledge, resulting in the addition of the output modelet to that state of knowledge. 
-tff(exertion_decl, type,
-  exertion: (engine * modelet_set * modelet * modelet_set) > modelet_set
+tff(exertion3_decl, type,
+  exertion3: (engine * modelet * modelet * modelet * modelet * modelet_set) > modelet_set
 ).
 
 % we want to plan backwards
 % we need to capture 'and' connectives between modelets and 'or' connectives between engines
 
 
-%tff(exertion_axiom, axiom,
-%  ![MS : modelet_set, E : engine, IUS : modelet_set, M: modelet]:
-%  (
-%    (
-%      exertable(E, MS)
-%      &
-%      subset(MS, IUS)
-%    )
-%    =>
-%    (
-%      exertion(E, MS, exert(E, MS), IUS) = s(M, IUS)
-%    )
-%  )
-%).
-
-
-tff(exertion_axiom, axiom,
-  ![MS: modelet_set, E : engine, IUS : modelet_set]:
+tff(exertion1_axiom, axiom,
+  ![M: modelet, E : engine, IUS : modelet_set]:
   (
     (
-      subset(MS, IUS)
+      is_in_modelet_set(M, IUS)
       &
-      exertable(E, MS)
+      exertable1(E, M)
     )
     => 
-    exertion(E, MS, exert(E, MS), IUS) = s(exert(E, MS), IUS)
+    exertion1(E, M, exert1(E, M), IUS) = s(exert1(E, M), IUS)
   )
 ).
 
-%tff(exertion_axiom, axiom,
+tff(exertion2_axiom, axiom,
+  ![M1: modelet, M2: modelet, E : engine, IUS : modelet_set]:
+  (
+    (
+      is_in_modelet_set(M1, IUS)
+      &
+      is_in_modelet_set(M2, IUS)
+      &
+      exertable2(E, M1, M2)
+    )
+    => 
+    exertion2(E, M1, M2, exert2(E, M1, M2), IUS) = s(exert2(E, M1, M2), IUS)
+  )
+).
+
+
+tff(exertion3_axiom, axiom,
+  ![M1: modelet, M2: modelet, M3: modelet, E : engine, IUS : modelet_set]:
+  (
+    (
+      is_in_modelet_set(M1, IUS)
+      &
+      is_in_modelet_set(M2, IUS)
+      &
+      is_in_modelet_set(M3, IUS)
+      &
+      exertable2(E, M1, M2, M3)
+    )
+    => 
+    exertion3(E, M1, M2, M3, exert3(E, M1, M2, M3), IUS) = s(exert3(E, M1, M2, M3), IUS)
+  )
+).
+
+%tff(no_exertion_axiom, axiom,
 %  ![MS : modelet_set, E : engine, IUS : modelet_set, RUS: modelet_set]:
 %  (
 %    ~exertable(E, MS)

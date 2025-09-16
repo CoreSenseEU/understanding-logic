@@ -10,14 +10,30 @@ tff(decl_concept, type,
   concept : $tType
 ).
 
+% Engines
+tff(decl_engine, type,
+  engine : $tType
+).
+
+% Modelets
+tff(decl_modelet, type,
+  modelet : $tType
+).
+
+% Templates. Descriptions of Engine Inputs.
+tff(decl_template, type,
+  template : $tType
+).
+
+
 % Formalisms - Methods used to express modelets. Class in Data Model. ROSMessages.
 tff(decl_formalism, type,
   formalism : $tType
 ).
 
 % Datatypes - As the name suggests, the fundamental types of data considered
-tff(decl_datatype, type,
-  datatype : $tType
+tff(decl_proptype, type,
+  proptype : $tType
 ).
 
 % Role - Usage of a modelet by engines. Class in the Processing Model.

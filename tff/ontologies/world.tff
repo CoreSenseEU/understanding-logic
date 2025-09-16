@@ -1,0 +1,75 @@
+
+%% Classes
+tff(_wo_class_decl, type,
+  wo_class : type
+).
+
+%% Base Class
+tff(_wo_base_class_decl, type,
+  wo_entity : wo_class
+).
+
+%% Sub Classing 
+tff(_wo_subclass_decl, type,
+  wo_sc : (wo_class * wo_class) > $o 
+).
+
+%% Sub Classing Transitivity
+%%% TODO do I want this, or do I want the transitivity on an extra predicate?
+tff(_wo_subclass_transitive_axiom, axiom,
+  ![C1 : wo_class, C2 : wo_class, C3 : wo_class]:
+  (
+    (
+      wo_sc(C1, C2)
+      &
+      wo_sc(C2, C3)
+    )
+    =>
+    wo_sc(C1, C3)
+  )
+).
+
+
+% Class Relations
+
+%% Part
+tff(decl_wo_part_relation, type,
+  wo_is_part_of : (wo_class * wo_class) > $o
+).
+
+%% Every Class except the base class subclasses the base class
+tff(_wo_subclassing_root_axiom, axiom,
+  ![C : wo_class]:
+  (
+    C != wo_entity
+    =>
+    wo_sc(C, wo_entity)
+  )
+).
+
+
+
+%% Instances
+tff(_concept_decl, type,
+  concept : type
+).
+
+%% Class Membership
+tff(_wo_class_membership_decl, type,
+  wo_is: (concept * wo_class) > $o
+).
+
+
+%% Parent Class Membership
+tff(_wo_subtype_transitivity_axiom, axiom,
+  ! [I : concept, CP : wo_class, CC : wo_class]:
+  (
+    (
+      wo_is(I, CC)
+      &
+      wo_sc(CC, CP)
+    )
+    =>
+    wo_is(I, CP)
+  )
+).

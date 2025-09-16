@@ -1,8 +1,7 @@
 % Wind Estimation Scenario
 
 %include('understanding-logic/tff/model/properties.tff').
-include('understanding-logic/tff/model/top.tff').
-
+include('understanding-logic/tff/model/sets.tff').
 %%%%%% Phenomena
 %---------------------------------------------------------------------------
 % Inertia
@@ -345,9 +344,9 @@ tff(imu0_modelet_creator, axiom,
     modelet_has_creator(imu0_modelet, E)
 ).
 
-%tff(imu0_modelet_parents, axiom,
-%  parents_of_modelet(imu0_modelet) = empty_ms
-%).
+tff(imu0_modelet_parents, axiom,
+  parents_of_modelet(imu0_modelet) = empty_ms
+).
 
 tff(imu0_modelet_models_inertia, axiom,
   ![C : concept]:
@@ -370,9 +369,9 @@ tff(gnss0_modelet_creator, axiom,
     modelet_has_creator(gnss0_modelet, E)
 ).
 
-%tff(gnss0_modelet_parents, axiom,
-%  parents_of_modelet(gnss0_modelet) = empty_ms
-%).
+tff(gnss0_modelet_parents, axiom,
+  parents_of_modelet(gnss0_modelet) = empty_ms
+).
 
 tff(gnss0_modelet_models_geolocation, axiom,
   ![C : concept]:
@@ -395,9 +394,9 @@ tff(rotor_force0_modelet_creator, axiom,
     modelet_has_creator(rotor_force0_modelet, E)
 ).
 
-%tff(rotor_force0_modelet_parents, axiom,
-%  parents_of_modelet(rotor_force0_modelet) = empty_ms
-%).
+tff(rotor_force0_modelet_parents, axiom,
+  parents_of_modelet(rotor_force0_modelet) = empty_ms
+).
 
 tff(rotor_force0_modelet_models_force, axiom,
   ![C : concept]:
@@ -419,9 +418,9 @@ tff(trajectory0_modelet_creator, axiom,
     modelet_has_creator(trajectory0_modelet, E)
 ).
 
-%tff(trajectory0_modelet_parents, axiom,
-%  parents_of_modelet(trajectory0_modelet) = empty_ms
-%).
+tff(trajectory0_modelet_parents, axiom,
+  parents_of_modelet(trajectory0_modelet) = empty_ms
+).
 
 tff(trajectory0_has_vector3_msg_formalims, axiom,
   formalism_of_modelet(trajectory0_modelet) = vector3_msg
@@ -444,9 +443,9 @@ tff(wind0_modelet_creator, axiom,
     modelet_has_creator(wind0_modelet, E)
 ).
 
-%tff(wind0_modelet_parents, axiom,
-%  parents_of_modelet(wind0_modelet) = empty_ms
-%).
+tff(wind0_modelet_parents, axiom,
+  parents_of_modelet(wind0_modelet) = empty_ms
+).
 
 tff(wind0_has_vector3_msg_formalims, axiom,
   formalism_of_modelet(wind0_modelet) = vector3_msg
@@ -459,6 +458,32 @@ tff(wind0_modelet_models_wind, axiom,
   )
 ).
 
+
+% Initial understanding
+tff(initial_understanding_decl, type,
+  ius : modelet_set
+).
+
+tff(initial_understanding_set_membership, axiom,
+  (
+    ![M : modelet]:
+    (
+      is_in_modelet_set(M, ius)
+      <=>
+      (
+        M = wind0_modelet
+        |
+        M = trajectory0_modelet
+        |
+        M = imu0_modelet
+        |
+        M = gnss0_modelet
+        |
+        M = rotor_force0_modelet
+      )
+    )
+  )
+).
 
 tff(input_modelets_are_distinct, axiom,
   $distinct(wind0_modelet, trajectory0_modelet, imu0_modelet, gnss0_modelet)
@@ -490,10 +515,33 @@ tff(dse_engine_output_representation_class, axiom,
     is_output_modelet_representation_class(dse_engine, R)
 ).
 
- tff(dse_engine_defined_input, axiom,
-  defines_input2(gnss_template, imu_template, dse_engine)
- ).
+tff(dse_template_set_decl, type,
+  dse_template_set : template_set
+).
 
+
+tff(wee_template_set_axiom, axiom,
+  interface_of(dse_engine) = dse_template_set
+).
+
+tff(dse_template_set_parts, axiom,
+  (
+    is_in_template_set(gnss_template, dse_template_set)
+    &
+    is_in_template_set(imu_template, dse_template_set)
+    &
+    ![T : template]:
+    (
+      is_in_template_set(T, dse_template_set)
+      <=>
+      (
+        T = gnss_template
+        |
+        T = imu_template
+      )
+    )
+  )
+).
 
 
 %%% Drone Evolution Estimator
@@ -520,9 +568,30 @@ tff(drone_state_evolution_engine_output_topic, axiom,
   )
 ).
 
-tff(dsee_engine_input_define, axiom,
-  defines_input3(ds_template, wind_template, trajectory_template, dsee_engine)
+tff(dsee_template_set_decl, type,
+  dsee_template_set : template_set
 ).
+
+
+tff(wee_template_set_axiom, axiom,
+  interface_of(dsee_engine) = dsee_template_set
+).
+
+tff(drone_state_estimation_template_set_parts, axiom,
+  ![T : template]:
+  (
+    is_in_template_set(T, dsee_template_set)
+    <=>
+    (
+      T = ds_template
+      |
+      T = wind_template
+      |
+      T = trajectory_template
+    )
+  )
+).
+
 
 
 %%% Wind Estimator
@@ -550,11 +619,60 @@ tff(wind_estimation_engine_output_topic, axiom,
 ).
 
 
-tff(wee_engine_defined_input, axiom,
-  defines_input2(ds_template, dse_template, we_engine)
+tff(wee_template_set_decl, type,
+  wee_template_set : template_set
 ).
 
 
+tff(wee_template_set_axiom, axiom,
+  interface_of(we_engine) = wee_template_set
+).
+
+tff(wee_template_set_parts, axiom,
+  ![T : template]:
+  (
+    is_in_template_set(T, wee_template_set)
+    <=>
+    (
+      T = ds_template
+      |
+      T = dse_template
+    )
+  )
+).
+
+tff(template_sets_are_distinct, axiom,
+  $distinct(wee_template_set, dsee_template_set, dse_template_set)
+).
+
+
+%%% Modelet Set Definitions
+%---------------------------------------------------------------------------
+
+%tff(all_engines, axiom, 
+%  ![E : engine]:
+%  (
+%    E = we_engine
+%    |
+%    E = dse_engine
+%    |
+%    E = dsee_engine
+%  )
+%).
+/*
+%tff(question_decl, question,
+%  ?[MS : modelet_set, M: modelet, US1: modelet_set]:
+%  (
+%    subset(MS, US1)
+%    &
+%    exertable(we_engine, MS)
+%    &
+%    exert(we_engine, MS) = M
+%    &
+%    is_in_modelet_set(M, exertion(we_engine, MS, M, US1))
+%  )
+%).
+*/
 
 tff(question_decl, question,
   ?[M : modelet]:
@@ -565,6 +683,13 @@ tff(question_decl, question,
   )
 ).
 
+
+%tff(question_decl, question,
+%  ?[MS : modelet_set]:
+%  (
+%    exertable(we_engine, MS)
+%  )
+%).
 
 
 %tff(question_decl, question,
