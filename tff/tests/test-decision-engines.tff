@@ -1,0 +1,112 @@
+% Test Decision engines
+include('understanding-logic/tff/domains/decision-system/engines.tff').
+
+
+%%%%%% Input Modelets
+%---------------------------------------------------------------------------
+
+%%% Alternatives (assume given for now)
+% A set of alternatives to choose from - the choice set.
+%-----------------------------------
+tff(given_alternatives_decl, type,
+  given_alternatives_modelet : modelet
+).
+
+tff(given_alternatives_modelet_creator, axiom,
+  ~?[E : engine]:
+    modelet_has_creator(given_alternatives_modelet, E)
+).
+
+%tff(given_alternatives_modelet_parents, axiom,
+%  parents_of_modelet(given_alternatives_modelet) = empty_ms
+%).
+
+% TODO: This cannot be a biconditional because other modelets (namely the choice/chosen set)
+%    could also model the `alternative_array` concept
+tff(given_alternatives_modelet_models_alternative_array, axiom,
+  (
+    modelet_models_concept(given_alternatives_modelet, alternative_array) 
+    &
+    ![C : concept]:
+    (
+      modelet_models_concept(given_alternatives_modelet, C) 
+      => 
+      C = alternative_array
+    )
+  )
+).
+
+tff(given_alternatives_modelet_formalism, axiom,
+  formalism_of_modelet(given_alternatives_modelet) = alternative_array_msg
+).
+
+% TODO: This should probably not be a biconditional in general, but is fine for now.
+tff(given_alternatives_modelet_representation_class, axiom,
+  ![R : representation_class]:
+  (
+    modelet_has_representation_class(given_alternatives_modelet, R) 
+    <=> 
+    R = choice_set
+  )
+).
+
+%-----------------------------------
+
+%%% Cues (assume given for now)
+% A set of cues to use to assess the alternatives.
+%-----------------------------------
+tff(given_cues_modelet_decl, type,
+  given_cues_modelet : modelet
+).
+
+tff(given_cues_modelet_creator, axiom,
+  ~?[E : engine]:
+    modelet_has_creator(given_cues_modelet, E)
+).
+
+%tff(given_cues_modelet_parents, axiom,
+%  parents_of_modelet(given_cues_modelet) = empty_ms
+%).
+
+% TODO: This should probably not be a biconditional in general, but is fine for now.
+tff(given_cues_modelet_models_cue_array, axiom,
+  ![C : concept]:
+  (
+    modelet_models_concept(given_cues_modelet, C)
+    <=>
+    C = cue_array
+  )
+).
+
+tff(given_cues_modelet_formalism, axiom,
+  formalism_of_modelet(given_cues_modelet) = cue_array_msg
+).
+%-----------------------------------
+
+
+% Initial understanding
+%tff(initial_understanding_decl, type,
+%  ius : modelet_set
+%).
+
+%tff(initial_understanding_set_membership, axiom,
+%  (
+%    ![M : modelet]:
+%    (
+%      is_in_modelet_set(M, ius)
+%      <=>
+%      (
+%        M = given_alternatives_modelet
+%        |
+%        M = given_cues_modelet
+%      )
+%    )
+%  )
+%).
+
+tff(input_modelets_are_distinct, axiom,
+  $distinct(given_alternatives_modelet, 
+            given_cues_modelet)
+).
+
+%---------------------------------------------------------------------------

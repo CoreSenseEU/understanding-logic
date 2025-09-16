@@ -222,6 +222,30 @@ tff(axiom_engine_may_impart_property, axiom,
   )
 ).
 
+%%%%%% Transitive properties
+%---------------------------------------------------------------------------
+% An engine transits a property from any of its inputs to its output.
+% That is if any of its inputs have some property P, then its output will also
+% have that property P.
+tff(axiom_engine_transits_property, axiom,
+  ![E : engine, P : property, MS : modelet_set]:
+  (
+    (
+      exertable(E, MS)
+      &
+      engine_transits_property(E, P)
+      &
+      ?[Mparent : modelet]:
+      (
+        is_in_modelet_set(Mparent, MS)
+        &
+        modelet_has_property(Mparent, P)
+      )
+    )
+    =>
+    modelet_has_property(exert(E, MS), P)
+  )
+).
 
 %Engines produce reliable output
 %tff(axiom_engine_reliability, axiom,

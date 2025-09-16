@@ -1,0 +1,991 @@
+% Originally contributed by Tyler Olson  https://github.com/Rockjack00
+
+
+% Decision Engines
+include('understanding-logic/tff/model/top.tff').
+include('understanding-logic/tff/domains/decision-system/properties.tff').
+
+%%%%%% Concepts
+%---------------------------------------------------------------------------
+%%% Alternative Array
+% A set of alternatives.
+%-----------------------------------
+tff(alternative_array_decl, type,
+  alternative_array : concept
+).
+%-----------------------------------
+
+%%% Cue Array
+% A set of cues to use to make a decision.
+%-----------------------------------
+tff(cue_array_decl, type,
+  cue_array : concept
+).
+%-----------------------------------
+
+%%% Assessment Matrix
+% A matrix of scores of each alternative by each cue.
+%-----------------------------------
+tff(assessment_matrix_decl, type,
+  assessment_matrix : concept
+).
+%-----------------------------------
+
+%%% Evaluation
+% A matix of multi-dimensional values of each alternative.
+%-----------------------------------
+tff(evaluation_decl, type,
+  evaluation : concept
+).
+%-----------------------------------
+
+%%% WeakOrdering
+% A preference relation on a set of alternatives
+%-----------------------------------
+tff(weak_ordering_decl, type,
+  weak_ordering : concept
+).
+%-----------------------------------
+
+%%% Decision
+% A chosen set of alternatives that may or may not have been accepted.
+%-----------------------------------
+tff(decision_decl, type,
+  decision: concept
+).
+%-----------------------------------
+
+
+tff(concepts_are_distinct, axiom,
+  $distinct(alternative_array, 
+            cue_array, 
+            assessment_matrix,
+            evaluation,
+            weak_ordering,
+            decision)
+).
+
+%---------------------------------------------------------------------------
+
+
+
+%%%%%% Formalisms
+%---------------------------------------------------------------------------
+%%% AlternativeArray.msg
+% A ROS 2 message decision_msgs/msg/AlternativeArray
+%-----------------------------------
+tff(alternative_array_msg_decl, type,
+  alternative_array_msg : formalism
+).
+%-----------------------------------
+
+%%% CueArray.msg
+% A ROS 2 message decision_msgs/msg/CueArray
+%-----------------------------------
+tff(cue_array_msg_decl, type,
+  cue_array_msg : formalism
+).
+%-----------------------------------
+
+%%% AssessmentMatrix.msg
+% A ROS 2 message decision_msgs/msg/AssessmentMatrix
+%-----------------------------------
+tff(assessment_matrix_msg_decl, type,
+  assessment_matrix_msg : formalism
+).
+%-----------------------------------
+
+%%% Evaluation.msg
+% A ROS 2 message decision_msgs/msg/Evaluation
+%-----------------------------------
+tff(evaluation_msg_decl, type,
+  evaluation_msg : formalism
+).
+%-----------------------------------
+
+%%% WeakOrdering.msg
+% A ROS 2 message decision_msgs/msg/WeakOrdering
+%-----------------------------------
+tff(weak_ordering_msg_decl, type,
+  weak_ordering_msg : formalism
+).
+%-----------------------------------
+
+%%% Decision.msg
+% A ROS 2 message decision_msgs/msg/Decision
+%-----------------------------------
+tff(decision_msg_decl, type,
+  decision_msg : formalism
+).
+%-----------------------------------
+
+tff(formalisms_are_distinct, axiom,
+  $distinct(alternative_array_msg, 
+            cue_array_msg, 
+            assessment_matrix_msg,
+            evaluation_msg, 
+            weak_ordering_msg,
+            decision_msg)
+).
+
+%---------------------------------------------------------------------------
+
+
+
+%%%%%% Representation Class
+%---------------------------------------------------------------------------
+%%% choice set
+% A choice set of alternatives, a subset of which may be chosen.
+%-----------------------------------
+tff(choice_set_decl, type,
+  choice_set : representation_class
+).
+%-----------------------------------
+
+%%% choice
+% The chosen set of alternatives.
+%-----------------------------------
+tff(choice_decl, type,
+  choice : representation_class
+).
+%-----------------------------------
+
+tff(representation_classes_are_distinct, axiom,
+  $distinct(choice_set, 
+            choice)
+).
+%---------------------------------------------------------------------------
+
+
+
+%%%%%% Templates
+%---------------------------------------------------------------------------
+%%% choice_set
+%-----------------------------------
+tff(choice_set_template_decl, type,
+  choice_set_template : template
+).
+
+tff(choice_set_template_no_requirements, axiom,
+  ~?[R : requirement]:
+    is_part_of(R, choice_set_template)
+).
+
+tff(choice_set_template_no_creator_requirements, axiom,
+  ~?[E: engine]:
+    template_has_creator_requirement(choice_set_template, E)
+).
+
+% TODO: combine this with take_template_concept?
+%    Right now double implication is too strong
+tff(choice_set_template_concept, axiom,
+(
+  % It only has this requirement
+  template_has_concept_requirement(choice_set_template, alternative_array) 
+  &
+  % It has no other concept requirements
+  ![C : concept]:
+  (
+    template_has_concept_requirement(choice_set_template, C) 
+    => 
+    C = alternative_array
+  )
+)
+).
+
+tff(choice_set_template_formalism, axiom,
+  template_formalism_requirement(choice_set_template) = alternative_array_msg
+).
+
+% Using this particular set of alternatives as a choice set
+%
+% TODO: Need an engine that adds a representation class to sets of alternatives (this will be GetAlternatives :D)
+%
+tff(choice_set_template_representation_class, axiom,
+  ![R : representation_class]:
+  (
+    template_has_representation_class_requirement(choice_set_template, R) 
+    <=> 
+    R = choice_set
+  )
+).
+
+tff(choice_set_template_no_location_requirements, axiom,
+  ~?[SPT: spacetime_point]:
+    template_has_location_requirement(choice_set_template, SPT)
+).
+
+tff(choice_set_template_no_extent_requirements, axiom,
+  ~?[E: extent]:
+    template_has_extent_requirement(choice_set_template, E)
+).
+%-----------------------------------
+
+%%% cue_array
+%-----------------------------------
+tff(cue_array_template_decl, type,
+  cue_array_template : template
+).
+
+tff(cue_array_template_no_requirements, axiom,
+  ~?[R : requirement]:
+    is_part_of(R, cue_array_template)
+).
+
+tff(cue_array_template_no_creator_requirements, axiom,
+  ~?[E: engine]:
+    template_has_creator_requirement(cue_array_template, E)
+).
+
+tff(cue_array_template_concept, axiom,
+  ![C : concept]:
+  (
+    template_has_concept_requirement(cue_array_template, C) 
+    <=> 
+    C = cue_array
+  )
+).
+
+tff(cue_array_template_formalism, axiom,
+  template_formalism_requirement(cue_array_template) = cue_array_msg
+).
+
+tff(cue_array_template_representation_class, axiom,
+  ~?[R : representation_class]:
+    template_has_representation_class_requirement(cue_array_template, R)
+).
+
+tff(cue_array_template_no_location_requirements, axiom,
+  ~?[SPT: spacetime_point]:
+    template_has_location_requirement(cue_array_template, SPT)
+).
+
+tff(cue_array_template_no_extent_requirements, axiom,
+  ~?[E: extent]:
+    template_has_extent_requirement(cue_array_template, E)
+).
+%-----------------------------------
+
+%%% assessment_matrix
+%-----------------------------------
+tff(assessment_matrix_template_decl, type,
+  assessment_matrix_template : template
+).
+
+tff(assessment_matrix_template_no_requirements, axiom,
+  ~?[R : requirement]:
+    is_part_of(R, assessment_matrix_template)
+).
+
+tff(assessment_matrix_template_no_creator_requirements, axiom,
+  ~?[E: engine]:
+    template_has_creator_requirement(assessment_matrix_template, E)
+).
+
+tff(assessment_matrix_template_concept, axiom,
+  ![C : concept]:
+  (
+    template_has_concept_requirement(assessment_matrix_template, C) 
+    <=> 
+    C = assessment_matrix
+  )
+).
+
+tff(assessment_matrix_template_formalism, axiom,
+  template_formalism_requirement(assessment_matrix_template) = assessment_matrix_msg
+).
+
+tff(assessment_matrix_template_representation_class, axiom,
+  ~?[R : representation_class]:
+    template_has_representation_class_requirement(assessment_matrix_template, R)
+).
+
+tff(assessment_matrix_template_no_location_requirements, axiom,
+  ~?[SPT: spacetime_point]:
+    template_has_location_requirement(assessment_matrix_template, SPT)
+).
+
+tff(assessment_matrix_template_no_extent_requirements, axiom,
+  ~?[E: extent]:
+    template_has_extent_requirement(assessment_matrix_template, E)
+).
+%-----------------------------------
+
+%%% evaluation
+%-----------------------------------
+tff(evaluation_template_decl, type,
+  evaluation_template : template
+).
+
+tff(evaluation_template_no_requirements, axiom,
+  ~?[R : requirement]:
+    is_part_of(R, evaluation_template)
+).
+
+tff(evaluation_template_no_creator_requirements, axiom,
+  ~?[E: engine]:
+    template_has_creator_requirement(evaluation_template, E)
+).
+
+tff(evaluation_template_concept, axiom,
+  ![C : concept]:
+  (
+    template_has_concept_requirement(evaluation_template, C) 
+    <=> 
+    C = evaluation
+  )
+).
+
+tff(evaluation_template_formalism, axiom,
+  template_formalism_requirement(evaluation_template) = evaluation_msg
+).
+
+tff(evaluation_template_representation_class, axiom,
+  ~?[R : representation_class]:
+    template_has_representation_class_requirement(evaluation_template, R)
+).
+
+tff(evaluation_template_no_location_requirements, axiom,
+  ~?[SPT: spacetime_point]:
+    template_has_location_requirement(evaluation_template, SPT)
+).
+
+tff(evaluation_template_no_extent_requirements, axiom,
+  ~?[E: extent]:
+    template_has_extent_requirement(evaluation_template, E)
+).
+%-----------------------------------
+
+%%% weak_ordering
+%-----------------------------------
+tff(weak_ordering_template_decl, type,
+  weak_ordering_template : template
+).
+
+tff(weak_ordering_template_no_requirements, axiom,
+  ~?[R : requirement]:
+    is_part_of(R, weak_ordering_template)
+).
+
+tff(weak_ordering_template_no_creator_requirements, axiom,
+  ~?[E: engine]:
+    template_has_creator_requirement(weak_ordering_template, E)
+).
+
+tff(weak_ordering_template_concept, axiom,
+  ![C : concept]:
+  (
+    template_has_concept_requirement(weak_ordering_template, C) 
+    <=> 
+    C = weak_ordering
+  )
+).
+
+tff(weak_ordering_template_formalism, axiom,
+  template_formalism_requirement(weak_ordering_template) = weak_ordering_msg
+).
+
+tff(weak_ordering_template_representation_class, axiom,
+  ~?[R : representation_class]:
+    template_has_representation_class_requirement(weak_ordering_template, R)
+).
+
+tff(weak_ordering_template_no_location_requirements, axiom,
+  ~?[SPT: spacetime_point]:
+    template_has_location_requirement(weak_ordering_template, SPT)
+).
+
+tff(weak_ordering_template_no_extent_requirements, axiom,
+  ~?[E: extent]:
+    template_has_extent_requirement(weak_ordering_template, E)
+).
+%-----------------------------------
+
+%%% choice
+%-----------------------------------
+tff(choice_template_decl, type,
+  choice_template : template
+).
+
+tff(choice_template_no_requirements, axiom,
+  ~?[R : requirement]:
+    is_part_of(R, choice_template)
+).
+
+tff(choice_template_no_creator_requirements, axiom,
+  ~?[E: engine]:
+    template_has_creator_requirement(choice_template, E)
+).
+
+tff(choice_template_concept, axiom,
+  ![C : concept]:
+  (
+    template_has_concept_requirement(choice_template, C) 
+    <=> 
+    C = alternative_array
+  )
+).
+
+tff(choice_template_formalism, axiom,
+  template_formalism_requirement(choice_template) = alternative_array_msg
+).
+
+tff(choice_template_representation_class, axiom,
+  ![R : representation_class]:
+  (
+    template_has_representation_class_requirement(choice_template, R) 
+    <=> 
+    R = choice
+  )
+).
+
+tff(choice_template_no_location_requirements, axiom,
+  ~?[SPT: spacetime_point]:
+    template_has_location_requirement(choice_template, SPT)
+).
+
+tff(choice_template_no_extent_requirements, axiom,
+  ~?[E: extent]:
+    template_has_extent_requirement(choice_template, E)
+).
+%-----------------------------------
+
+tff(templates_are_distinct, axiom,
+  $distinct(choice_set_template, 
+            cue_array_template, 
+            assessment_matrix_template, 
+            evaluation_template, 
+            weak_ordering_template,
+            choice_template)
+).
+
+%---------------------------------------------------------------------------
+
+
+
+%%%%%% Engines
+%---------------------------------------------------------------------------
+%%% UpdateAlternatives
+% elim - assume all, eliminate until desired (diminishing)
+%    keep_policy = taken, capacity = 0
+% (used for eliminate-by-aspects)
+%-----------------------------------
+tff(update_alternatives_elim_engine_decl, type,
+  update_alternatives_elim_engine : engine
+).
+
+tff(update_alternatives_elim_engine_output_formalism, axiom,
+  output_modelet_formalism(update_alternatives_elim_engine) = alternative_array_msg
+).
+
+tff(update_alternatives_elim_engine_output_concept, axiom,
+  ![C : concept]:
+  (
+    is_output_modelet_concept(update_alternatives_elim_engine, C)
+    <=>
+    C = alternative_array
+  )
+).
+
+tff(update_alternatives_elim_engine_output_representation_class, axiom,
+  ![R : representation_class]:
+  (
+    is_output_modelet_representation_class(update_alternatives_elim_engine, R)
+    <=>
+    R = choice_set
+  )
+).
+
+%TODO: update_alternatives_elim_engine has no inputs, find a formulation.
+
+%-----------------------------------
+
+%%% UpdateCues
+% iter_one - Use and lose one cue per round (dynamic)
+%    reuse = False, iter_add = 1
+% (used for eliminate-by-aspects)
+%-----------------------------------
+% tff(update_cues_iter_one_engine_decl, type,
+%   update_cues_iter_one_engine : engine
+% ).
+
+tff(update_cues_take_the_best_engine_decl, type,
+  update_cues_take_the_best_engine : engine
+).
+
+tff(update_cues_engine_output_formalisms, axiom,
+%  output_modelet_formalism(update_cues_iter_one_engine) = cue_array_msg
+%  &
+  output_modelet_formalism(update_cues_take_the_best_engine) = cue_array_msg
+).
+
+tff(update_cues_iter_one_engine_output_concept, axiom,
+  ![C : concept]:
+  (
+    (
+%    is_output_modelet_concept(update_cues_iter_one_engine, C)
+%    |
+    is_output_modelet_concept(update_cues_take_the_best_engine, C)
+    )
+    <=>
+    C = cue_array
+  )
+).
+
+tff(update_cues_iter_one_engine_output_representation_class, axiom,
+  ~?[R : representation_class]:
+    (
+%      is_output_modelet_representation_class(update_cues_iter_one_engine, R)
+%      |
+      is_output_modelet_representation_class(update_cues_take_the_best_engine, R)
+    )
+).
+
+%TODO: update_cues_take_the_best_engine has no inputs, find a formulation.
+
+%-----------------------------------
+
+%%% Assess
+%-----------------------------------
+tff(assess_engine_decl, type,
+  assess_engine : engine
+).
+
+tff(assess_engine_output_formalism, axiom,
+  output_modelet_formalism(assess_engine) = assessment_matrix_msg
+).
+
+tff(assess_engine_output_concept, axiom,
+  ![C : concept]:
+  (
+    is_output_modelet_concept(assess_engine, C)
+    <=>
+    C = assessment_matrix
+  )
+).
+
+% TODO: Right now the AssessmentMatrix is modeled as an atomic modelet, but it could
+%   be modeled with a representation class...
+tff(assess_engine_output_representation_class, axiom,
+  ~?[R : representation_class]:
+    is_output_modelet_representation_class(assess_engine, R)
+).
+
+tff(assess_engine_defined_input, axiom,
+  defines_input2(choice_set_template, cue_array_template, assess_engine)
+).
+
+
+%-----------------------------------
+
+%%% Aggregate
+%-----------------------------------
+tff(aggregate_preferences_engine_decl, type,
+  aggregate_preferences_engine : engine
+).
+
+tff(aggregate_utility_boolean_engine_decl, type,
+  aggregate_utility_boolean_engine : engine
+).
+
+tff(aggregate_utility_signed_engine_decl, type,
+  aggregate_utility_signed_engine : engine
+).
+
+tff(aggregate_utility_sum_engine_decl, type,
+  aggregate_utility_sum_engine : engine
+).
+
+% TODO: implement multi-value utility
+% tff(aggregate_multi_value_utility_engine_decl, type,
+%   aggregate_multi_value_utility_engine : engine
+% ).
+
+tff(aggregate_engines_output_formalism, axiom,
+  output_modelet_formalism(aggregate_preferences_engine) = evaluation_msg
+  &
+  output_modelet_formalism(aggregate_utility_boolean_engine) = evaluation_msg
+  &
+  output_modelet_formalism(aggregate_utility_signed_engine) = evaluation_msg
+  &
+  output_modelet_formalism(aggregate_utility_sum_engine) = evaluation_msg
+  % &
+  % output_modelet_formalism(aggregate_multi_value_utility_engine) = evaluation_msg
+).
+
+tff(aggregate_engines_output_concept, axiom,
+  ![C : concept]:
+  (
+    (
+      is_output_modelet_concept(aggregate_preferences_engine, C)
+      |
+      is_output_modelet_concept(aggregate_utility_boolean_engine, C)
+      |
+      is_output_modelet_concept(aggregate_utility_signed_engine, C)
+      |
+      is_output_modelet_concept(aggregate_utility_sum_engine, C)
+      % |
+      % is_output_modelet_concept(aggregate_multi_value_utility_engine, C)
+    )
+    <=>
+    C = evaluation
+  )
+).
+
+tff(aggregate_engines_output_representation_class, axiom,
+  ~?[R : representation_class]:
+    (
+      is_output_modelet_representation_class(aggregate_preferences_engine, R)
+      |
+      is_output_modelet_representation_class(aggregate_utility_boolean_engine, R)
+      |
+      is_output_modelet_representation_class(aggregate_utility_signed_engine, R)
+      |
+      is_output_modelet_representation_class(aggregate_utility_sum_engine, R)
+      % |
+      % is_output_modelet_representation_class(aggregate_multi_value_utility_engine, R)
+    )
+).
+
+
+
+tff(aggregate_preferences_engine_defined_input, axiom,
+  defines_input1(assessment_matrix_template, aggregate_preferences_engine)
+).
+
+tff(aggregate_utility_boolean_engine_defined_input, axiom,
+  defines_input1(assessment_matrix_template, aggregate_utility_boolean_engine)
+).
+
+tff(aggregate_utility_signed_engine_defined_input, axiom,
+  defines_input1(assessment_matrix_template, aggregate_utility_signed_engine)
+).
+
+
+tff(aggregate_utility_sum_engine_defined_input, axiom,
+  defines_input1(assessment_matrix_template, aggregate_utility_sum_engine)
+).
+
+
+%tff(aggregate_multi_value_utility_engine_defined_input, axiom,
+%  defines_input1(assessment_matrix_template, aggregate_multi_value_utility_engine)
+%).
+
+%-----------------------------------
+
+%%% Order
+%-----------------------------------
+tff(order_condorcet_engine_decl, type,
+  order_condorcet_engine : engine
+).
+
+tff(order_dominating_engine_decl, type,
+  order_dominating_engine : engine
+).
+
+tff(order_lexicographical_engine_decl, type,
+  order_lexicographical_engine : engine
+).
+
+tff(order_engines_output_formalism, axiom,
+  output_modelet_formalism(order_condorcet_engine) = weak_ordering_msg
+  &
+  output_modelet_formalism(order_dominating_engine) = weak_ordering_msg
+  &
+  output_modelet_formalism(order_lexicographical_engine) = weak_ordering_msg
+).
+
+tff(order_engines_output_concept, axiom,
+  ![C : concept]:
+  (
+    (
+      is_output_modelet_concept(order_condorcet_engine, C)
+      |
+      is_output_modelet_concept(order_dominating_engine, C)
+      |
+      is_output_modelet_concept(order_lexicographical_engine, C)
+    )
+    <=>
+    C = weak_ordering
+  )
+).
+
+tff(order_engines_output_representation_class, axiom,
+  ~?[R : representation_class]:
+    (
+      is_output_modelet_representation_class(order_condorcet_engine, R)
+      |
+      is_output_modelet_representation_class(order_dominating_engine, R)
+      |
+      is_output_modelet_representation_class(order_lexicographical_engine, R)
+    )
+).
+
+
+tff(order_condorcet_engine_defined_input, axiom,
+  defines_input1(evaluation_template, order_condorcet_engine)
+).
+
+tff(order_dominating_engine_defined_input, axiom,
+  defines_input1(evaluation_template, order_dominating_engine)
+).
+
+tff(order_lexicographical_engine_defined_input, axiom,
+  defines_input1(evaluation_template, order_lexicographical_engine)
+).
+
+%-----------------------------------
+
+%%% Take
+%-----------------------------------
+tff(take_best_engine_decl, type,
+  take_best_engine : engine
+).
+
+tff(eliminate_worst_engine_decl, type,
+  eliminate_worst_engine : engine
+).
+
+tff(take_engines_output_formalism, axiom,
+  output_modelet_formalism(take_best_engine) = alternative_array_msg
+  &
+  output_modelet_formalism(eliminate_worst_engine) = alternative_array_msg
+).
+
+
+% TODO: combine this with get/update_alternatives_output_concept?
+%    Right now double implication is too strong
+tff(take_engines_output_concept, axiom,
+  (
+    is_output_modelet_concept(take_best_engine, alternative_array)
+    &
+    is_output_modelet_concept(eliminate_worst_engine, alternative_array)
+    &
+    ![C : concept]:
+    (
+      (
+        is_output_modelet_concept(take_best_engine, C)
+        |
+        is_output_modelet_concept(eliminate_worst_engine, C)
+      )
+      =>
+      C = alternative_array
+    )
+  )
+).
+
+tff(take_engines_output_representation_class, axiom,
+  (
+    % Right now these statements are redudant with the universal quantifier,
+    % but help make it faster.
+    is_output_modelet_representation_class(take_best_engine, choice)
+    &
+    is_output_modelet_representation_class(eliminate_worst_engine, choice)
+    &
+    ![R : representation_class]:
+    (
+      (
+        is_output_modelet_representation_class(take_best_engine, R)
+        |
+        is_output_modelet_representation_class(eliminate_worst_engine, R)
+      )
+      <=>
+      R = choice
+    )
+  )
+).
+
+% TODO: It is not generally true that take_best imparts absolute size, but it is
+%   true with the default configuration. This is currently the only possible configuration
+%   by the heuristic assembly node so for now it works.
+tff(take_best_imparts_absolute_size_prop, axiom,
+  (
+    % This is redundant, but helps with performance
+    engine_imparts_output_property(take_best_engine, absolute_size_prop)
+    &
+    ! [P: property]:
+    (
+      engine_imparts_output_property(take_best_engine, P)
+      <=>
+      P = absolute_size_prop
+    )
+  )
+).
+
+
+tff(take_best_engine_defined_input, axiom,
+  defines_input1(weak_ordering_template, take_best_engine)
+).
+
+tff(eliminate_worst_engine_defined_input, axiom,
+  defines_input1(weak_ordering_template, eliminate_worst_engine)
+).
+
+%-----------------------------------
+
+%%% Accept
+%-----------------------------------
+tff(accept_always_engine_decl, type,
+  accept_always_engine : engine
+).
+
+tff(accept_dominating_engine_decl, type,
+  accept_dominating_engine : engine
+).
+
+tff(accept_satisficing_engine_decl, type,
+  accept_satisficing_engine : engine
+).
+
+tff(accept_size_engine_decl, type,
+  accept_size_engine : engine
+).
+
+
+
+tff(accept_size_engine_has_properties, axiom,
+  (
+    engine_has_property(accept_size_engine, n_parameter_prop)
+    &
+    engine_has_property(accept_size_engine, relation_parameter_prop)
+    %%% RESUME
+
+    % &
+    %
+    % % This can enforce a size desired by the gap by setting the parameters.
+    % ![N: $real]:
+    % (
+    %   (
+    %     has_value(n_parameter_prop) = N
+    %     &
+    %     has_value(relation_parameter_prop) = 1.0 % Assume 1 means '=' for now (like an enum)
+    %   )
+    %   <=>
+    %   (
+    %     % Allow a model of known properties to enforce the property from this engine.
+    %     ?[M: modelet]:
+    %     (
+    %       modelet_has_creator(M, accept_size_engine)
+    %       &
+    %       modelet_has_property(M, absolute_size_prop)
+    %       &
+    %       has_value(absolute_size_prop) = N
+    %     )
+    %     =>
+    %     engine_imparts_output_property(accept_size_engine, absolute_size_prop)
+    %   )
+    % )
+  )
+).
+
+
+tff(accept_size_imparts_absolute_size_prop, axiom,
+  (
+    % This is redundant, but helps with performance
+    engine_imparts_output_property(accept_size_engine, absolute_size_prop)
+    &
+    ! [P: property]:
+    (
+      engine_imparts_output_property(accept_size_engine, P)
+      <=>
+      P = absolute_size_prop
+    )
+  )
+).
+
+
+% TODO: consider outputting a boolean instead of a whole decision message
+%   That is more in the spirit of what is going on, and lets the 'decision
+%   engine' (behavior tree) output decisions.
+%   That being said, would we rather the 'decision engine' output a useful
+%   modelet (unpacked) instead?
+tff(accept_engines_output_formalism, axiom,
+  output_modelet_formalism(accept_always_engine) = decision_msg
+  &
+  output_modelet_formalism(accept_dominating_engine) = decision_msg
+  &
+  output_modelet_formalism(accept_satisficing_engine) = decision_msg
+  &
+  output_modelet_formalism(accept_size_engine) = decision_msg
+).
+
+% TODO: see above
+tff(accept_engines_output_concept, axiom,
+  (
+    % Right now these statements are redudant with the universal quantifier,
+    % but help make it faster.
+    is_output_modelet_concept(accept_always_engine, decision)
+    &
+    is_output_modelet_concept(accept_dominating_engine, decision)
+    &
+    is_output_modelet_concept(accept_satisficing_engine, decision)
+    &
+    is_output_modelet_concept(accept_size_engine, decision)
+    &
+    ![C : concept]:
+    (
+      (
+        is_output_modelet_concept(accept_always_engine, C)
+        |
+        is_output_modelet_concept(accept_dominating_engine, C)
+        |
+        is_output_modelet_concept(accept_satisficing_engine, C)
+        |
+        is_output_modelet_concept(accept_size_engine, C)
+      )
+      <=>
+      C = decision
+    )
+  )
+).
+
+% TODO: see above, it would mean that the boolean takes the representation of
+% accepting or rejecting a decision...
+tff(accept_engines_output_representation_class, axiom,
+  ~?[R : representation_class]:
+    (
+      is_output_modelet_representation_class(accept_always_engine, R)
+      |
+      is_output_modelet_representation_class(accept_dominating_engine, R)
+      |
+      is_output_modelet_representation_class(accept_satisficing_engine, R)
+      |
+      is_output_modelet_representation_class(accept_size_engine, R)
+    )
+).
+
+
+tff(accept_always_engine_defined_input, axiom,
+  defines_input1(choice_template, accept_always_engine)
+).
+
+tff(accept_dominating_engine_defined_input, axiom,
+  defines_input1(choice_template, accept_dominating_engine)
+).
+
+tff(accept_satisficing_engine_defined_input, axiom,
+  defines_input1(choice_template, accept_satisficing_engine)
+).
+
+tff(accept_size_engine_defined_input, axiom,
+  defines_input1(choice_template, accept_size_engine)
+).
+
+
+%-----------------------------------
+
+% These decision engines transit the "absolute_size" property.
+% i.e. If some other engine ensures the absolute size of a chosen set, then this
+% engine will ensure that is also a property of the decision.
+tff(properties_are_transited_through_engines, axiom,
+  engine_transits_property(accept_always_engine, absolute_size_prop)
+  &
+  engine_transits_property(accept_dominating_engine, absolute_size_prop)
+  &
+  engine_transits_property(accept_satisficing_engine, absolute_size_prop)
+  &
+  engine_transits_property(accept_size_engine, absolute_size_prop)
+).
+
+
+%---------------------------------------------------------------------------

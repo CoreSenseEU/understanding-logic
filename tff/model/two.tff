@@ -20,7 +20,7 @@ tff(decl_exertable2, type,
 ).
 % Modelets are exertable by Engines (no sets) 2
 tff(axiom_modelet_is_exertable2, axiom,
-  ![M1: modelet, M2: modelet, T1: template, T2: template, E: engine]:
+  ![M1: modelet, M2: modelet, T1: template, T2: template, E: engine, R: requirement]:
   (
     (
       inputs_match(M1, T1)
@@ -28,6 +28,8 @@ tff(axiom_modelet_is_exertable2, axiom,
       inputs_match(M2, T2)
       &
       defines_input2(T1, T2, E)
+      &
+      (is_active(R) => engine_meets_requirement(E, R))
     )
     =>
     exertable2(E, M1, M2)
@@ -126,6 +128,27 @@ tff(axiom_engine_may_impart_property2, axiom,
       exert2(E, IM1, IM2) = OM
       &
       engine_imparts_output_property(E, P)
+    )
+    =>
+    modelet_has_property(OM, P)
+  )
+).
+
+tff(axiom_engine_may_transit_property2, axiom,
+  ! [E: engine, IM1: modelet, IM2: modelet, OM: modelet, P: property]:
+  (
+    (
+      exertable2(E, IM1, IM2)
+      &
+      exert2(E, IM1, IM2) = OM
+      &
+      engine_transits_property(E, P)
+      &
+      (
+        modelet_has_property(IM1, P)
+        |
+        modelet_has_property(IM2, P)
+      )
     )
     =>
     modelet_has_property(OM, P)

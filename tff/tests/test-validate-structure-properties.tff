@@ -1,0 +1,156 @@
+% Test Decision engines
+include('understanding-logic/tff/domains/decision-system/engines.tff').
+%include('decision-logic/tff/model/decision-properties-fixed.tff').
+
+%%% Decent strategy = lrs+1110_1:1_drc=ordering:bsd=on:fsr=off:nwc=3.0:s2a=on:s2agt=10:urr=on_0
+
+
+%%%%%% Requirements
+%---------------------------------------------------------------------------
+%%% Absolute Size Requirement
+%-----------------------------------
+% tff(absolute_size_req_decl, type,
+%   absolute_size_req : requirement
+% ).
+% 
+% tff(absolute_size_req_datatype, axiom,
+%   datatype_of_requirement(absolute_size_req) = choice_size_datatype
+% ).
+% 
+% tff(abslute_size_permissible_value, axiom,
+%   ![N: $real]:
+%   (
+%     is_permissible(absolute_size_req, N)
+%     <=>
+%     N = 1.0
+%   )
+% ).
+% %-----------------------------------
+% %---------------------------------------------------------------------------
+% 
+% 
+% 
+% %%%%%% Templates
+% %---------------------------------------------------------------------------
+% %%% Absolute Size Template
+% %-----------------------------------
+% tff(absolute_size_template_decl, type,
+%   absolute_size_template : template
+% ).
+% 
+% tff(absolute_size_template_requirements, axiom,
+%   ![R : requirement]:
+%   (
+%     is_part_of(R, absolute_size_template)
+%     <=>
+%     R = absolute_size_req
+%   )
+% ).
+% 
+% % tff(absolute_size_template_requirements, axiom,
+% %   ~?[R : requirement]:
+% %     is_part_of(R, absolute_size_template)
+% % ).
+% 
+% tff(absolute_size_template_no_creator_requirements, axiom,
+%   ~?[E: engine]:
+%     template_has_creator_requirement(absolute_size_template, E)
+% ).
+% 
+% tff(absolute_size_template_concept, axiom,
+%   ![C : concept]:
+%   (
+%     template_has_concept_requirement(absolute_size_template, C) 
+%     <=> 
+%     C = decision
+%   )
+% ).
+% 
+% tff(absolute_size_template_formalism, axiom,
+%   template_formalism_requirement(absolute_size_template) = decision_msg
+% ).
+% 
+% tff(absolute_size_template_no_representation_class, axiom,
+%   ~?[R : representation_class]:
+%     template_has_representation_class_requirement(absolute_size_template, R) 
+% ).
+% 
+% tff(absolute_size_template_no_location_requirements, axiom,
+%   ~?[SPT: spacetime_point]:
+%     template_has_location_requirement(absolute_size_template, SPT)
+% ).
+% 
+% tff(absolute_size_template_no_extent_requirements, axiom,
+%   ~?[E: extent]:
+%     template_has_extent_requirement(absolute_size_template, E)
+% ).
+% %-----------------------------------
+% 
+% tff(template_distinct_from_others, axiom,
+%   (
+%     absolute_size_template != cue_array_template
+%     &
+%     absolute_size_template != assessment_matrix_template
+%     &
+%     absolute_size_template != evaluation_template
+%     &
+%     absolute_size_template != weak_ordering_template
+%     &
+%     absolute_size_template != choice_template
+%   )
+% ).
+% 
+% %---------------------------------------------------------------------------
+% 
+% 
+% 
+% %%%%%% Questions
+% %---------------------------------------------------------------------------
+% 
+% tff(set_param_value, axiom,
+%   has_value(absolute_size_prop) = 1.0
+% ).
+
+% Is there a modelet that matches the absolute_size template
+% tff(question_decl, question,
+%   ?[M : modelet] :
+%   (
+%     inputs_match(M, absolute_size_template)
+%   )
+% ).
+tff(no_engine_requirements, axiom,
+  ![R: requirement]:
+    ~is_active(R)
+).
+
+tff(question_decl, conjecture,
+  ?[M : modelet, MS0a : modelet_set, MS0b : modelet_set, MS1 : modelet_set, MS2 : modelet_set, MS3 : modelet_set, MS4 : modelet_set]:
+  (
+    (
+      s(exert(update_alternatives_elim_engine, empty_ms), empty_ms) = MS0a
+      &
+      s(exert(update_cues_take_the_best_engine, MS0a), MS0a) = MS0b
+      &
+      s(exert(assess_engine, MS0b), MS0b) = MS1
+      &
+      s(exert(aggregate_preferences_engine, MS1), MS1) = MS2
+      &
+      s(exert(order_lexicographical_engine, MS2), MS2) = MS3
+      &
+      s(exert(eliminate_worst_engine, MS3), MS3) = MS4
+      &
+      exert(accept_size_engine, MS4) = M
+    )
+    % &
+    % inputs_match(M, absolute_size_template)
+    =>
+    (
+      modelet_models_concept(M, decision) 
+      &
+      modelet_has_property(M, absolute_size_prop)
+    )
+  )
+).
+
+
+%---------------------------------------------------------------------------

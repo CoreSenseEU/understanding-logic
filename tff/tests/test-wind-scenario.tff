@@ -490,9 +490,9 @@ tff(dse_engine_output_representation_class, axiom,
     is_output_modelet_representation_class(dse_engine, R)
 ).
 
- tff(dse_engine_defined_input, axiom,
+tff(dse_engine_defined_input, axiom,
   defines_input2(gnss_template, imu_template, dse_engine)
- ).
+).
 
 
 
@@ -554,6 +554,11 @@ tff(wee_engine_defined_input, axiom,
   defines_input2(ds_template, dse_template, we_engine)
 ).
 
+
+tff(no_engine_requirements, axiom,
+  ![R: requirement]:
+    ~is_active(R)
+).
 
 
 tff(question_decl, question,
