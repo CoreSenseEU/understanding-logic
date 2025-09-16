@@ -26,6 +26,11 @@ tff(decl_engine_output_properties, type,
 tff(decl_engine_imparts_output_properties, type,
   engine_imparts_output_property: (engine * property) > $o
 ).
+
+% Engine outputs may retain properties
+tff(engine_transits_property_decl, type,
+  engine_transits_property : (engine * property) > $o
+).
 %---
 
 tff(decl_engine_output_formalism, type,
@@ -79,13 +84,13 @@ tff(formally_equivalent, axiom,
         modelet_models_concept(M, C)
       )
       &
-%      ![R: representation_class]:
-%      ( % Equivalence of processing model classes
-%        template_has_representation_class_requirement(T, R)
-%        =>
-%        modelet_has_representation_class(M, R)
-%      )
-%      &
+      ![R: representation_class]:
+      ( % Equivalence of processing model classes
+        template_has_representation_class_requirement(T, R)
+        =>
+        modelet_has_representation_class(M, R)
+      )
+      &
       ! [SPT : spacetime_point]:
       (
         template_has_location_requirement(T, SPT)
@@ -135,5 +140,23 @@ tff(axiom_modelet_matches_template, axiom,
     )
     =>
     inputs_match(M, T)
+  )
+).
+
+% Engines can conform to requirements
+tff(decl_engine_meets_requirement, type,
+  engine_meets_requirement: (engine * requirement) > $o
+).
+
+tff(axiom_engine_meets_requirement, axiom,
+  ! [E : engine, R : requirement, P: property]:
+  (
+    (
+      engine_has_property(E, P) % match engine to property
+      &
+      property_meets_requirement(P, R)
+    )
+    =>
+    engine_meets_requirement(E, R)
   )
 ).

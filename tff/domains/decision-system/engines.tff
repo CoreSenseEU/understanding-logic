@@ -2,7 +2,8 @@
 
 
 % Decision Engines
-include('understanding-logic/tff/model/engines.tff').
+include('understanding-logic/tff/model/top.tff').
+include('understanding-logic/tff/domains/decision-system/properties.tff').
 
 %%%%%% Concepts
 %---------------------------------------------------------------------------
@@ -54,7 +55,7 @@ tff(decision_decl, type,
 ).
 %-----------------------------------
 
-% TODO: why do concepts not need to be distinct?  Was this left out of the wind estimation example?
+
 tff(concepts_are_distinct, axiom,
   $distinct(alternative_array, 
             cue_array, 
@@ -495,18 +496,8 @@ tff(update_alternatives_elim_engine_output_representation_class, axiom,
   )
 ).
 
-tff(empty_template_set_decl, type,
-  empty_template_set : template_set
-).
+%TODO: update_alternatives_elim_engine has no inputs, find a formulation.
 
-tff(update_alternatives_elim_template_set_axiom, axiom,
-  interface_of(update_alternatives_elim_engine) = empty_template_set
-).
-
-tff(empty_template_set_parts, axiom,
-  ~?[T : template]:
-    is_in_template_set(T, empty_template_set)
-).
 %-----------------------------------
 
 %%% UpdateCues
@@ -550,11 +541,8 @@ tff(update_cues_iter_one_engine_output_representation_class, axiom,
     )
 ).
 
-tff(update_cues_iter_one_template_set_axiom, axiom,
-%  interface_of(update_cues_iter_one_engine) = empty_template_set
-%  &
-  interface_of(update_cues_take_the_best_engine) = empty_template_set
-).
+%TODO: update_cues_take_the_best_engine has no inputs, find a formulation.
+
 %-----------------------------------
 
 %%% Assess
@@ -583,27 +571,11 @@ tff(assess_engine_output_representation_class, axiom,
     is_output_modelet_representation_class(assess_engine, R)
 ).
 
-tff(assess_template_set_decl, type,
-  assess_template_set : template_set
+tff(assess_engine_defined_input, axiom,
+  defines_input2(choice_set_template, cue_array_template, assess_engine)
 ).
 
-tff(assess_template_set_axiom, axiom,
-  interface_of(assess_engine) = assess_template_set
-).
 
-% TODO: address domain axiom (maybe with finite model finder?)
-tff(assess_template_set_parts, axiom,
-  ![T : template]:
-  (
-    is_in_template_set(T, assess_template_set)
-    <=>
-    (
-      T = choice_set_template
-      |
-      T = cue_array_template
-    )
-  )
-).
 %-----------------------------------
 
 %%% Aggregate
@@ -675,30 +647,30 @@ tff(aggregate_engines_output_representation_class, axiom,
     )
 ).
 
-tff(aggregate_template_set_decl, type,
-  aggregate_template_set : template_set
+
+
+tff(aggregate_preferences_engine_defined_input, axiom,
+  defines_input1(assessment_matrix_template, aggregate_preferences_engine)
 ).
 
-tff(aggregate_template_set_axiom, axiom,
-  interface_of(aggregate_preferences_engine) = aggregate_template_set
-  &
-  interface_of(aggregate_utility_boolean_engine) = aggregate_template_set
-  &
-  interface_of(aggregate_utility_signed_engine) = aggregate_template_set
-  &
-  interface_of(aggregate_utility_sum_engine) = aggregate_template_set
-  % &
-  % interface_of(aggregate_multi_value_utility_engine) = aggregate_template_set
+tff(aggregate_utility_boolean_engine_defined_input, axiom,
+  defines_input1(assessment_matrix_template, aggregate_utility_boolean_engine)
 ).
 
-tff(aggregate_template_set_parts, axiom,
-  ![T : template]:
-  (
-    is_in_template_set(T, aggregate_template_set)
-    <=>
-    T = assessment_matrix_template
-  )
+tff(aggregate_utility_signed_engine_defined_input, axiom,
+  defines_input1(assessment_matrix_template, aggregate_utility_signed_engine)
 ).
+
+
+tff(aggregate_utility_sum_engine_defined_input, axiom,
+  defines_input1(assessment_matrix_template, aggregate_utility_sum_engine)
+).
+
+
+%tff(aggregate_multi_value_utility_engine_defined_input, axiom,
+%  defines_input1(assessment_matrix_template, aggregate_multi_value_utility_engine)
+%).
+
 %-----------------------------------
 
 %%% Order
@@ -749,26 +721,19 @@ tff(order_engines_output_representation_class, axiom,
     )
 ).
 
-tff(order_template_set_decl, type,
-  order_template_set : template_set
+
+tff(order_condorcet_engine_defined_input, axiom,
+  defines_input1(evaluation_template, order_condorcet_engine)
 ).
 
-tff(order_template_set_axiom, axiom,
-  interface_of(order_condorcet_engine) = order_template_set
-  &
-  interface_of(order_dominating_engine) = order_template_set
-  &
-  interface_of(order_lexicographical_engine) = order_template_set
+tff(order_dominating_engine_defined_input, axiom,
+  defines_input1(evaluation_template, order_dominating_engine)
 ).
 
-tff(order_template_set_parts, axiom,
-  ![T : template]:
-  (
-    is_in_template_set(T, order_template_set)
-    <=>
-    T = evaluation_template
-  )
+tff(order_lexicographical_engine_defined_input, axiom,
+  defines_input1(evaluation_template, order_lexicographical_engine)
 ).
+
 %-----------------------------------
 
 %%% Take
@@ -830,24 +795,32 @@ tff(take_engines_output_representation_class, axiom,
   )
 ).
 
-tff(take_template_set_decl, type,
-  take_template_set : template_set
-).
-
-tff(take_template_set_axiom, axiom,
-  interface_of(take_best_engine) = take_template_set
-  &
-  interface_of(eliminate_worst_engine) = take_template_set
-).
-
-tff(take_template_set_parts, axiom,
-  ![T : template]:
+% TODO: It is not generally true that take_best imparts absolute size, but it is
+%   true with the default configuration. This is currently the only possible configuration
+%   by the heuristic assembly node so for now it works.
+tff(take_best_imparts_absolute_size_prop, axiom,
   (
-    is_in_template_set(T, take_template_set)
-    <=>
-    T = weak_ordering_template
+    % This is redundant, but helps with performance
+    engine_imparts_output_property(take_best_engine, absolute_size_prop)
+    &
+    ! [P: property]:
+    (
+      engine_imparts_output_property(take_best_engine, P)
+      <=>
+      P = absolute_size_prop
+    )
   )
 ).
+
+
+tff(take_best_engine_defined_input, axiom,
+  defines_input1(weak_ordering_template, take_best_engine)
+).
+
+tff(eliminate_worst_engine_defined_input, axiom,
+  defines_input1(weak_ordering_template, eliminate_worst_engine)
+).
+
 %-----------------------------------
 
 %%% Accept
@@ -867,6 +840,59 @@ tff(accept_satisficing_engine_decl, type,
 tff(accept_size_engine_decl, type,
   accept_size_engine : engine
 ).
+
+
+
+tff(accept_size_engine_has_properties, axiom,
+  (
+    engine_has_property(accept_size_engine, n_parameter_prop)
+    &
+    engine_has_property(accept_size_engine, relation_parameter_prop)
+    %%% RESUME
+
+    % &
+    %
+    % % This can enforce a size desired by the gap by setting the parameters.
+    % ![N: $real]:
+    % (
+    %   (
+    %     has_value(n_parameter_prop) = N
+    %     &
+    %     has_value(relation_parameter_prop) = 1.0 % Assume 1 means '=' for now (like an enum)
+    %   )
+    %   <=>
+    %   (
+    %     % Allow a model of known properties to enforce the property from this engine.
+    %     ?[M: modelet]:
+    %     (
+    %       modelet_has_creator(M, accept_size_engine)
+    %       &
+    %       modelet_has_property(M, absolute_size_prop)
+    %       &
+    %       has_value(absolute_size_prop) = N
+    %     )
+    %     =>
+    %     engine_imparts_output_property(accept_size_engine, absolute_size_prop)
+    %   )
+    % )
+  )
+).
+
+
+tff(accept_size_imparts_absolute_size_prop, axiom,
+  (
+    % This is redundant, but helps with performance
+    engine_imparts_output_property(accept_size_engine, absolute_size_prop)
+    &
+    ! [P: property]:
+    (
+      engine_imparts_output_property(accept_size_engine, P)
+      <=>
+      P = absolute_size_prop
+    )
+  )
+).
+
 
 % TODO: consider outputting a boolean instead of a whole decision message
 %   That is more in the spirit of what is going on, and lets the 'decision
@@ -928,37 +954,38 @@ tff(accept_engines_output_representation_class, axiom,
     )
 ).
 
-tff(accept_template_set_decl, type,
-  accept_template_set : template_set
+
+tff(accept_always_engine_defined_input, axiom,
+  defines_input1(choice_template, accept_always_engine)
 ).
 
-tff(accept_template_set_axiom, axiom,
-  interface_of(accept_always_engine) = accept_template_set
-  &
-  interface_of(accept_dominating_engine) = accept_template_set
-  &
-  interface_of(accept_satisficing_engine) = accept_template_set
-  &
-  interface_of(accept_size_engine) = accept_template_set
+tff(accept_dominating_engine_defined_input, axiom,
+  defines_input1(choice_template, accept_dominating_engine)
 ).
 
-tff(accept_template_set_parts, axiom,
-  ![T : template]:
-  (
-    is_in_template_set(T, accept_template_set)
-    <=>
-    T = choice_template
-  )
+tff(accept_satisficing_engine_defined_input, axiom,
+  defines_input1(choice_template, accept_satisficing_engine)
 ).
+
+tff(accept_size_engine_defined_input, axiom,
+  defines_input1(choice_template, accept_size_engine)
+).
+
+
 %-----------------------------------
 
-tff(template_sets_are_distinct, axiom,
-  $distinct(assess_template_set, 
-            aggregate_template_set, 
-            order_template_set,
-            take_template_set,
-            accept_template_set,
-            empty_template_set)
+% These decision engines transit the "absolute_size" property.
+% i.e. If some other engine ensures the absolute size of a chosen set, then this
+% engine will ensure that is also a property of the decision.
+tff(properties_are_transited_through_engines, axiom,
+  engine_transits_property(accept_always_engine, absolute_size_prop)
+  &
+  engine_transits_property(accept_dominating_engine, absolute_size_prop)
+  &
+  engine_transits_property(accept_satisficing_engine, absolute_size_prop)
+  &
+  engine_transits_property(accept_size_engine, absolute_size_prop)
 ).
+
 
 %---------------------------------------------------------------------------

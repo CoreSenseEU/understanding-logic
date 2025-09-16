@@ -25,6 +25,9 @@ tff(decl_type_of_r, type,
 tff(decl_requirement_range, type,
   is_permissible: (requirement * $real) > $o).
 
+% Requirements can be active, when applied to engines
+tff(decl_requirement_active, type,
+  is_active: (requirement) > $o).
 
 tff(property_meets_requirement_decl, type,
   property_meets_requirement : (property * requirement) > $o

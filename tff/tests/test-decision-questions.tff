@@ -1,0 +1,136 @@
+% Originally contributed by Tyler Olson  https://github.com/Rockjack00
+
+% Test Decision engine questions
+include('understanding-logic/tff/domains/decision-system/engines.tff').
+include('understanding-logic/tff/tests/test-decision-engines.tff').
+tff(no_engine_requirements, axiom,
+  ![R: requirement]:
+    ~is_active(R)
+).
+
+
+%%% Do the input modelets exist?
+%% Output:
+% SZS answers Tuple [[M1->given_alternatives_modelet,M2->given_cues_modelet]|_] for test-decision-questions
+%
+% tff(question_decl, question,
+%   ?[M1 : modelet, M2: modelet]:
+%   (
+%     modelet_models_concept(M1, alternative_array) 
+%     &
+%     modelet_models_concept(M2, cue_array) 
+%   )
+% ).
+
+
+%%% Test assess
+%%% Output
+% SZS answers Tuple [([M->exert(assess_engine,ius)]|[M->exert(assess_engine,ius)])|_] for test-decision-questions
+%
+% tff(question_decl, question,
+%   ?[M : modelet]:
+%   (
+%     modelet_models_concept(M, assessment_matrix) 
+%   )
+% ).
+
+
+%%% Test aggregate
+%%% Output
+% SZS answers Tuple [(∀X0.[M->exert(aggregate_preferences_engine,s(exert(assess_engine,ius),X0))]|∀X0.[M->exert(aggregate_utility_boolean_engine,s(exert(assess_engine,ius),X0))]|∀X0.[M->exert(aggregate_utility_sum_engine,s(exert(assess_engine,ius),X0))]|∀X0.[M->exert(aggregate_utility_signed_engine,s(exert(assess_engine,ius),X0))])|_] for test-decision-questions
+%
+% tff(question_decl, question,
+%   ?[M : modelet]:
+%   (
+%     modelet_models_concept(M, evaluation) 
+%   )
+% ).
+
+
+%%% Test order
+%
+% Solved with this strategy: 
+% dis+1010_1:4_drc=ordering:aac=none:abs=on:atotf=0.5:avsq=on:avsqc=2:avsqr=215,247:bsd=on:erd=off:fde=none:gve=cautious:newcnf=on:nwc=5.0:rnwc=on:sac=on:sas=z3:sp=const_min:tgt=ground:thsq=on:thsqc=64:thsqr=1,4:i=59848:si=on:rawr=on:rtra=on_0
+% 
+% simplified to -s 1010
+%
+%%% Output
+% SZS answers Tuple [(∀X1,X0.[M->exert(order_condorcet_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,ius),X0)),X1))]|∀X1,X0.[M->exert(order_lexicographical_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,ius),X0)),X1))]|∀X1,X0.[M->exert(order_dominating_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,ius),X0)),X1))]|∀X1,X0.[M->exert(order_condorcet_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,ius),X0)),X1))]|∀X1,X0.[M->exert(order_condorcet_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,ius),X0)),X1))]|∀X1,X0.[M->exert(order_condorcet_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,ius),X0)),X1))]|∀X1,X0.[M->exert(order_dominating_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,ius),X0)),X1))]|∀X1,X0.[M->exert(order_lexicographical_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,ius),X0)),X1))]|∀X1,X0.[M->exert(order_dominating_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,ius),X0)),X1))]|∀X1,X0.[M->exert(order_dominating_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,ius),X0)),X1))]|∀X1,X0.[M->exert(order_lexicographical_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,ius),X0)),X1))]|∀X1,X0.[M->exert(order_lexicographical_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,ius),X0)),X1))])|_] for test-decision-questions
+%
+% tff(question_decl, question,
+%   ?[M : modelet]:
+%   (
+%     modelet_models_concept(M, weak_ordering) 
+%   )
+% ).
+
+
+%%% Test take
+%
+% Solved with this strategy: 
+% dis+1010_1:4_drc=ordering:aac=none:abs=on:atotf=0.5:avsq=on:avsqc=2:avsqr=215,247:bsd=on:erd=off:fde=none:gve=cautious:newcnf=on:nwc=5.0:rnwc=on:sac=on:sas=z3:sp=const_min:tgt=ground:thsq=on:thsqc=64:thsqr=1,4:i=59848:si=on:rawr=on:rtra=on_0
+%
+% simplified to -s 1010 -sa discount -awr 1:4
+%
+%%% Output
+% SZS answers Tuple [(∀X6,X5,X4,X3,X2,X1,X0.[M->exert(take_best_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(X3,ius))))),X4)),X5)),X6))]|∀X6,X5,X4,X3,X2,X1,X0.[M->exert(take_best_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(X3,ius))))),X4)),X5)),X6))]|∀X6,X5,X4,X3,X2,X1,X0.[M->exert(take_best_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(X3,ius))))),X4)),X5)),X6))]|∀X5,X4,X3,X2,X1,X0.[M->exert(take_best_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_alternatives_modelet,ius))))),X3)),X4)),X5))]|∀X5,X4,X3,X2,X1,X0.[M->exert(take_best_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_alternatives_modelet,ius))))),X3)),X4)),X5))]|∀X5,X4,X3,X2,X1,X0.[M->exert(take_best_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_alternatives_modelet,ius))))),X3)),X4)),X5))]|∀X5,X4,X3,X2,X1,X0.[M->exert(take_best_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_alternatives_modelet,ius))))),X3)),X4)),X5))]|∀X5,X4,X3,X2,X1,X0.[M->exert(take_best_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_alternatives_modelet,ius))))),X3)),X4)),X5))]|∀X5,X4,X3,X2,X1,X0.[M->exert(take_best_engine,s(exert(order_dominating_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_alternatives_modelet,ius))))),X3)),X4)),X5))]|∀X5,X4,X3,X2,X1,X0.[M->exert(take_best_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_alternatives_modelet,ius))))),X3)),X4)),X5))]|∀X6,X5,X4,X3,X2,X1,X0.[M->exert(take_best_engine,s(exert(order_condorcet_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(X3,ius))))),X4)),X5)),X6))]|∀X5,X4,X3,X2,X1,X0.[M->exert(take_best_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_alternatives_modelet,ius))))),X3)),X4)),X5))]|∀X5,X4,X3,X2,X1,X0.[M->exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_alternatives_modelet,ius))))),X3)),X4)),X5))]|∀X5,X4,X3,X2,X1,X0.[M->exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_alternatives_modelet,ius))))),X3)),X4)),X5))]|∀X5,X4,X3,X2,X1,X0.[M->exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_alternatives_modelet,ius))))),X3)),X4)),X5))]|∀X5,X4,X3,X2,X1,X0.[M->exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_alternatives_modelet,ius))))),X3)),X4)),X5))]|∀X5,X4,X3,X2,X1,X0.[M->exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_alternatives_modelet,ius))))),X3)),X4)),X5))]|∀X5,X4,X3,X2,X1,X0.[M->exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_alternatives_modelet,ius))))),X3)),X4)),X5))]|∀X2,X1,X0.[M->exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,ius),X0)),X1)),X2))]|∀X5,X4,X3,X2,X1,X0.[M->exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_alternatives_modelet,ius))))),X3)),X4)),X5))]|∀X5,X4,X3,X2,X1,X0.[M->exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_alternatives_modelet,ius))))),X3)),X4)),X5))]|∀X5,X4,X3,X2,X1,X0.[M->exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_alternatives_modelet,ius))))),X3)),X4)),X5))]|∀X2,X1,X0.[M->exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,ius),X0)),X1)),X2))]|∀X5,X4,X3,X2,X1,X0.[M->exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_alternatives_modelet,ius))))),X3)),X4)),X5))])|_] for test-decision-questions
+%
+% tff(question_decl, question,
+%   ?[M : modelet]:
+%   (
+%     modelet_models_concept(M, alternative_array) 
+%     &
+%     modelet_has_representation_class(M, choice) 
+%   )
+% ).
+
+
+%%% Test decision
+%
+% With just two accept engines, Solved with this strategy: 
+% dis+1010_1:4_drc=ordering:aac=none:abs=on:atotf=0.5:avsq=on:avsqc=2:avsqr=215,247:bsd=on:erd=off:fde=none:gve=cautious:newcnf=on:nwc=5.0:rnwc=on:sac=on:sas=z3:sp=const_min:tgt=ground:thsq=on:thsqc=64:thsqr=1,4:i=59848:si=on:rawr=on:rtra=on_0 on test-decision-questions for (300ds/59848Mi)
+%
+% simplified to: -s 1010 -sa discount -awr 1:4 -drc ordering -aac none -abs on -avsq on -avsqc 2 -avsqr 215,247
+
+% lrs+1010_1:1_drc=ordering:aac=none:abs=on:bd=off:fd=off:nm=0:sas=z3:sims=off:tha=off:to=lpo:i=12098:si=on:rawr=on:rtra=on:si=on:rtra=on_0
+% Simplified to : -s 1010 -sa lrs -awr 1:1 -drc ordering -aac none -abs on -avsq on -avsqc 2 -avsqr 215,247 -bce on -bd off -fd off -nm 0 -sas z3 -sims off -tha off -to lpo -i 120980 -si on
+%
+%  - removing z3 made a huge difference
+% -s 1010 -sa lrs -awr 1:1 -drc ordering -aac none -abs on -avsq on -avsqc 2 -avsqr 215,247 -bce on -bd off -fd off -nm 0 -i 100000 -si on
+% -s 1010 -amm off -aac none -abs on -avsq on -avsqc 2 -bd off -fd off -si on
+%
+% lrs+11_9:8_drc=ordering:amm=off:bsd=on:etr=on:fsd=on:fsr=off:lma=on:newcnf=on:nm=0:nwc=3.0:s2a=on:s2agt=10:sas=z3:tha=some:i=4725:si=on:rawr=on:rtra=on_0
+% lrs+1010_1:1_drc=ordering:bsr=unit_only:cond=on:flr=on:newcnf=on:nwc=10.0:sas=z3:to=lpo:i=360:si=on:rawr=on:rtra=on_0
+%
+% lrs+1010_1:1_drc=ordering:bsr=unit_only:cond=on:flr=on:newcnf=on:nwc=10.0:sas=z3:to=lpo:i=360:si=on:rawr=on:rtra=on_0
+% Simplified to : -sa discount -s 1010 -nwc 10.0
+
+
+
+%%% Output
+% With only one accept engine:
+% SZS answers Tuple [(∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,s(given_cues_modelet,s(given_alternatives_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,s(given_cues_modelet,s(given_alternatives_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,s(given_cues_modelet,s(given_alternatives_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,s(given_cues_modelet,s(given_alternatives_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,s(given_alternatives_modelet,s(given_cues_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,s(given_alternatives_modelet,s(given_cues_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,s(given_alternatives_modelet,s(given_cues_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(take_best_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,s(given_alternatives_modelet,s(given_cues_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(take_best_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,s(given_alternatives_modelet,s(given_cues_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,s(given_alternatives_modelet,s(given_cues_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(take_best_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,s(given_alternatives_modelet,s(given_cues_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(take_best_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,s(given_alternatives_modelet,s(given_cues_modelet,X0))),X1)),X2)),X3)),X4))])|_] for test-decision-questions
+%
+% With only two accept engines:
+% SZS answers Tuple [(∀X7,X6,X5,X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_cues_modelet,s(given_alternatives_modelet,s(given_cues_modelet,X3))))))),X4)),X5)),X6)),X7))]|∀X8,X7,X6,X5,X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(X3,s(X4,ius)))))),X5)),X6)),X7)),X8))]|∀X8,X7,X6,X5,X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(X3,s(X4,ius)))))),X5)),X6)),X7)),X8))]|∀X7,X6,X5,X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(given_cues_modelet,s(given_alternatives_modelet,s(given_cues_modelet,X3))))))),X4)),X5)),X6)),X7))]|∀X8,X7,X6,X5,X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(X3,s(X4,ius)))))),X5)),X6)),X7)),X8))]|∀X8,X7,X6,X5,X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(X3,s(X4,ius)))))),X5)),X6)),X7)),X8))]|∀X8,X7,X6,X5,X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(X3,s(X4,ius)))))),X5)),X6)),X7)),X8))]|∀X8,X7,X6,X5,X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(X3,s(X4,ius)))))),X5)),X6)),X7)),X8))]|∀X8,X7,X6,X5,X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(X3,s(X4,ius)))))),X5)),X6)),X7)),X8))]|∀X8,X7,X6,X5,X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(X3,s(X4,ius)))))),X5)),X6)),X7)),X8))]|∀X8,X7,X6,X5,X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(X3,s(X4,ius)))))),X5)),X6)),X7)),X8))]|∀X8,X7,X6,X5,X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,s(X0,s(X1,s(X2,s(X3,s(X4,ius)))))),X5)),X6)),X7)),X8))])|_] for test-decision-questions
+%
+% Without "hints"
+% SZS answers Tuple [(∀X4,X3,X2,X1,X0.[M->exert(accept_dominating_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,s(given_alternatives_modelet,s(given_cues_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,s(given_cues_modelet,s(given_alternatives_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,s(given_alternatives_modelet,s(given_cues_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,s(given_alternatives_modelet,s(given_cues_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_dominating_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,s(given_cues_modelet,s(given_alternatives_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,s(given_alternatives_modelet,s(given_cues_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_dominating_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,s(given_alternatives_modelet,s(given_cues_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_dominating_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,s(given_alternatives_modelet,s(given_cues_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_dominating_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,s(given_alternatives_modelet,s(given_cues_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,s(given_alternatives_modelet,s(given_cues_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_dominating_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,s(given_alternatives_modelet,s(given_cues_modelet,X0))),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_dominating_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,s(given_alternatives_modelet,s(given_cues_modelet,X0))),X1)),X2)),X3)),X4))])|_] for test-decision-questions
+%
+% With only three accept engines:
+% SZS answers Tuple [(∀X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_satisficing_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_satisficing_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X4,X3,X2,X1,X0.[M->exert(accept_satisficing_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,s(X0,ius)),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,s(X0,ius)),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,s(X0,ius)),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_dominating_engine,s(exert(take_best_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,s(X0,ius)),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_dominating_engine,s(exert(take_best_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,s(X0,ius)),X1)),X2)),X3)),X4))]|∀X4,X3,X2,X1,X0.[M->exert(accept_dominating_engine,s(exert(take_best_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,s(X0,ius)),X1)),X2)),X3)),X4))]|∀X5,X4,X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,s(X0,s(X1,ius))),X2)),X3)),X4)),X5))]|∀X5,X4,X3,X2,X1,X0.[M->exert(accept_satisficing_engine,s(exert(take_best_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,s(X0,s(X1,ius))),X2)),X3)),X4)),X5))]|∀X5,X4,X3,X2,X1,X0.[M->exert(accept_satisficing_engine,s(exert(take_best_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,s(X0,s(X1,ius))),X2)),X3)),X4)),X5))])|_] for test-decision-questions
+%
+% With all:
+% SZS answers Tuple [(∀X3,X2,X1,X0.[M->exert(accept_size_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_size_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_size_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_size_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_size_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_size_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_size_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_size_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))])|_] for test-decision-questions
+%
+%
+
+
+tff(question_decl, question,
+  ?[M : modelet]:
+  (
+    modelet_models_concept(M, decision)
+    &
+    modelet_has_property(M, absolute_size_prop)
+  )
+).
