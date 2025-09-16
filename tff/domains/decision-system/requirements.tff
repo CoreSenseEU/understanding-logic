@@ -1,0 +1,156 @@
+% Originally contributed by Tyler Olson  https://github.com/Rockjack00
+
+% Decision Requirements
+include('understanding-logic/tff/model/properties.tff').
+include('decision-logic/tff/model/decision-engines.tff').
+
+%%%%%% Properties
+%---------------------------------------------------------------------------
+%%% Choice properties
+%-----------------------------------
+tff(absolute_size_prop_decl, type,
+   absolute_size_prop : property
+).
+
+tff(n_parameter_prop_decl, type,
+   n_parameter_prop : property
+).
+
+tff(relation_parameter_prop_decl, type,
+   relation_parameter_prop : property
+).
+
+tff(accept_size_imparts_absolute_size_prop, axiom,
+  (
+    engine_has_property(accept_size_engine, n_parameter_prop)
+    &
+    engine_has_property(accept_size_engine, relation_parameter_prop)
+    %%% RESUME
+
+    % &
+    %
+    % % This can enforce a size desired by the gap by setting the parameters.
+    % ![N: $real]:
+    % (
+    %   (
+    %     has_value(n_parameter_prop) = N
+    %     &
+    %     has_value(relation_parameter_prop) = 1.0 % Assume 1 means '=' for now (like an enum)
+    %   )
+    %   <=>
+    %   (
+    %     % Allow a model of known properties to enforce the property from this engine.
+    %     ?[M: modelet]:
+    %     (
+    %       modelet_has_creator(M, accept_size_engine)
+    %       &
+    %       modelet_has_property(M, absolute_size_prop)
+    %       &
+    %       has_value(absolute_size_prop) = N
+    %     )
+    %     =>
+    %     engine_imparts_output_property(accept_size_engine, absolute_size_prop)
+    %   )
+    % )
+  )
+).
+
+
+tff(properties_are_distinct, axiom,
+  $distinct(absolute_size_prop,
+            n_parameter_prop,
+            relation_parameter_prop
+            )
+).
+
+%-----------------------------------
+
+
+
+%---------------------------------------------------------------------------
+%%%%%% Requirements
+%---------------------------------------------------------------------------
+%%% Chosen set requirements
+%-----------------------------------
+% tff(choice_absolute_size_req_decl, axiom,
+%    choice_absolute_size_req : requirement
+% ).
+
+
+
+
+%-----------------------------------
+
+%---------------------------------------------------------------------------
+
+
+
+% tff(gap_template_decl, axiom,
+%   gap_template : template  
+% ).
+
+
+
+%%%%%% Templates
+%---------------------------------------------------------------------------
+%%% choice_set
+%-----------------------------------
+% tff(choice_set_template_decl, type,
+%   choice_set_template : template
+% ).
+%
+% tff(choice_set_template_no_requirements, axiom,
+%   ~?[R : requirement]:
+%     is_part_of(R, choice_set_template)
+% ).
+%
+% tff(choice_set_template_no_creator_requirements, axiom,
+%   ~?[E: engine]:
+%     template_has_creator_requirement(choice_set_template, E)
+% ).
+%
+% % TODO: combine this with take_template_concept?
+% %    Right now double implication is too strong
+% tff(choice_set_template_concept, axiom,
+% (
+%   % It only has this requirement
+%   template_has_concept_requirement(choice_set_template, alternative_array) 
+%   &
+%   % It has no other concept requirements
+%   ![C : concept]:
+%   (
+%     template_has_concept_requirement(choice_set_template, C) 
+%     => 
+%     C = alternative_array
+%   )
+% )
+% ).
+%
+% tff(choice_set_template_formalism, axiom,
+%   template_formalism_requirement(choice_set_template) = alternative_array_msg
+% ).
+%
+% % Using this particular set of alternatives as a choice set
+% %
+% % TODO: Need an engine that adds a representation class to sets of alternatives (this will be GetAlternatives :D)
+% %
+% tff(choice_set_template_representation_class, axiom,
+%   ![R : representation_class]:
+%   (
+%     template_has_representation_class_requirement(choice_set_template, R) 
+%     <=> 
+%     R = choice_set
+%   )
+% ).
+%
+% tff(choice_set_template_no_location_requirements, axiom,
+%   ~?[SPT: spacetime_point]:
+%     template_has_location_requirement(choice_set_template, SPT)
+% ).
+%
+% tff(choice_set_template_no_extent_requirements, axiom,
+%   ~?[E: extent]:
+%     template_has_extent_requirement(choice_set_template, E)
+% ).
+%-----------------------------------
+

@@ -1,0 +1,140 @@
+% Originally contributed by Tyler Olson  https://github.com/Rockjack00
+
+% Decision properties for fixed parameters
+include('understanding-logic/tff/model/properties.tff').
+include('decision-logic/tff/model/decision-engines.tff').
+
+%%%%%% Datatypes
+%---------------------------------------------------------------------------
+%%% Choice Size
+% TODO: This is not a datatype, it is a phenomenon.  but right now there's not a way to express that...
+%-----------------------------------
+tff(choice_size_datatype_decl, type,
+   choice_size_datatype : datatype
+).
+%-----------------------------------
+
+%---------------------------------------------------------------------------
+
+
+
+%%%%%% Properties
+%---------------------------------------------------------------------------
+%%% Decision Properties
+%-----------------------------------
+tff(absolute_size_prop_decl, type,
+   absolute_size_prop : property
+).
+
+tff(absolute_size_prop_datatype, axiom,
+  datatype_of_property(absolute_size_prop) = choice_size_datatype
+).
+
+
+tff(accept_size_imparts_absolute_size_prop, axiom,
+  (
+    % This is redundant, but helps with performance
+    engine_imparts_output_property(accept_size_engine, absolute_size_prop)
+    &
+    ! [P: property]:
+    (
+      engine_imparts_output_property(accept_size_engine, P)
+      <=>
+      P = absolute_size_prop
+    )
+  )
+).
+
+% TODO: It is not generally true that take_best imparts absolute size, but it is
+%   true with the default configuration. This is currently the only possible configuration
+%   by the heuristic assembly node so for now it works.
+tff(take_best_imparts_absolute_size_prop, axiom,
+  (
+    % This is redundant, but helps with performance
+    engine_imparts_output_property(take_best_engine, absolute_size_prop)
+    &
+    ! [P: property]:
+    (
+      engine_imparts_output_property(take_best_engine, P)
+      <=>
+      P = absolute_size_prop
+    )
+  )
+).
+%-----------------------------------
+
+
+% tff(properties_are_distinct, axiom,
+%   $distinct(absolute_size_prop,
+%             n_parameter_prop,
+%             relation_parameter_prop
+%             )
+% ).
+
+
+
+%%%%%% Transitive properties
+%---------------------------------------------------------------------------
+% An engine transits a property from any of its inputs to its output.
+% That is if any of its inputs have some property P, then its output will also
+% have that property P.
+tff(engine_transits_property_decl, type,
+  engine_transits_property : (engine * property) > $o
+).
+
+tff(engine_transits_property_def, axiom,
+  ![E : engine, P : property, MS : modelet_set]:
+  (
+    (
+      exertable(E, MS)
+      &
+      engine_transits_property(E, P)
+      &
+      ?[Mparent : modelet]:
+      (
+        is_in_modelet_set(Mparent, MS)
+        &
+        modelet_has_property(Mparent, P)
+      )
+    )
+    =>
+    modelet_has_property(exert(E, MS), P)
+    %
+    %
+    %
+    %
+    %
+    %
+    %
+    %
+    % (
+    %   engine_passes_property(E, P)
+    %   &
+    %   modelet_has_creator(M, E)
+    %   &
+    %   ?[Mparent : modelet]:
+    %   (
+    %     is_in_modelet_set(Mparent, parents_of_modelet(M))
+    %     &
+    %     modelet_has_property(Mparent, P)
+    %   )
+    % )
+    % =>
+    % modelet_has_property(M, P)
+  )
+).
+
+
+% These decision engines transit the "absolute_size" property.
+% i.e. If some other engine ensures the absolute size of a chosen set, then this
+% engine will ensure that is also a property of the decision.
+tff(properties_are_transited_through_engines, axiom,
+  engine_transits_property(accept_always_engine, absolute_size_prop)
+  &
+  engine_transits_property(accept_dominating_engine, absolute_size_prop)
+  &
+  engine_transits_property(accept_satisficing_engine, absolute_size_prop)
+  &
+  engine_transits_property(accept_size_engine, absolute_size_prop)
+).
+
