@@ -94,32 +94,6 @@ tff(formally_equivalent, axiom,
   )
 ).
 
-% % Modelets and Templates can have matching profiles
-% tff(axiom_modelet_matches_template, axiom,
-%   ! [M: modelet, T: template]:
-%   (
-%     (
-%       formally_equivalent(T, M)
-%       &
-%       ! [R: requirement]:
-%       (
-%         is_part_of(R, T)
-%         =>
-%         ? [P: property]:
-%         (
-%           modelet_has_property(M, P) % match modelet to property
-%           &
-%           (datatype_of_requirement(R) = datatype_of_property(P)) % property has correct correct data format/type for requirement
-%           &
-%           is_permissible(R, has_value(P)) % ensure that the property's value is permissible
-%         )
-%       )
-%     )
-%     =>
-%     inputs_match(M, T)
-%   )
-% ).
-
 
 
 tff(property_meets_requirement_decl, type,
