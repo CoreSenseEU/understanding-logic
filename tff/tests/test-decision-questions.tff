@@ -3,10 +3,10 @@
 % Test Decision engine questions
 include('understanding-logic/tff/domains/decision-system/engines.tff').
 include('understanding-logic/tff/tests/test-decision-engines.tff').
-tff(no_engine_requirements, axiom,
-  ![R: requirement]:
-    ~is_active(R)
-).
+%tff(no_engine_requirements, axiom,
+%  ![R: engine_requirement]:
+%    ~is_active(R)
+%).
 
 
 %%% Do the input modelets exist?
@@ -124,6 +124,10 @@ tff(no_engine_requirements, axiom,
 % SZS answers Tuple [(∀X3,X2,X1,X0.[M->exert(accept_size_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_size_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_size_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_size_engine,s(exert(eliminate_worst_engine,s(exert(order_dominating_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_size_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_preferences_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_size_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_sum_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_size_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_boolean_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_size_engine,s(exert(eliminate_worst_engine,s(exert(order_lexicographical_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))]|∀X3,X2,X1,X0.[M->exert(accept_always_engine,s(exert(eliminate_worst_engine,s(exert(order_condorcet_engine,s(exert(aggregate_utility_signed_engine,s(exert(assess_engine,ius),X0)),X1)),X2)),X3))])|_] for test-decision-questions
 %
 %
+
+tff(axiom_fast_active, axiom,
+    is_active(fast)
+).
 
 
 tff(question_decl, question,

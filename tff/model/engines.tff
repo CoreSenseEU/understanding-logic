@@ -145,18 +145,18 @@ tff(axiom_modelet_matches_template, axiom,
 
 % Engines can conform to requirements
 tff(decl_engine_meets_requirement, type,
-  engine_meets_requirement: (engine * requirement) > $o
+  engine_meets_requirement: (engine * engine_requirement) > $o
 ).
 
-tff(axiom_engine_meets_requirement, axiom,
-  ! [E : engine, R : requirement, P: property]:
-  (
-    (
-      engine_has_property(E, P) % match engine to property
-      &
-      property_meets_requirement(P, R)
-    )
-    =>
-    engine_meets_requirement(E, R)
-  )
-).
+%tff(axiom_engine_meets_requirement, axiom,
+%  ! [E : engine, R : requirement, P: property]:
+%  (
+%    (
+%      engine_has_property(E, P) % match engine to property
+%      &
+%      property_meets_requirement(P, R)
+%    )
+%    =>
+%    engine_meets_requirement(E, R)
+%  )
+%).

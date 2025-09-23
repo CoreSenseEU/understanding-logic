@@ -13,6 +13,17 @@ tff(decl_property_value, type,
 tff(decl_requirement, type,
   requirement: $tType).
 
+
+tff(decl_engine_requirement, type,
+  engine_requirement: $tType
+).
+
+tff(decl_fast_requirement, type,
+  fast: engine_requirement
+).
+
+
+
 % Properties have types
 tff(decl_type_of_p, type,
   type_of_property : property > proptype).
@@ -27,7 +38,7 @@ tff(decl_requirement_range, type,
 
 % Requirements can be active, when applied to engines
 tff(decl_requirement_active, type,
-  is_active: (requirement) > $o).
+  is_active: (engine_requirement) > $o).
 
 tff(property_meets_requirement_decl, type,
   property_meets_requirement : (property * requirement) > $o
