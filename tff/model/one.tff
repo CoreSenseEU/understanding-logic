@@ -1,4 +1,5 @@
 % Modelets and engines
+include('understanding-logic/tff/model/fundamental-concepts.tff').
 include('understanding-logic/tff/model/engines.tff').
 
 
@@ -20,17 +21,17 @@ tff(decl_exertable1, type,
 ).
 % Modelets are exertable by Engines (no sets) 1
 tff(axiom_modelet_is_exertable1, axiom,
-  ![M: modelet, T: template, E: engine, R: requirement]:
+  ![M1: modelet,  T1: template, E: engine, R: engine_requirement]:
   (
     (
-      inputs_match(M, T)
+      inputs_match(M1, T1)
       &
-      defines_input1(T, E)
+      defines_input1(T1, E)
       &
       (is_active(R) => engine_meets_requirement(E, R))
     )
     =>
-    exertable1(E, M)
+    exertable1(E, M1)
   )
 ).
 
@@ -84,12 +85,12 @@ tff(axiom_engines_are_creators_of_modelets1, axiom,
 
 
 tff(axiom_engine_may_impart_representation_class1, axiom,
-  ![E: engine, IM: modelet, OM: modelet, R: representation_class]:
+  ![E: engine, IM1: modelet, OM: modelet, R: representation_class]:
   (
     (
-      exertable1(E, IM)
+      exertable1(E, IM1)
       &
-      exert1(E, IM) = OM
+      exert1(E, IM1) = OM
       &
       is_output_modelet_representation_class(E, R)
     )
@@ -101,12 +102,12 @@ tff(axiom_engine_may_impart_representation_class1, axiom,
 
 
 tff(axiom_engine_may_impart_topic1, axiom,
-  ![E: engine, IM: modelet, OM: modelet, C: concept]:
+  ![E: engine, IM1: modelet, OM: modelet, C: concept]:
   (
     (
-      exertable1(E, IM)
+      exertable1(E, IM1)
       &
-      exert1(E, IM) = OM
+      exert1(E, IM1) = OM
       &
       is_output_modelet_concept(E, C)
     )
@@ -114,7 +115,6 @@ tff(axiom_engine_may_impart_topic1, axiom,
     modelet_models_concept(OM, C) 
   )
 ).
-
 
 
 % Engine outputs have properties
@@ -133,8 +133,6 @@ tff(axiom_engine_may_impart_property1, axiom,
   )
 ).
 
-
-
 tff(axiom_engine_may_transit_property1, axiom,
   ! [E: engine, IM1: modelet, OM: modelet, P: property]:
   (
@@ -151,4 +149,3 @@ tff(axiom_engine_may_transit_property1, axiom,
     modelet_has_property(OM, P)
   )
 ).
-

@@ -478,14 +478,6 @@ tff(update_alternatives_elim_engine_output_formalism, axiom,
   output_modelet_formalism(update_alternatives_elim_engine) = alternative_array_msg
 ).
 
-tff(update_alternatives_elim_engine_output_concept, axiom,
-  ![C : concept]:
-  (
-    is_output_modelet_concept(update_alternatives_elim_engine, C)
-    <=>
-    C = alternative_array
-  )
-).
 
 tff(update_alternatives_elim_engine_output_representation_class, axiom,
   ![R : representation_class]:
@@ -571,6 +563,10 @@ tff(assess_engine_output_representation_class, axiom,
     is_output_modelet_representation_class(assess_engine, R)
 ).
 
+tff(assess_engine_meets_requirement_axiom, axiom,
+  engine_meets_requirement(assess_engine, fast)
+).
+
 tff(assess_engine_defined_input, axiom,
   defines_input2(choice_set_template, cue_array_template, assess_engine)
 ).
@@ -614,21 +610,21 @@ tff(aggregate_engines_output_formalism, axiom,
 ).
 
 tff(aggregate_engines_output_concept, axiom,
-  ![C : concept]:
+  ![E : engine]:
   (
-    (
-      is_output_modelet_concept(aggregate_preferences_engine, C)
-      |
-      is_output_modelet_concept(aggregate_utility_boolean_engine, C)
-      |
-      is_output_modelet_concept(aggregate_utility_signed_engine, C)
-      |
-      is_output_modelet_concept(aggregate_utility_sum_engine, C)
-      % |
-      % is_output_modelet_concept(aggregate_multi_value_utility_engine, C)
-    )
+    is_output_modelet_concept(E, evaluation)
     <=>
-    C = evaluation
+    (
+      (E = aggregate_preferences_engine)
+      |
+      (E = aggregate_utility_boolean_engine)
+      |
+      (E = aggregate_utility_signed_engine)
+      |
+      (E = aggregate_utility_sum_engine)
+%      |
+%      (E = aggregate_multi_value_utility_engine)
+    )
   )
 ).
 
@@ -648,6 +644,9 @@ tff(aggregate_engines_output_representation_class, axiom,
 ).
 
 
+tff(aggregate_utility_sum_engine_meets_requirement_axiom, axiom,
+  engine_meets_requirement(aggregate_utility_sum_engine, fast)
+).
 
 tff(aggregate_preferences_engine_defined_input, axiom,
   defines_input1(assessment_matrix_template, aggregate_preferences_engine)
@@ -696,17 +695,17 @@ tff(order_engines_output_formalism, axiom,
 ).
 
 tff(order_engines_output_concept, axiom,
-  ![C : concept]:
+  ![E : engine]:
   (
-    (
-      is_output_modelet_concept(order_condorcet_engine, C)
-      |
-      is_output_modelet_concept(order_dominating_engine, C)
-      |
-      is_output_modelet_concept(order_lexicographical_engine, C)
-    )
+    is_output_modelet_concept(E, weak_ordering)
     <=>
-    C = weak_ordering
+    (
+      (E = order_condorcet_engine)
+      |
+      (E = order_dominating_engine)
+      |
+      (E = order_lexicographical_engine)
+    )
   )
 ).
 
@@ -721,6 +720,9 @@ tff(order_engines_output_representation_class, axiom,
     )
 ).
 
+tff(order_lexicographical_engine_meets_requirement_axiom, axiom,
+  engine_meets_requirement(order_lexicographical_engine, fast)
+).
 
 tff(order_condorcet_engine_defined_input, axiom,
   defines_input1(evaluation_template, order_condorcet_engine)
@@ -756,41 +758,29 @@ tff(take_engines_output_formalism, axiom,
 % TODO: combine this with get/update_alternatives_output_concept?
 %    Right now double implication is too strong
 tff(take_engines_output_concept, axiom,
+  ![E: engine]:
   (
-    is_output_modelet_concept(take_best_engine, alternative_array)
-    &
-    is_output_modelet_concept(eliminate_worst_engine, alternative_array)
-    &
-    ![C : concept]:
+    is_output_modelet_concept(E, alternative_array)
+    <=>
     (
-      (
-        is_output_modelet_concept(take_best_engine, C)
-        |
-        is_output_modelet_concept(eliminate_worst_engine, C)
-      )
-      =>
-      C = alternative_array
+      (E = take_best_engine)
+      |
+      (E = eliminate_worst_engine)
+      |
+      (E = update_alternatives_elim_engine)
     )
   )
 ).
 
 tff(take_engines_output_representation_class, axiom,
+  ![E: engine]:
   (
-    % Right now these statements are redudant with the universal quantifier,
-    % but help make it faster.
-    is_output_modelet_representation_class(take_best_engine, choice)
-    &
-    is_output_modelet_representation_class(eliminate_worst_engine, choice)
-    &
-    ![R : representation_class]:
+    is_output_modelet_representation_class(E, choice)
+    <=>
     (
-      (
-        is_output_modelet_representation_class(take_best_engine, R)
-        |
-        is_output_modelet_representation_class(eliminate_worst_engine, R)
-      )
-      <=>
-      R = choice
+      (E = take_best_engine)
+      |
+      (E = eliminate_worst_engine)
     )
   )
 ).
@@ -812,6 +802,9 @@ tff(take_best_imparts_absolute_size_prop, axiom,
   )
 ).
 
+tff(eliminate_worst_engine_meets_requirement_axiom, axiom,
+  engine_meets_requirement(eliminate_worst_engine, fast)
+).
 
 tff(take_best_engine_defined_input, axiom,
   defines_input1(weak_ordering_template, take_best_engine)
@@ -911,30 +904,18 @@ tff(accept_engines_output_formalism, axiom,
 
 % TODO: see above
 tff(accept_engines_output_concept, axiom,
+  ![E : engine]:
   (
-    % Right now these statements are redudant with the universal quantifier,
-    % but help make it faster.
-    is_output_modelet_concept(accept_always_engine, decision)
-    &
-    is_output_modelet_concept(accept_dominating_engine, decision)
-    &
-    is_output_modelet_concept(accept_satisficing_engine, decision)
-    &
-    is_output_modelet_concept(accept_size_engine, decision)
-    &
-    ![C : concept]:
+    is_output_modelet_concept(E, decision)
+    <=>
     (
-      (
-        is_output_modelet_concept(accept_always_engine, C)
-        |
-        is_output_modelet_concept(accept_dominating_engine, C)
-        |
-        is_output_modelet_concept(accept_satisficing_engine, C)
-        |
-        is_output_modelet_concept(accept_size_engine, C)
-      )
-      <=>
-      C = decision
+    (E = accept_always_engine)
+    |
+    (E = accept_dominating_engine)
+    |
+    (E = accept_satisficing_engine)
+    |
+    (E = accept_size_engine)
     )
   )
 ).
@@ -954,6 +935,9 @@ tff(accept_engines_output_representation_class, axiom,
     )
 ).
 
+tff(accept_size_engine_meets_requirement_axiom, axiom,
+  engine_meets_requirement(accept_size_engine, fast)
+).
 
 tff(accept_always_engine_defined_input, axiom,
   defines_input1(choice_template, accept_always_engine)
