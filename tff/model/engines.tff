@@ -11,6 +11,12 @@ tff(decl_engine, type,
 ).
 
 
+% Engines can be disabled selectively
+tff(decl_engine_disable, type,
+  engine_disabled: (engine) > $o
+).
+
+
 % Engines have properties
 tff(decl_property_of_e, type,
   engine_has_property: (engine * property) > $o
