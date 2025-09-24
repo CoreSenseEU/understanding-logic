@@ -30,6 +30,8 @@ tff(axiom_modelet_is_exertable2, axiom,
       &
       defines_input2(T1, T2, E)
       &
+      ~engine_disabled(E)
+      &
       (is_active(R) => engine_meets_requirement(E, R))
     )
     =>

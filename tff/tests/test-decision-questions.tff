@@ -126,7 +126,14 @@ include('understanding-logic/tff/tests/test-decision-engines.tff').
 %
 
 tff(axiom_fast_active, axiom,
-    is_active(fast)
+  is_active(fast)
+).
+
+tff(axion_no_engine_disabled, axiom,
+  ![E: engine]:
+  (
+    ~engine_disabled(E)
+  )
 ).
 
 
