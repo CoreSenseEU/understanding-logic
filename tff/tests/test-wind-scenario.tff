@@ -1,7 +1,10 @@
 % Wind Estimation Scenario
 
 %include('understanding-logic/tff/model/properties.tff').
-include('understanding-logic/tff/model/top.tff').
+%include('understanding-logic/tff/model/top.tff').
+include('understanding-logic/tff/model/one.tff').
+include('understanding-logic/tff/model/two.tff').
+include('understanding-logic/tff/model/three.tff').
 
 %%%%%% Phenomena
 %---------------------------------------------------------------------------
@@ -479,7 +482,7 @@ tff(dse_engine_output_formalism, axiom,
 tff(dse_engine_output_topic, axiom,
   ![C : concept]:
   (
-    is_output_modelet_concept(dse_engine, C)
+    engine_imparts_concept(dse_engine, C)
     <=>
     C = drone_state
   )
@@ -487,7 +490,7 @@ tff(dse_engine_output_topic, axiom,
 
 tff(dse_engine_output_representation_class, axiom,
   ~?[R : representation_class]:
-    is_output_modelet_representation_class(dse_engine, R)
+    engine_imparts_representation_class(dse_engine, R)
 ).
 
 tff(dse_engine_defined_input, axiom,
@@ -508,13 +511,13 @@ tff(drone_state_evolution_engine_output_formalism, axiom,
 
 tff(dsee_engine_output_representation_class, axiom,
   ~?[R : representation_class]:
-    is_output_modelet_representation_class(dsee_engine, R)
+    engine_imparts_representation_class(dsee_engine, R)
 ).
 
 tff(drone_state_evolution_engine_output_topic, axiom,
   ![C : concept]:
   (
-    is_output_modelet_concept(dsee_engine, C)
+    engine_imparts_concept(dsee_engine, C)
     <=>
     C = drone_state_evolution
   )
@@ -537,13 +540,13 @@ tff(wind_estimation_engine_output_formalism, axiom,
 
 tff(we_engine_output_representation_class, axiom,
   ~?[R : representation_class]:
-    is_output_modelet_representation_class(we_engine, R)
+    engine_imparts_representation_class(we_engine, R)
 ).
 
 tff(wind_estimation_engine_output_topic, axiom,
   ![C : concept]:
   (
-    is_output_modelet_concept(we_engine, C)
+    engine_imparts_concept(we_engine, C)
     <=>
     C = wind
   )
@@ -554,12 +557,15 @@ tff(wee_engine_defined_input, axiom,
   defines_input2(ds_template, dse_template, we_engine)
 ).
 
-
-tff(no_engine_requirements, axiom,
-  ![R: requirement]:
-    ~is_active(R)
+tff(resources_available, axiom, 
+  ![R: resource]:
+    ~resource_unavailable(R)
 ).
 
+tff(engines_available, axiom, 
+  ![E: engine]:
+    ~engine_unavailable(E)
+).
 
 tff(question_decl, question,
   ?[M : modelet]:

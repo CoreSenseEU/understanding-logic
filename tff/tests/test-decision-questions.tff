@@ -125,23 +125,33 @@ include('understanding-logic/tff/tests/test-decision-engines.tff').
 %
 %
 
-tff(axiom_fast_active, axiom,
-  is_active(fast)
-).
 
 tff(axion_no_engine_disabled, axiom,
   ![E: engine]:
   (
-    ~engine_disabled(E)
+    ~engine_unavailable(E)
   )
 ).
 
+tff(axion_no_resource_disabled, axiom,
+  ![R: resource]:
+  (
+    ~resource_unavailable(R)
+  )
+).
+
+tff(axion_no_template_isabled, axiom,
+  ![T: template, C: concept]:
+  (
+    ~template_has_concept_requirement(T,C)
+  )
+).
 
 tff(question_decl, question,
   ?[M : modelet]:
   (
-    modelet_models_concept(M, decision)
-    &
-    modelet_has_property(M, absolute_size_prop)
+    modelet_has_representation_class(M, assessment_matrix_rc)
+%    &
+%    modelet_has_property(M, absolute_size_prop)
   )
 ).
