@@ -1,5 +1,0 @@
-include('understanding-logic/tff/model/one.tff').
-include('understanding-logic/tff/model/two.tff').
-include('understanding-logic/tff/model/three.tff').
-
-

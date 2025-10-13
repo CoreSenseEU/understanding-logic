@@ -13,7 +13,7 @@ tff(decl_engine, type,
 
 % Engines can be disabled selectively
 tff(decl_engine_disable, type,
-  engine_disabled: (engine) > $o
+  engine_unavailable: (engine) > $o
 ).
 
 
@@ -23,14 +23,9 @@ tff(decl_property_of_e, type,
 ).
 
 
-%--- TODO either or
 % Engine outputs have properties
-tff(decl_engine_output_properties, type,
-  output_property_of_engine: engine > property).
-  
-% Engine outputs have properties
-tff(decl_engine_imparts_output_properties, type,
-  engine_imparts_output_property: (engine * property) > $o
+tff(decl_engine_imparts_property, type,
+  engine_imparts_property: (engine * property) > $o
 ).
 
 % Engine outputs may retain properties
@@ -45,12 +40,12 @@ tff(decl_engine_output_formalism, type,
 
 
 tff(decl_engine_output_concept, type,
-  is_output_modelet_concept : (engine * concept) > $o
+  engine_imparts_concept : (engine * concept) > $o
 ).
 
 % Engines can impart processing semantics unto their output modelets
 tff(decl_engine_imparts_representation_class, type,
-  is_output_modelet_representation_class : (engine * representation_class) > $o
+  engine_imparts_representation_class : (engine * representation_class) > $o
 ).
 
 
@@ -150,8 +145,8 @@ tff(axiom_modelet_matches_template, axiom,
 ).
 
 % Engines can conform to requirements
-tff(decl_engine_meets_requirement, type,
-  engine_meets_requirement: (engine * engine_requirement) > $o
+tff(decl_engine_uses_resource, type,
+  engine_uses_resource: (engine * resource) > $o
 ).
 
 %tff(axiom_engine_meets_requirement, axiom,

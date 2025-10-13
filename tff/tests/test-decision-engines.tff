@@ -1,5 +1,5 @@
 % Test Decision engines
-include('understanding-logic/tff/domains/decision-system/engines.tff').
+%include('understanding-logic/tff/domains/decision-system/engines.tff').
 
 
 %%%%%% Input Modelets
@@ -25,13 +25,17 @@ tff(given_alternatives_modelet_creator, axiom,
 %    could also model the `alternative_array` concept
 tff(given_alternatives_modelet_models_alternative_array, axiom,
   (
-    modelet_models_concept(given_alternatives_modelet, alternative_array) 
+    modelet_has_representation_class(given_alternatives_modelet, alternative_array_rc) 
     &
-    ![C : concept]:
+    ![RC : representation_class]:
     (
-      modelet_models_concept(given_alternatives_modelet, C) 
+      modelet_has_representation_class(given_alternatives_modelet, RC) 
       => 
-      C = alternative_array
+      (
+        RC = alternative_array_rc
+        |
+        RC = choice_set_rc
+      )
     )
   )
 ).
@@ -40,15 +44,6 @@ tff(given_alternatives_modelet_formalism, axiom,
   formalism_of_modelet(given_alternatives_modelet) = alternative_array_msg
 ).
 
-% TODO: This should probably not be a biconditional in general, but is fine for now.
-tff(given_alternatives_modelet_representation_class, axiom,
-  ![R : representation_class]:
-  (
-    modelet_has_representation_class(given_alternatives_modelet, R) 
-    <=> 
-    R = choice_set
-  )
-).
 
 %-----------------------------------
 
@@ -70,11 +65,11 @@ tff(given_cues_modelet_creator, axiom,
 
 % TODO: This should probably not be a biconditional in general, but is fine for now.
 tff(given_cues_modelet_models_cue_array, axiom,
-  ![C : concept]:
+  ![RC: representation_class]:
   (
-    modelet_models_concept(given_cues_modelet, C)
+    modelet_has_representation_class(given_cues_modelet, RC)
     <=>
-    C = cue_array
+    RC = cue_array_rc
   )
 ).
 
