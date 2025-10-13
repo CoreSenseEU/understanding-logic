@@ -92,20 +92,6 @@ tff(formally_equivalent, axiom,
         modelet_has_representation_class(M, R)
       )
       &
-      ! [SPT : spacetime_point]:
-      (
-        template_has_location_requirement(T, SPT)
-        =>
-        modelet_has_location(M, SPT)
-      )
-      &
-      ! [E : extent]:
-      (
-        template_has_extent_requirement(T, E)
-        =>
-        modelet_has_extent(M, E)
-      )
-      &
       ![E: engine]:
       ( % Equivalence of creators
         template_has_creator_requirement(T, E)
