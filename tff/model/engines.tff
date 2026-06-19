@@ -1,4 +1,3 @@
-
 include('understanding-logic/tff/model/modelets.tff').
 include('understanding-logic/tff/model/templates.tff').
 
@@ -13,19 +12,19 @@ tff(decl_engine, type,
 
 % Engines can be disabled selectively
 tff(decl_engine_disable, type,
-  engine_unavailable: (engine) > $o
+  engine_unavailable : (engine) > $o
 ).
 
 
 % Engines have properties
 tff(decl_property_of_e, type,
-  engine_has_property: (engine * property) > $o
+  engine_has_property : (engine * property * value) > $o
 ).
 
 
 % Engine outputs have properties
 tff(decl_engine_imparts_property, type,
-  engine_imparts_property: (engine * property) > $o
+  engine_imparts_property : (engine * property * value) > $o
 ).
 
 % Engine outputs may retain properties
@@ -65,11 +64,11 @@ tff(decl_template_has_creator_requirement, type,
 
 % Modelets and Templates can be formally equivalent
 tff(formally_equivalent_decl, type, 
-  formally_equivalent: (template * modelet) > $o
+  formally_equivalent : (template * modelet) > $o
 ).
 
 tff(formally_equivalent, axiom,
-  ! [M: modelet, T: template]:
+  ! [M : modelet, T : template]:
   (
     (
       (
@@ -78,21 +77,21 @@ tff(formally_equivalent, axiom,
         formalism_of_modelet(M)
       )
       &
-      ![C: concept]:
+      ![C : concept]:
       ( % Equivalence of world model classes
         template_has_concept_requirement(T, C)
         =>
         modelet_models_concept(M, C)
       )
       &
-      ![R: representation_class]:
+      ![R : representation_class]:
       ( % Equivalence of processing model classes
         template_has_representation_class_requirement(T, R)
         =>
         modelet_has_representation_class(M, R)
       )
       &
-      ![E: engine]:
+      ![E : engine]:
       ( % Equivalence of creators
         template_has_creator_requirement(T, E)
         =>
@@ -113,16 +112,16 @@ tff(decl_inputs_match, type,
 
 % Modelets and Templates can have matching profiles
 tff(axiom_modelet_matches_template, axiom,
-  ! [M: modelet, T: template]:
+  ! [M : modelet, T : template]:
   (
     (
       formally_equivalent(T, M)
       &
-      ![R: requirement] :
+      ![P : property, R : requirement_specification]:
       (
-        is_part_of(R, T)
+        template_has_property_requirement(T, P, R)
         =>
-        modelet_meets_requirement(M, R)
+        modelet_meets_requirement(M, P, R)
       )
     )
     =>
@@ -132,11 +131,11 @@ tff(axiom_modelet_matches_template, axiom,
 
 % Engines can conform to requirements
 tff(decl_engine_uses_resource, type,
-  engine_uses_resource: (engine * resource) > $o
+  engine_uses_resource : (engine * resource) > $o
 ).
 
 %tff(axiom_engine_meets_requirement, axiom,
-%  ! [E : engine, R : requirement, P: property]:
+%  ! [E : engine, R : requirement, P : property]:
 %  (
 %    (
 %      engine_has_property(E, P) % match engine to property

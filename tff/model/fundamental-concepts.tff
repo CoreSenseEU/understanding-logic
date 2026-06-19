@@ -31,10 +31,6 @@ tff(decl_formalism, type,
   formalism : $tType
 ).
 
-% Datatypes - As the name suggests, the fundamental types of data considered
-tff(decl_proptype, type,
-  proptype : $tType
-).
 
 % Role - Usage of a modelet by engines. Class in the Processing Model.
 tff(decl_representation_class, type,

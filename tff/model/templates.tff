@@ -10,10 +10,9 @@ tff(decl_template, type,
 
 
 
-% Templates may carry model characteristic requirements. e.g. 'minimun resolution'
 % See properties-and-requirements.tff
 tff(decl_templates_have_requirements, type,
-  is_part_of: (requirement * template) > $o
+  template_has_property_requirement : (template * property * requirement_specification) > $o
 ).
 
 
@@ -46,7 +45,6 @@ tff(decl_template_has_concept_requirement, type,
 
 
 
-% representation class removed for the moment.
 % Templates carry Role requirements. Extrinsic (from the perspective of the modelet) purpose.
 tff(decl_template_has_representation_class_requirement, type,
   template_has_representation_class_requirement : (template * representation_class) > $o
