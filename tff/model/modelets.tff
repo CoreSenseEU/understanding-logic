@@ -70,7 +70,7 @@ tff(modelet_meets_requirement_decl, type,
 
 
 tff(axiom_modelet_meets_requirement, axiom,
-  ! [M : modelet, R : requirement_specification, P : property, V : value]:
+  ![M : modelet, R : requirement_specification, P : property, V : value]:
   (
     (
       modelet_has_property(M, P, V) % match modelet to property

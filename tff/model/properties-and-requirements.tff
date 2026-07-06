@@ -23,10 +23,14 @@ tff(decl_value, type,
   value : $tType
 ).
 
+tff(decl_value_meets_requirement_external, type,
+  value_meets_requirement : (value * requirement_specification) > $o
+).
+
 tff(property_meets_requirement_external, external,
-  ![R : requirement_specification, V : value]:
+  ![R : requirement_specification, V : value]: ?[Fake : value]:
     value_meets_requirement(V, R),
-  "/triplestarkb/value_check"
+  "/coresense/understanding/requirement_enforcer"
 ).
 
 
