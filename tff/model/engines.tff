@@ -27,9 +27,9 @@ tff(decl_engine_imparts_property, type,
   engine_imparts_property : (engine * property * value) > $o
 ).
 
-% Engine outputs may retain properties
-tff(engine_transits_property_decl, type,
-  engine_transits_property : (engine * property) > $o
+% Engine outputs may block the transit of properties
+tff(engine_blocks_property_transit_decl, type,
+  engine_blocks_property_transit : (engine * property) > $o
 ).
 %---
 
